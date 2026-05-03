@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Computer Store - bảng điều khiển quản trị." />
+  <title>Computer Store - Admin</title>
+  <link rel="stylesheet" href="../css/index.css" />
+  <link rel="stylesheet" href="./css/admin.css" />
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main class="admin-page">
+    <section class="section">
+      <div class="container">
+        <div class="section__heading">
+          <h2>Bảng điều khiển</h2>
+          <a href="../index.html">Về trang chủ</a>
+        </div>
+
+        <div class="admin-stats">
+          <article class="admin-stat-card">
+            <span>Đơn hàng hôm nay</span>
+            <strong>128</strong>
+          </article>
+          <article class="admin-stat-card">
+            <span>Doanh thu</span>
+            <strong>245.000.000đ</strong>
+          </article>
+          <article class="admin-stat-card">
+            <span>Sản phẩm</span>
+            <strong>1.248</strong>
+          </article>
+          <article class="admin-stat-card">
+            <span>Khách hàng mới</span>
+            <strong>36</strong>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--alt">
+      <div class="container">
+        <div class="section__heading">
+          <h2>Đơn hàng gần đây</h2>
+          <a href="#">Xem tất cả</a>
+        </div>
+
+        <div class="admin-table">
+          <div class="admin-table__row admin-table__row--head">
+            <span>Mã đơn</span>
+            <span>Khách hàng</span>
+            <span>Sản phẩm</span>
+            <span>Trạng thái</span>
+          </div>
+          <div class="admin-table__row">
+            <span>#CS1024</span>
+            <span>Nguyễn Minh</span>
+            <span>Lenovo IdeaPad Slim 5</span>
+            <span class="admin-badge admin-badge--success">Đã giao</span>
+          </div>
+          <div class="admin-table__row">
+            <span>#CS1023</span>
+            <span>Trần Anh</span>
+            <span>ASUS TUF Gaming F15</span>
+            <span class="admin-badge admin-badge--warning">Đang xử lý</span>
+          </div>
+          <div class="admin-table__row">
+            <span>#CS1022</span>
+            <span>Phạm Huy</span>
+            <span>MSI RTX 4060 VENTUS 2X</span>
+            <span class="admin-badge admin-badge--info">Chờ thanh toán</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section__heading">
+          <h2>Quản trị nhanh</h2>
+          <a href="#">Mở rộng</a>
+        </div>
+
+        <div class="admin-grid">
+          <a class="admin-panel-card" href="#">
+            <strong>Sản phẩm</strong>
+            <span>Thêm, sửa, xoá sản phẩm</span>
+          </a>
+          <a class="admin-panel-card" href="#">
+            <strong>Danh mục</strong>
+            <span>Quản lý danh mục và bộ lọc</span>
+          </a>
+          <a class="admin-panel-card" href="#">
+            <strong>Khuyến mãi</strong>
+            <span>Tạo mã giảm giá và banner</span>
+          </a>
+          <a class="admin-panel-card" href="#">
+            <strong>Người dùng</strong>
+            <span>Phân quyền và theo dõi tài khoản</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script src="../utils/loadHeader.js"></script>
+  <script src="../utils/header.js"></script>
+  <script src="../utils/loadFooter.js"></script>
+</body>
+</html>

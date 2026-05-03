@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Computer Store - thanh toán đơn hàng nhanh chóng và an toàn." />
+  <title>Computer Store - Thanh toán</title>
+  <link rel="stylesheet" href="../css/checkout.css" />
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main>
+    <section class="section">
+      <div class="container">
+        <div class="section__heading">
+          <h2>Thanh toán</h2>
+          <a href="./cart.html">Quay lại giỏ hàng</a>
+        </div>
+
+        <div class="newsletter__inner">
+          <div>
+            <h2>Xác nhận thông tin giao hàng</h2>
+            <p>Điền địa chỉ và phương thức thanh toán để hoàn tất đơn hàng.</p>
+          </div>
+          <form class="newsletter__form checkout-form" action="#" method="post">
+            <label class="checkout-form__field" for="fullName">
+              <span>Họ và tên</span>
+              <input id="fullName" type="text" name="fullName" autocomplete="name" placeholder="Nhập họ và tên" />
+            </label>
+
+            <label class="checkout-form__field" for="address">
+              <span>Địa chỉ nhận hàng</span>
+              <input id="address" type="text" name="address" autocomplete="street-address" placeholder="Nhập địa chỉ nhận hàng" />
+            </label>
+
+            <label class="checkout-form__field" for="phone">
+              <span>Số điện thoại</span>
+              <input id="phone" type="tel" name="phone" autocomplete="tel" placeholder="Nhập số điện thoại" />
+            </label>
+
+            <button type="submit">Đặt hàng</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--alt">
+      <div class="container">
+        <div class="section__heading">
+          <h2>Thông tin đơn hàng</h2>
+          <a href="./cart.html">Chỉnh sửa</a>
+        </div>
+
+        <div class="review-grid">
+          <article class="review-card">
+            <p>“Lenovo IdeaPad Slim 5”</p>
+            <strong>20.990.000đ</strong>
+          </article>
+          <article class="review-card">
+            <p>“MSI RTX 4060 VENTUS 2X”</p>
+            <strong>8.990.000đ</strong>
+          </article>
+          <article class="review-card">
+            <p>Tổng tiền thanh toán sau ưu đãi</p>
+            <strong>29.980.000đ</strong>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script src="../utils/loadHeader.js"></script>
+  <script src="../utils/header.js"></script>
+  <script src="../utils/loadFooter.js"></script>
+</body>
+</html>

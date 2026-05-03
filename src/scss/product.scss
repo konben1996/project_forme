@@ -11,7 +11,6 @@ $page-text: var(--page-text);
 $page-muted: var(--page-muted);
 $page-accent: var(--page-accent);
 $page-accent-dark: var(--page-accent-dark);
-$page-success: var(--page-success);
 $page-shadow: var(--page-shadow);
 $page-shadow-hover: var(--page-shadow-hover);
 $page-section-alt: var(--page-section-alt);
@@ -19,8 +18,6 @@ $page-hero-sidebar-bg: var(--page-hero-sidebar-bg);
 $page-hero-image-start: var(--page-hero-image-start);
 $page-hero-image-end: var(--page-hero-image-end);
 $page-hero-image-text: var(--page-hero-image-text);
-$page-budget-bg-start: var(--page-budget-bg-start);
-$page-budget-bg-end: var(--page-budget-bg-end);
 
 body {
   background: linear-gradient(180deg, $page-bg 0%, $page-bg-alt 100%);
@@ -174,10 +171,6 @@ section {
   width: 100%;
 }
 
-.benefits {
-  padding: 12px 0 56px;
-}
-
 .benefits__grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -242,122 +235,10 @@ section {
   }
 }
 
-.category-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 16px;
-}
-
-.category-card {
-  min-height: 120px;
-  border-radius: 20px;
-  border: 1px solid $page-border;
-  background:
-    linear-gradient(135deg, rgba(37, 99, 235, 0.04), rgba(37, 99, 235, 0.08)),
-    $page-surface;
-  padding: 20px;
-  display: flex;
-  align-items: flex-end;
-  font-weight: 800;
-  color: $page-text;
-  box-shadow: $page-shadow;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, background 0.2s ease;
-
-  &:hover {
-    transform: translateY(-4px);
-    box-shadow: $page-shadow-hover;
-    border-color: rgba(37, 99, 235, 0.28);
-    background:
-      linear-gradient(135deg, rgba(37, 99, 235, 0.14), rgba(37, 99, 235, 0.22)),
-      $page-surface;
-  }
-}
-
-.product-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 20px;
-}
-
-.product-card {
-  background: $page-surface;
-  border: 1px solid $page-border;
-  border-radius: 24px;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  box-shadow: $page-shadow;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-
-  &:hover {
-    transform: translateY(-4px);
-    box-shadow: $page-shadow-hover;
-    border-color: rgba(37, 99, 235, 0.24);
-  }
-
-  &__image {
-    min-height: 180px;
-    border-radius: 18px;
-    display: grid;
-    place-items: center;
-    background:
-      radial-gradient(circle at top, rgba(255, 255, 255, 0.4), transparent 45%),
-      linear-gradient(135deg, $page-hero-image-start 0%, $page-hero-image-end 100%);
-    color: $page-hero-image-text;
-    font-size: 1.1rem;
-    font-weight: 800;
-  }
-
-  &__badge {
-    display: inline-flex;
-    align-self: flex-start;
-    margin: 0;
-    padding: 6px 10px;
-    border-radius: 999px;
-    background: #dcfce7;
-    color: #166534;
-    font-size: 0.85rem;
-    font-weight: 700;
-  }
-
-  h3 {
-    margin: 0;
-    font-size: 1.1rem;
-    color: $page-text;
-  }
-
-  &__spec {
-    margin: 0;
-    color: $page-muted;
-  }
-
-  &__price {
-    display: flex;
-    align-items: baseline;
-    gap: 10px;
-    flex-wrap: wrap;
-
-    strong {
-      color: $page-accent-dark;
-      font-size: 1.15rem;
-    }
-
-    span {
-      color: $page-muted;
-      text-decoration: line-through;
-    }
-  }
-}
-
 .tile-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 18px;
-}
-
-.tile-grid--budget .tile-card {
-  background: linear-gradient(135deg, $page-budget-bg-start, $page-budget-bg-end);
 }
 
 .tile-card {
@@ -379,31 +260,6 @@ section {
     background: $page-accent;
     color: #fff;
     border-color: $page-accent;
-    box-shadow: $page-shadow-hover;
-  }
-}
-
-.brand-grid {
-  display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-  gap: 14px;
-}
-
-.brand-card {
-  min-height: 84px;
-  border-radius: 18px;
-  background: $page-surface;
-  border: 1px solid $page-border;
-  display: grid;
-  place-items: center;
-  font-weight: 800;
-  color: $page-text;
-  box-shadow: $page-shadow;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-
-  &:hover {
-    transform: translateY(-3px);
-    border-color: rgba(37, 99, 235, 0.28);
     box-shadow: $page-shadow-hover;
   }
 }
@@ -438,128 +294,15 @@ section {
   }
 }
 
-.blog-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 20px;
-}
-
-.blog-card {
-  background: $page-surface;
-  border: 1px solid $page-border;
-  border-radius: 24px;
-  padding: 24px;
-  box-shadow: $page-shadow;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-
-  &:hover {
-    transform: translateY(-4px);
-    box-shadow: $page-shadow-hover;
-  }
-
-  h3 {
-    margin: 0 0 12px;
-    font-size: 1.1rem;
-    color: $page-text;
-  }
-
-  p {
-    margin: 0;
-    color: $page-muted;
-    line-height: 1.7;
-  }
-}
-
-.newsletter {
-  padding: 0 0 60px;
-}
-
-.newsletter__inner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  padding: 32px 40px;
-  border-radius: 28px;
-  background: linear-gradient(135deg, $page-accent 0%, $page-accent-dark 100%);
-  color: #fff;
-  box-shadow: $page-shadow-hover;
-
-  h2 {
-    margin: 0 0 10px;
-    font-size: clamp(1.5rem, 2.2vw, 2.3rem);
-  }
-
-  p {
-    margin: 0;
-    color: rgba(255, 255, 255, 0.88);
-  }
-}
-
-.newsletter__form {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex: 1 1 420px;
-  justify-content: flex-end;
-
-  input {
-    flex: 1 1 auto;
-    min-width: 240px;
-    min-height: 52px;
-    border: 0;
-    border-radius: 16px;
-    padding: 0 18px;
-    font-size: 1rem;
-    color: $page-text;
-    outline: none;
-    box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.08);
-  }
-
-  button {
-    min-height: 52px;
-    padding: 0 22px;
-    border: 0;
-    border-radius: 16px;
-    background: #0f172a;
-    color: #fff;
-    font-weight: 800;
-    cursor: pointer;
-    transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
-
-    &:hover {
-      background: #111827;
-      transform: translateY(-1px);
-    }
-  }
-}
-
 @media (max-width: 1024px) {
   .hero__grid {
     grid-template-columns: 1fr;
   }
 
   .benefits__grid,
-  .category-grid,
-  .product-grid,
   .tile-grid,
-  .review-grid,
-  .blog-grid {
+  .review-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .brand-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
-  .newsletter__inner {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .newsletter__form {
-    width: 100%;
-    justify-content: flex-start;
   }
 }
 
@@ -571,12 +314,8 @@ section {
   .hero__sidebar,
   .hero__banner,
   .benefit-card,
-  .category-card,
-  .product-card,
   .tile-card,
-  .brand-card,
-  .review-card,
-  .blog-card {
+  .review-card {
     border-radius: 20px;
   }
 
@@ -594,28 +333,14 @@ section {
   }
 
   .benefits__grid,
-  .category-grid,
-  .product-grid,
   .tile-grid,
-  .brand-grid,
-  .review-grid,
-  .blog-grid {
+  .review-grid {
     grid-template-columns: 1fr;
   }
 
-  .hero__buttons,
-  .newsletter__form {
+  .hero__buttons {
     flex-direction: column;
     align-items: stretch;
-  }
-
-  .newsletter__form input,
-  .newsletter__form button {
-    width: 100%;
-  }
-
-  .newsletter__inner {
-    padding: 28px 24px;
   }
 }
 
@@ -640,19 +365,11 @@ section {
     font-size: 1rem;
   }
 
-  .benefits {
-    padding-bottom: 40px;
-  }
-
   .section {
     padding: 32px 0;
   }
 
   .section__heading a {
     font-size: 0.95rem;
-  }
-
-  .newsletter {
-    padding-bottom: 40px;
   }
 }

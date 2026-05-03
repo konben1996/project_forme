@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Computer Store - thông tin tài khoản, đơn hàng và cài đặt cá nhân." />
+  <title>Computer Store - Thông tin tài khoản</title>
+  <link rel="stylesheet" href="../css/account-info.css" />
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main>
+    <section class="account-page">
+      <div class="container">
+        <div class="account-page__hero">
+          <div class="account-page__hero-grid">
+            <div class="account-avatar" aria-hidden="true">NA</div>
+
+            <div>
+              <h1>Thông tin tài khoản</h1>
+              <p>
+                Quản lý hồ sơ cá nhân, địa chỉ nhận hàng, đơn hàng gần đây và các cài đặt bảo mật
+                trong cùng một nơi.
+              </p>
+
+              <div class="account-badges">
+                <span class="account-badge">Đã xác minh email</span>
+                <span class="account-badge">Thành viên từ 2024</span>
+                <span class="account-badge">Ưu tiên hỗ trợ</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="account-grid">
+          <div class="account-card">
+            <div class="account-card__title">
+              <h2>Hồ sơ cá nhân</h2>
+              <a href="#">Chỉnh sửa</a>
+            </div>
+
+            <div class="account-info-list">
+              <div class="account-info-row">
+                <span>Họ và tên</span>
+                <strong>Nguyễn Anh</strong>
+              </div>
+              <div class="account-info-row">
+                <span>Email</span>
+                <strong>nguyen.anh@example.com</strong>
+              </div>
+              <div class="account-info-row">
+                <span>Số điện thoại</span>
+                <strong>0900 123 456</strong>
+              </div>
+              <div class="account-info-row">
+                <span>Địa chỉ mặc định</span>
+                <strong>12 Nguyễn Huệ, Quận 1, TP. Hồ Chí Minh</strong>
+              </div>
+            </div>
+
+            <div class="account-actions">
+              <a class="btn btn--primary" href="#">Cập nhật hồ sơ</a>
+              <a class="btn btn--ghost" href="#">Đổi mật khẩu</a>
+            </div>
+
+            <div class="account-section">
+              <div class="account-section__heading">
+                <h2>Đơn hàng gần đây</h2>
+                <a href="#">Xem tất cả</a>
+              </div>
+
+              <div class="account-orders">
+                <article class="account-order">
+                  <div class="account-order__top">
+                    <strong>#CS1024</strong>
+                    <span>12/04/2026</span>
+                  </div>
+                  <p>Lenovo IdeaPad Slim 5 · 20.990.000đ</p>
+                  <span class="account-order__status">Đã giao</span>
+                </article>
+
+                <article class="account-order">
+                  <div class="account-order__top">
+                    <strong>#CS1023</strong>
+                    <span>08/04/2026</span>
+                  </div>
+                  <p>MSI RTX 4060 VENTUS 2X · 8.990.000đ</p>
+                  <span class="account-order__status">Đang xử lý</span>
+                </article>
+              </div>
+            </div>
+          </div>
+
+          <div class="account-sidebar">
+            <div class="account-card">
+              <div class="account-section__heading">
+                <h2>Điều hướng nhanh</h2>
+                <a href="../index.html">Trang chủ</a>
+              </div>
+
+              <nav class="account-menu" aria-label="Điều hướng tài khoản">
+                <a href="./account-info.html"><span>Thông tin tài khoản</span><span>→</span></a>
+                <a href="./cart.html"><span>Giỏ hàng</span><span>→</span></a>
+                <a href="./checkout.html"><span>Thanh toán</span><span>→</span></a>
+                <a href="./forgot-password.html"><span>Quên mật khẩu</span><span>→</span></a>
+              </nav>
+            </div>
+
+            <div class="account-tips">
+              <h3>Mẹo bảo mật</h3>
+              <p>
+                Hãy bật xác thực email và cập nhật mật khẩu định kỳ để bảo vệ tài khoản của bạn.
+              </p>
+            </div>
+
+            <div class="account-card">
+              <div class="account-section__heading">
+                <h2>Liên hệ hỗ trợ</h2>
+              </div>
+
+              <div class="account-info-list">
+                <div class="account-info-row">
+                  <span>Hotline</span>
+                  <strong>0900 000 001</strong>
+                </div>
+                <div class="account-info-row">
+                  <span>Email</span>
+                  <strong>support@computerstore.vn</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script src="../utils/loadHeader.js"></script>
+  <script src="../utils/header.js"></script>
+  <script src="../utils/loadFooter.js"></script>
+</body>
+</html>

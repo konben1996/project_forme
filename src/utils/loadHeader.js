@@ -32,6 +32,7 @@ const setHeaderLinks = () => {
 
   const homeLinks = header.querySelectorAll('.logo, a[aria-label="Trang chủ"]');
   const registerLinks = header.querySelectorAll('a[aria-label="Đăng ký tài khoản"]');
+  const accountLinks = header.querySelectorAll('a[aria-label="Thông tin tài khoản"]');
   const cartLinks = header.querySelectorAll('a[aria-label="Giỏ hàng"]');
   const loginLinks = header.querySelectorAll('a[aria-label="Đăng nhập"]');
 
@@ -41,6 +42,10 @@ const setHeaderLinks = () => {
 
   registerLinks.forEach((link) => {
     link.setAttribute('href', resolveSiteUrl('src/pages/register.html'));
+  });
+
+  accountLinks.forEach((link) => {
+    link.setAttribute('href', resolveSiteUrl('src/pages/account-info.html'));
   });
 
   cartLinks.forEach((link) => {

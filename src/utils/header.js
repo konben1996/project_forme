@@ -1,4 +1,6 @@
 const THEME_KEY = 'computer-store-theme';
+const THEME_LIGHT = 'light';
+const THEME_DARK = 'dark';
 const HEADER_SELECTOR = '#site-header';
 const TOGGLE_SELECTOR = '.theme-toggle';
 const ICON_SELECTOR = '.theme-toggle__icon';
@@ -14,20 +16,51 @@ const BODY_DRAWER_OPEN_CLASS = 'header-drawer-open';
 
 const getSavedTheme = () => {
   const savedTheme = localStorage.getItem(THEME_KEY);
-  return savedTheme === 'dark' ? 'dark' : 'light';
+
+  if (savedTheme === THEME_DARK || savedTheme === THEME_LIGHT) {
+    return savedTheme;
+  }
+
+  return null;
 };
 
-const setTheme = (theme, button) => {
-  document.documentElement.dataset.theme = theme;
+const getPreferredTheme = () => {
+  const savedTheme = getSavedTheme();
 
-  if (button) {
-    button.setAttribute('aria-pressed', String(theme === 'dark'));
-    const icon = button.querySelector(ICON_SELECTOR);
-
-    if (icon) {
-      icon.textContent = theme === 'dark' ? '☾' : '☀';
-    }
+  if (savedTheme) {
+    return savedTheme;
   }
+
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  return prefersDark ? THEME_DARK : THEME_LIGHT;
+};
+
+const getCurrentTheme = () => {
+  return document.documentElement.dataset.theme === THEME_DARK ? THEME_DARK : THEME_LIGHT;
+};
+
+const applyTheme = (theme) => {
+  document.documentElement.dataset.theme = theme;
+  localStorage.setItem(THEME_KEY, theme);
+};
+
+const updateThemeButton = (button, theme) => {
+  if (!button) {
+    return;
+  }
+
+  button.setAttribute('aria-pressed', String(theme === THEME_DARK));
+  button.setAttribute('aria-label', theme === THEME_DARK ? 'Chuyển sang giao diện sáng' : 'Chuyển sang giao diện tối');
+
+  const icon = button.querySelector(ICON_SELECTOR);
+
+  if (icon) {
+    icon.textContent = theme === THEME_DARK ? '☾' : '☀';
+  }
+};
+
+const initializeTheme = () => {
+  applyTheme(getPreferredTheme());
 };
 
 const isCompactHeader = () => window.innerWidth <= COMPACT_HEADER_MAX_WIDTH;
@@ -139,12 +172,12 @@ const bindThemeToggle = () => {
 
   button.dataset.bound = 'true';
 
-  setTheme(getSavedTheme(), button);
+  updateThemeButton(button, getCurrentTheme());
 
   button.addEventListener('click', () => {
-    const nextTheme = getSavedTheme() === 'dark' ? 'light' : 'dark';
-    localStorage.setItem(THEME_KEY, nextTheme);
-    setTheme(nextTheme, button);
+    const nextTheme = getCurrentTheme() === THEME_DARK ? THEME_LIGHT : THEME_DARK;
+    applyTheme(nextTheme);
+    updateThemeButton(button, nextTheme);
   });
 };
 
@@ -175,6 +208,8 @@ const observeHeader = () => {
   bindMobileDrawer();
   bindThemeToggle();
 };
+
+initializeTheme();
 
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', observeHeader);

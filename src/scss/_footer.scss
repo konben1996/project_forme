@@ -1,7 +1,7 @@
 .footer {
   margin-top: 48px;
-  background: #0f172a;
-  color: #e2e8f0;
+  background: var(--footer-bg);
+  color: var(--footer-text);
   padding: 48px 0;
 
   &__grid {
@@ -13,13 +13,13 @@
   h3,
   h4 {
     margin: 0 0 12px;
-    color: #ffffff;
+    color: var(--footer-heading);
   }
 
   p {
     margin: 0;
     line-height: 1.6;
-    color: #cbd5e1;
+    color: var(--footer-muted);
   }
 
   ul {
@@ -30,15 +30,15 @@
 
   li {
     margin-bottom: 10px;
-    color: #cbd5e1;
+    color: var(--footer-muted);
   }
 
   a {
-    color: #cbd5e1;
+    color: var(--footer-link);
     transition: color 0.2s ease;
 
     &:hover {
-      color: #ffffff;
+      color: var(--footer-link-hover);
     }
   }
 }
