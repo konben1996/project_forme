@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Computer Store - đăng nhập tài khoản để theo dõi đơn hàng và quản lý thông tin." />
+  <title>Computer Store - Đăng nhập</title>
+  <link rel="stylesheet" href="../css/login.css" />
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main>
+    <section class="auth-page">
+      <div class="container auth-page__grid">
+        <div class="auth-card">
+          <div class="auth-card__header">
+            <h2>Đăng nhập</h2>
+            <p>Nhập thông tin tài khoản để tiếp tục.</p>
+          </div>
+
+          <form class="auth-form" action="#" method="post">
+            <label for="email">
+              Email hoặc số điện thoại
+              <input id="email" type="text" name="email" autocomplete="username" placeholder="Nhập email hoặc số điện thoại" />
+            </label>
+
+            <label for="password">
+              Mật khẩu
+              <input id="password" type="password" name="password" autocomplete="current-password" placeholder="Nhập mật khẩu" />
+            </label>
+
+            <div class="auth-form__row">
+              <div class="auth-form__remember">
+                <label class="auth-form__checkbox" for="remember">
+                  <input id="remember" type="checkbox" name="remember" />
+                  Ghi nhớ đăng nhập
+                </label>
+              </div>
+
+              <div class="auth-form__forgot">
+                <a class="auth-form__link" href="#">Quên mật khẩu?</a>
+              </div>
+            </div>
+
+            <button class="auth-form__submit" type="submit">Đăng nhập</button>
+          </form>
+
+          <div class="auth-card__footer">
+            Chưa có tài khoản? <a href="#">Đăng ký ngay</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script src="../utils/loadHeader.js"></script>
+  <script src="../utils/header.js"></script>
+  <script src="../utils/loadFooter.js"></script>
+</body>
+</html>
