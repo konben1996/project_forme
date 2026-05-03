@@ -1,4 +1,4 @@
-const getProjectBasePath = () => {
+const getFooterProjectBasePath = () => {
   const { pathname } = window.location;
   const srcMarker = '/src/';
   const srcIndex = pathname.indexOf(srcMarker);
@@ -18,8 +18,8 @@ const getProjectBasePath = () => {
   return `${pathname.replace(/[^/]*$/, '')}`;
 };
 
-const resolveSiteUrl = (relativePath) => {
-  const baseUrl = `${window.location.origin}${getProjectBasePath()}`;
+const resolveFooterUrl = (relativePath) => {
+  const baseUrl = `${window.location.origin}${getFooterProjectBasePath()}`;
   return new URL(relativePath, baseUrl).href;
 };
 
@@ -31,7 +31,7 @@ const loadFooter = async () => {
   }
 
   try {
-    const response = await fetch(resolveSiteUrl('src/layout/footer.html'));
+    const response = await fetch(resolveFooterUrl('src/layout/footer.html'));
 
     if (!response.ok) {
       throw new Error(`Failed to load footer: ${response.status}`);
