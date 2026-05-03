@@ -1,9 +1,9 @@
 const setHomeLink = () => {
-  const homeLink = document.querySelector('#site-header a[aria-label="Trang chủ"]');
+  const homeLinks = document.querySelectorAll('#site-header a[aria-label="Trang chủ"]');
 
-  if (homeLink) {
+  homeLinks.forEach((homeLink) => {
     homeLink.setAttribute('href', '/index.html');
-  }
+  });
 };
 
 const loadHeader = async () => {

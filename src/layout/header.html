@@ -21,7 +21,7 @@
 
     <div class="header__actions">
       <a href="#" aria-label="Trang chủ">Trang Chủ</a>
-      <a href="#" aria-label="Đăng ký tài khoản">Đăng ký</a>
+      <a href="/src/pages/register.html" aria-label="Đăng ký tài khoản">Đăng ký</a>
       <a href="#" aria-label="Thông tin tài khoản">Thông tin tài khoản</a>
       <a href="src/pages/cart.html" aria-label="Giỏ hàng">Giỏ hàng</a>
       <a href="src/pages/login.html" aria-label="Đăng nhập">Đăng nhập</a>
@@ -33,10 +33,28 @@
       </button>
     </div>
     <div class="header__mobile-menu">
-      <button class="mobile-menu-toggle" type="button" aria-label="Mở menu điều hướng">
+      <button class="mobile-menu-toggle" type="button" aria-label="Mở menu điều hướng" aria-controls="mobile-header-drawer" aria-expanded="false">
         <span class="mobile-menu-toggle__icon" aria-hidden="true">☰</span>
       </button>
     </div>
+  </div>
+
+  <div class="header__mobile-drawer" id="mobile-header-drawer" aria-hidden="true">
+    <button class="header__mobile-drawer-backdrop" type="button" aria-label="Đóng menu điều hướng"></button>
+    <aside class="header__mobile-drawer-panel" aria-label="Menu điều hướng">
+      <div class="header__mobile-drawer-header">
+        <strong>Menu điều hướng</strong>
+        <button class="header__mobile-drawer-close" type="button" aria-label="Đóng menu điều hướng">×</button>
+      </div>
+      <nav class="header__mobile-drawer-links" aria-label="Menu tài khoản và thao tác">
+        <a href="#" aria-label="Trang chủ">Trang Chủ</a>
+        <a href="/src/pages/register.html" aria-label="Đăng ký tài khoản">Đăng ký</a>
+        <a href="#" aria-label="Thông tin tài khoản">Thông tin tài khoản</a>
+        <a href="src/pages/cart.html" aria-label="Giỏ hàng">Giỏ hàng</a>
+        <a href="src/pages/login.html" aria-label="Đăng nhập">Đăng nhập</a>
+        <a href="#" aria-label="Đăng xuất">Đăng xuất</a>
+      </nav>
+    </aside>
   </div>
 </header>
 

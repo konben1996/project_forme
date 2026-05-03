@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Computer Store - tạo tài khoản mới để mua sắm nhanh hơn và quản lý thông tin dễ dàng." />
+  <title>Computer Store - Đăng ký</title>
+  <link rel="stylesheet" href="../css/register.css" />
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main>
+    <section class="auth-page">
+      <div class="container auth-page__grid">
+        <div class="auth-card">
+          <div class="auth-card__header">
+            <h2>Đăng ký</h2>
+            <p>Tạo tài khoản mới để bắt đầu mua sắm.</p>
+          </div>
+
+          <form class="auth-form" action="#" method="post">
+            <label for="full-name">
+              Họ và tên
+              <input id="full-name" type="text" name="fullName" autocomplete="name" placeholder="Nhập họ và tên" />
+            </label>
+
+            <label for="email">
+              Email
+              <input id="email" type="email" name="email" autocomplete="email" placeholder="Nhập email của bạn" />
+            </label>
+
+            <label for="phone">
+              Số điện thoại
+              <input id="phone" type="tel" name="phone" autocomplete="tel" placeholder="Nhập số điện thoại" />
+            </label>
+
+            <label for="password">
+              Mật khẩu
+              <input id="password" type="password" name="password" autocomplete="new-password" placeholder="Tạo mật khẩu" />
+            </label>
+
+            <label for="confirm-password">
+              Xác nhận mật khẩu
+              <input id="confirm-password" type="password" name="confirmPassword" autocomplete="new-password" placeholder="Nhập lại mật khẩu" />
+            </label>
+
+            <div class="auth-form__row">
+              <div class="auth-form__remember">
+                <label class="auth-form__checkbox" for="accept-terms">
+                  <input id="accept-terms" type="checkbox" name="acceptTerms" />
+                  Tôi đồng ý với điều khoản sử dụng và chính sách bảo mật
+                </label>
+              </div>
+            </div>
+
+            <button class="auth-form__submit" type="submit">Tạo tài khoản</button>
+          </form>
+
+          <div class="auth-card__footer">
+            Đã có tài khoản? <a href="../pages/login.html">Đăng nhập</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script src="../utils/loadHeader.js"></script>
+  <script src="../utils/header.js"></script>
+  <script src="../utils/loadFooter.js"></script>
+</body>
+</html>

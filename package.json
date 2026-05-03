@@ -3,8 +3,8 @@
   "private": true,
   "version": "1.0.0",
   "scripts": {
-    "build:css": "sass src/scss/index.scss src/css/index.css --no-source-map && sass src/scss/login.scss src/css/login.css --no-source-map",
-    "watch:css": "sass --watch src/scss/index.scss:src/css/index.css src/scss/login.scss:src/css/login.css --no-source-map"
+    "build:css": "sass src/scss/index.scss src/css/index.css --no-source-map && sass src/scss/login.scss src/css/login.css --no-source-map && sass src/scss/register.scss src/css/register.css --no-source-map",
+    "watch:css": "sass --watch src/scss/index.scss:src/css/index.css src/scss/login.scss:src/css/login.css src/scss/register.scss:src/css/register.css --no-source-map"
   },
   "devDependencies": {
     "sass": "^1.99.0"

@@ -117,6 +117,96 @@ img {
   display: none;
   align-items: center;
 }
+.header__mobile-drawer {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  justify-content: flex-end;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+.header__mobile-drawer.is-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+.header__mobile-drawer-backdrop {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  padding: 0;
+  background: rgba(15, 23, 42, 0.45);
+  cursor: pointer;
+}
+.header__mobile-drawer-panel {
+  position: relative;
+  width: min(360px, 88vw);
+  height: 100%;
+  margin-left: auto;
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  background: var(--header-bg);
+  box-shadow: -18px 0 40px rgba(15, 23, 42, 0.18);
+  transform: translateX(100%);
+  transition: transform 0.25s ease;
+  overflow-y: auto;
+}
+.header__mobile-drawer.is-open .header__mobile-drawer-panel {
+  transform: translateX(0);
+}
+.header__mobile-drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 16px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--header-border);
+}
+.header__mobile-drawer-header strong {
+  font-size: 18px;
+}
+.header__mobile-drawer-close {
+  min-width: 40px;
+  min-height: 40px;
+  border: 0;
+  border-radius: 12px;
+  background: #eff6ff;
+  color: var(--header-accent-dark);
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+.header__mobile-drawer-close:hover {
+  background: #dbeafe;
+}
+.header__mobile-drawer-close:active {
+  transform: translateY(1px);
+}
+.header__mobile-drawer-links {
+  display: grid;
+  gap: 8px;
+}
+.header__mobile-drawer-links a {
+  display: block;
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: #f8fafc;
+  color: var(--header-text);
+  font-weight: 600;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+.header__mobile-drawer-links a:hover {
+  background: #eff6ff;
+  color: var(--header-accent-dark);
+  transform: translateX(4px);
+}
 
 .mobile-menu-toggle {
   display: inline-flex;
