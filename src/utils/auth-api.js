@@ -417,6 +417,20 @@
     return writeSession(session);
   };
 
+  const updatePassword = async (payload) => {
+    const response = await request('/auth/password', {
+      method: 'PATCH',
+      body: payload || {},
+    });
+
+    const session = normalizeSession(response);
+    if (!session) {
+      return response;
+    }
+
+    return writeSession(session);
+  };
+
   const logout = async () => {
     const session = readStoredSession();
     const token = session ? session.accessToken || session.token || session.sessionToken || null : null;
@@ -454,6 +468,7 @@
     login,
     register,
     updateCurrentUser,
+    updatePassword,
     logout,
     normalizeSession,
     normalizeUser,

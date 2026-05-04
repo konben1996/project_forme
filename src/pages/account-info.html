@@ -16,32 +16,73 @@
         <h1>Thông tin tài khoản</h1>
       </div>
 
-      <p class="account-info__message" data-account-message aria-live="polite" hidden></p>
+      <div class="account-card__body">
+        <p class="account-info__message" data-account-message aria-live="polite" hidden></p>
 
-      <div class="account-info-list">
-        <div class="account-info-row">
-          <span>Họ và tên</span>
-          <strong data-account-field="fullName">Chưa cập nhật</strong>
+        <div class="account-info-list">
+          <div class="account-info-row">
+            <span>Họ và tên</span>
+            <strong data-account-field="fullName">Chưa cập nhật</strong>
+          </div>
+
+          <div class="account-info-row">
+            <span>Email</span>
+            <strong data-account-field="email">Chưa cập nhật</strong>
+          </div>
+
+          <div class="account-info-row">
+            <span>Số điện thoại</span>
+            <strong data-account-field="phone">Chưa cập nhật</strong>
+          </div>
+
+          <div class="account-info-row">
+            <span>Địa chỉ</span>
+            <strong data-account-field="address">Chưa cập nhật</strong>
+          </div>
         </div>
 
-        <div class="account-info-row">
-          <span>Email</span>
-          <strong data-account-field="email">Chưa cập nhật</strong>
+        <div class="account-actions">
+          <button class="btn btn--primary" type="button" data-account-action="open-address-form">Cập nhật địa chỉ</button>
         </div>
 
-        <div class="account-info-row">
-          <span>Số điện thoại</span>
-          <strong data-account-field="phone">Chưa cập nhật</strong>
-        </div>
+        <section class="account-password" aria-labelledby="password-section-title">
+          <div class="account-password__header">
+            <h2 id="password-section-title">Đổi mật khẩu</h2>
+            <p>Nhập mật khẩu hiện tại và mật khẩu mới để cập nhật tài khoản.</p>
+          </div>
 
-        <div class="account-info-row">
-          <span>Địa chỉ</span>
-          <strong data-account-field="address">Chưa cập nhật</strong>
-        </div>
-      </div>
+          <p class="account-password__message" data-password-message aria-live="polite" hidden></p>
 
-      <div class="account-actions">
-        <button class="btn btn--primary" type="button" data-account-action="open-address-form">Cập nhật địa chỉ</button>
+          <form class="account-password__form" data-password-form>
+            <label class="account-password__field" for="currentPassword">
+              <span>Mật khẩu hiện tại</span>
+              <div class="account-password__input">
+                <input id="currentPassword" name="currentPassword" type="password" autocomplete="current-password" placeholder="Nhập mật khẩu hiện tại" />
+                <button class="account-password__toggle" type="button" data-password-toggle="currentPassword" aria-pressed="false" aria-label="Hiện mật khẩu hiện tại">Hiện</button>
+              </div>
+            </label>
+
+            <label class="account-password__field" for="newPassword">
+              <span>Mật khẩu mới</span>
+              <div class="account-password__input">
+                <input id="newPassword" name="newPassword" type="password" autocomplete="new-password" placeholder="Nhập mật khẩu mới" />
+                <button class="account-password__toggle" type="button" data-password-toggle="newPassword" aria-pressed="false" aria-label="Hiện mật khẩu mới">Hiện</button>
+              </div>
+            </label>
+
+            <label class="account-password__field" for="confirmPassword">
+              <span>Nhập lại mật khẩu mới</span>
+              <div class="account-password__input">
+                <input id="confirmPassword" name="confirmPassword" type="password" autocomplete="new-password" placeholder="Nhập lại mật khẩu mới" />
+                <button class="account-password__toggle" type="button" data-password-toggle="confirmPassword" aria-pressed="false" aria-label="Hiện mật khẩu nhập lại">Hiện</button>
+              </div>
+            </label>
+
+            <div class="account-password__actions">
+              <button class="btn btn--primary" type="submit">Đổi mật khẩu</button>
+            </div>
+          </form>
+        </section>
       </div>
 
       <div class="address-modal" data-address-modal hidden>

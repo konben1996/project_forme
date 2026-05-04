@@ -24,6 +24,8 @@
 
   const toArray = (value) => (Array.isArray(value) ? value : [value]);
 
+  const PASSWORD_MISMATCH_MESSAGE = 'Mật khẩu mới nhập lại không khớp với mật khẩu mới.';
+
   let currentSession = null;
 
   const getAuthApi = () => window.AuthAPI || null;
@@ -55,7 +57,6 @@
     }
 
     const parts = [
-      address.formatted,
       address.line1 || address.addressLine1 || address.street || address.streetAddress || '',
       address.line2 || address.addressLine2 || '',
       address.ward || '',
@@ -68,7 +69,7 @@
       return parts.join(', ');
     }
 
-    return address.address || address.fullAddress || '';
+    return address.formatted || address.address || address.fullAddress || '';
   };
 
   const getTextValue = (value) => {
@@ -325,6 +326,9 @@
   const getAddressModal = (root) => root.querySelector('[data-address-modal]');
   const getAddressForm = (root) => root.querySelector('[data-address-form]');
   const getAddressModalMessage = (root) => root.querySelector('[data-address-modal-message]');
+  const getPasswordForm = (root) => root.querySelector('[data-password-form]');
+  const getPasswordMessage = (root) => root.querySelector('[data-password-message]');
+  const getPasswordToggleButtons = (root) => root.querySelectorAll('[data-password-toggle]');
 
   const setAddressModalMessage = (root, message, type) => {
     const node = getAddressModalMessage(root);
@@ -335,6 +339,130 @@
     node.textContent = message || '';
     node.hidden = !message;
     node.dataset.state = type || '';
+  };
+
+  const setPasswordMessage = (root, message, type) => {
+    const node = getPasswordMessage(root);
+    if (!node) {
+      return;
+    }
+
+    node.textContent = message || '';
+    node.hidden = !message;
+    node.dataset.state = type || '';
+  };
+
+  const getPasswordToggleLabels = (inputId) => {
+    switch (inputId) {
+      case 'currentPassword':
+        return {
+          show: 'Hiện mật khẩu hiện tại',
+          hide: 'Ẩn mật khẩu hiện tại',
+        };
+      case 'newPassword':
+        return {
+          show: 'Hiện mật khẩu mới',
+          hide: 'Ẩn mật khẩu mới',
+        };
+      case 'confirmPassword':
+        return {
+          show: 'Hiện mật khẩu nhập lại',
+          hide: 'Ẩn mật khẩu nhập lại',
+        };
+      default:
+        return {
+          show: 'Hiện mật khẩu',
+          hide: 'Ẩn mật khẩu',
+        };
+    }
+  };
+
+  const syncPasswordToggleButton = (button, input) => {
+    if (!button || !input) {
+      return;
+    }
+
+    const visible = input.type === 'text';
+    const labels = getPasswordToggleLabels(button.dataset.passwordToggle || input.id || '');
+
+    button.textContent = visible ? 'Ẩn' : 'Hiện';
+    button.setAttribute('aria-pressed', visible ? 'true' : 'false');
+    button.setAttribute('aria-label', visible ? labels.hide : labels.show);
+  };
+
+  const resetPasswordVisibility = (root) => {
+    getPasswordToggleButtons(root).forEach((button) => {
+      const inputId = button.dataset.passwordToggle;
+      const input = inputId ? root.querySelector(`#${inputId}`) : null;
+      if (!input) {
+        return;
+      }
+
+      input.type = 'password';
+      syncPasswordToggleButton(button, input);
+    });
+  };
+
+  const clearFieldState = (field) => {
+    if (!field) {
+      return;
+    }
+
+    field.setCustomValidity('');
+    field.removeAttribute('aria-invalid');
+  };
+
+  const setFieldError = (field, message) => {
+    if (!field) {
+      return;
+    }
+
+    field.setCustomValidity(message);
+    field.setAttribute('aria-invalid', 'true');
+    if (typeof field.reportValidity === 'function') {
+      field.reportValidity();
+    }
+  };
+
+  const setFieldErrorState = (field, message) => {
+    if (!field) {
+      return;
+    }
+
+    field.setCustomValidity(message);
+    field.setAttribute('aria-invalid', 'true');
+  };
+
+  const clearPasswordMismatchMessage = (root) => {
+    const node = getPasswordMessage(root);
+    if (node && node.dataset.state === 'error' && node.textContent === PASSWORD_MISMATCH_MESSAGE) {
+      setPasswordMessage(root, '', '');
+    }
+  };
+
+  const validatePasswordConfirmation = (root, newPasswordField, confirmPasswordField) => {
+    if (!newPasswordField || !confirmPasswordField) {
+      return true;
+    }
+
+    const newPassword = String(newPasswordField.value || '');
+    const confirmPassword = String(confirmPasswordField.value || '');
+
+    if (!confirmPassword || !newPassword) {
+      clearFieldState(confirmPasswordField);
+      clearPasswordMismatchMessage(root);
+      return true;
+    }
+
+    if (newPassword === confirmPassword) {
+      clearFieldState(confirmPasswordField);
+      clearPasswordMismatchMessage(root);
+      return true;
+    }
+
+    setFieldErrorState(confirmPasswordField, PASSWORD_MISMATCH_MESSAGE);
+    setPasswordMessage(root, PASSWORD_MISMATCH_MESSAGE, 'error');
+    return false;
   };
 
   const setInputValue = (form, selector, value) => {
@@ -523,6 +651,140 @@
     }
   };
 
+  const wirePasswordControls = (root) => {
+    const form = getPasswordForm(root);
+    if (!form || form.dataset.passwordFormBound === 'true') {
+      return;
+    }
+
+    form.dataset.passwordFormBound = 'true';
+    resetPasswordVisibility(root);
+
+    getPasswordToggleButtons(root).forEach((button) => {
+      if (button.dataset.passwordToggleBound === 'true') {
+        return;
+      }
+
+      const inputId = button.dataset.passwordToggle;
+      const input = inputId ? root.querySelector(`#${inputId}`) : null;
+      if (!input) {
+        return;
+      }
+
+      button.dataset.passwordToggleBound = 'true';
+      syncPasswordToggleButton(button, input);
+      button.addEventListener('click', () => {
+        const nextVisible = input.type !== 'text';
+        input.type = nextVisible ? 'text' : 'password';
+        syncPasswordToggleButton(button, input);
+        input.focus();
+      });
+    });
+
+    const currentPasswordField = form.querySelector('[name="currentPassword"]');
+    const newPasswordField = form.querySelector('[name="newPassword"]');
+    const confirmPasswordField = form.querySelector('[name="confirmPassword"]');
+
+    const handleCurrentPasswordInput = () => {
+      clearFieldState(currentPasswordField);
+    };
+
+    const handlePasswordFieldsInput = () => {
+      clearFieldState(newPasswordField);
+      clearFieldState(confirmPasswordField);
+      validatePasswordConfirmation(root, newPasswordField, confirmPasswordField);
+    };
+
+    if (currentPasswordField) {
+      currentPasswordField.addEventListener('input', handleCurrentPasswordInput);
+    }
+
+    if (newPasswordField) {
+      newPasswordField.addEventListener('input', handlePasswordFieldsInput);
+    }
+
+    if (confirmPasswordField) {
+      confirmPasswordField.addEventListener('input', handlePasswordFieldsInput);
+    }
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      const authApi = getAuthApi();
+      if (!authApi) {
+        setPasswordMessage(root, 'Không thể đổi mật khẩu khi chưa kết nối API.', 'error');
+        return;
+      }
+
+      clearPasswordErrors();
+
+      const currentPassword = currentPasswordField ? currentPasswordField.value : '';
+      const newPassword = newPasswordField ? newPasswordField.value : '';
+      const confirmPassword = confirmPasswordField ? confirmPasswordField.value : '';
+
+      if (!currentPassword) {
+        setFieldError(currentPasswordField, 'Vui lòng nhập mật khẩu hiện tại.');
+        if (currentPasswordField) {
+          currentPasswordField.focus();
+        }
+        return;
+      }
+
+      if (!newPassword) {
+        setFieldError(newPasswordField, 'Vui lòng nhập mật khẩu mới.');
+        if (newPasswordField) {
+          newPasswordField.focus();
+        }
+        return;
+      }
+
+      if (newPassword.length < 8) {
+        setFieldError(newPasswordField, 'Mật khẩu mới phải có ít nhất 8 ký tự.');
+        if (newPasswordField) {
+          newPasswordField.focus();
+        }
+        return;
+      }
+
+      if (!confirmPassword) {
+        setFieldError(confirmPasswordField, 'Vui lòng nhập lại mật khẩu mới.');
+        if (confirmPasswordField) {
+          confirmPasswordField.focus();
+        }
+        return;
+      }
+
+      if (!validatePasswordConfirmation(root, newPasswordField, confirmPasswordField)) {
+        if (confirmPasswordField) {
+          confirmPasswordField.focus();
+        }
+        return;
+      }
+
+      const submitButton = form.querySelector('button[type="submit"]');
+      setButtonLoading(submitButton, true);
+      setPasswordMessage(root, 'Đang đổi mật khẩu...', 'loading');
+
+      try {
+        const session = await authApi.updatePassword({
+          currentPassword,
+          newPassword,
+          confirmPassword,
+        });
+
+        form.reset();
+        resetPasswordVisibility(root);
+        renderAccountInfo(session);
+        setPasswordMessage(root, 'Đổi mật khẩu thành công.', 'success');
+      } catch (error) {
+        const errorMessage = error && error.message ? String(error.message) : 'Không thể đổi mật khẩu.';
+        setPasswordMessage(root, errorMessage, 'error');
+      } finally {
+        setButtonLoading(submitButton, false);
+      }
+    });
+  };
+
   const wireLogoutButtons = (root) => {
     const buttons = root.querySelectorAll('[data-auth-action="logout"], [data-account-logout], .account-info__logout');
     if (!buttons.length) {
@@ -585,6 +847,7 @@
 
     wireLogoutButtons(root);
     wireAddressControls(root);
+    wirePasswordControls(root);
   };
 
   const bootstrap = async () => {
@@ -633,6 +896,7 @@
     const root = getRoot();
     ensureShell(root);
     wireAddressControls(root);
+    wirePasswordControls(root);
     bootstrap();
 
     window.addEventListener('auth:change', async (event) => {

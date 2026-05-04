@@ -29,11 +29,12 @@ main {
 }
 
 .account-page {
-  padding: 165px 0 0;
+  padding: clamp(128px, 14vw, 165px) clamp(12px, 2vw, 24px) 0;
 }
 
 .account-card--main {
-  width: 100%;
+  width: min(100%, 720px);
+  margin: 0 auto;
 }
 
 .account-card {
@@ -42,7 +43,11 @@ main {
   border-radius: 24px;
   padding: 24px;
   box-shadow: $page-shadow;
+  display: grid;
+  justify-items: center;
+  gap: 18px;
   transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  overflow: hidden;
 
   &:hover {
     transform: translateY(-3px);
@@ -51,12 +56,31 @@ main {
   }
 }
 
+.account-card__title,
+.account-card__body {
+  width: min(100%, 560px);
+}
+
+.account-card__body {
+  display: grid;
+  gap: 18px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.account-info__message,
+.account-info-list,
+.account-actions,
+.account-password {
+  width: 100%;
+}
+
 .account-card__title {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  margin-bottom: 18px;
+  margin-bottom: 0;
 
   h1,
   h2 {
@@ -77,7 +101,7 @@ main {
 }
 
 .account-info__message {
-  margin: 0 0 16px;
+  margin: 0;
   padding: 12px 16px;
   border-radius: 14px;
   background: $page-surface-soft;
@@ -93,6 +117,7 @@ main {
 .account-info-list {
   display: grid;
   gap: 12px;
+  margin-top: 2px;
 }
 
 .account-info-row {
@@ -164,9 +189,166 @@ main {
   width: 100%;
 }
 
+.account-password {
+  margin-top: 22px;
+  padding-top: 22px;
+  border-top: 1px solid $page-border;
+}
+
+.account-password__header {
+  margin-bottom: 16px;
+
+  h2 {
+    margin: 0 0 6px;
+    font-size: 1.2rem;
+    color: $page-text;
+  }
+
+  p {
+    margin: 0;
+    color: $page-muted;
+  }
+}
+
+.account-password__message {
+  margin: 0 0 14px;
+  padding: 12px 16px;
+  border-radius: 14px;
+  background: $page-surface-soft;
+  color: $page-muted;
+  border: 1px solid rgba(37, 99, 235, 0.08);
+  font-weight: 600;
+}
+
+.account-password__message[hidden] {
+  display: none;
+}
+
+.account-password__form {
+  display: grid;
+  gap: 14px;
+}
+
+.account-password__field {
+  display: grid;
+  gap: 8px;
+
+  span {
+    color: $page-muted;
+    font-weight: 700;
+  }
+}
+
+.account-password__input {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  gap: 10px;
+  width: 100%;
+  min-height: 48px;
+  flex-wrap: nowrap;
+}
+
+.account-password__input input {
+  flex: 1 1 auto;
+  width: 100%;
+  min-width: 0;
+  padding: 0 16px;
+  border: 1px solid $page-border;
+  border-radius: 14px;
+  background: $page-surface;
+  color: $page-text;
+  font-size: 15px;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+  &::placeholder {
+    color: #94a3b8;
+  }
+
+  &:focus {
+    border-color: $page-accent;
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+  }
+}
+
+.account-password__input input[aria-invalid='true'] {
+  border-color: #dc2626;
+  box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.08);
+}
+
+.account-password__toggle {
+  flex: 0 0 80px;
+  width: 80px;
+  min-width: 80px;
+  max-width: 80px;
+  height: 46px;
+  min-height: 46px;
+  max-height: 46px;
+  padding: 0 10px;
+  border: 1px solid $page-border;
+  border-radius: 14px;
+  background: $page-surface-soft;
+  color: $page-accent-dark;
+  font-size: 14px;
+  line-height: 1;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  overflow: hidden;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.15s ease;
+}
+
+.account-password__toggle:hover {
+  background: rgba(37, 99, 235, 0.12);
+  border-color: rgba(37, 99, 235, 0.22);
+}
+
+.account-password__toggle:active {
+  transform: translateY(1px);
+}
+
+.account-password__actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 2px;
+}
+
+.account-password__actions .btn {
+  min-width: 160px;
+}
+
+@media (max-width: 768px) {
+  .account-password {
+    margin-top: 18px;
+    padding-top: 18px;
+  }
+
+  .account-password__header {
+    margin-bottom: 14px;
+  }
+
+  .account-password__actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .account-password__actions .btn {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
 @media (max-width: 1024px) {
   .account-card {
     border-radius: 22px;
+    padding: 22px;
+  }
+
+  .account-password__input {
+    gap: 8px;
   }
 }
 
@@ -181,9 +363,15 @@ main {
     margin-bottom: 16px;
   }
 
+  .account-card__title h1,
+  .account-card__title h2 {
+    font-size: 1.2rem;
+  }
+
   .account-info-row {
     grid-template-columns: 1fr;
     gap: 6px;
+    padding: 12px 14px;
   }
 
   .account-actions {
@@ -196,19 +384,112 @@ main {
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 640px) {
+  .account-page {
+    padding-top: 120px;
+  }
+
   .account-card {
-    padding: 18px;
-    border-radius: 18px;
+    padding: 16px;
+  }
+
+  .account-card__title h1,
+  .account-card__title h2 {
+    font-size: 1.1rem;
+  }
+
+  .account-info-row {
+    gap: 4px;
+    padding: 11px 12px;
+  }
+
+  .account-info-row span,
+  .account-info-row strong {
+    font-size: 0.94rem;
+  }
+
+  .account-password__input {
+    gap: 8px;
+  }
+
+  .account-password__input input {
+    min-height: 46px;
+  }
+
+  .address-modal {
+    padding: 8px;
+  }
+
+  .address-modal__dialog {
+    width: min(100vw - 16px, 680px);
+    padding: 16px;
+    border-radius: 16px;
+  }
+
+  .address-form__actions .btn {
+    min-width: 0;
+    min-height: 46px;
+  }
+}
+
+@media (max-width: 480px) {
+  .account-page {
+    padding-top: 112px;
+  }
+
+  .account-card {
+    padding: 14px;
+    border-radius: 16px;
   }
 
   .account-info__message {
     padding: 10px 12px;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
   }
 
   .account-info-row {
-    padding: 12px 14px;
+    padding: 10px 12px;
+    gap: 4px;
+  }
+
+  .account-info-row span,
+  .account-info-row strong {
+    font-size: 0.9rem;
+  }
+
+  .account-password {
+    margin-top: 16px;
+    padding-top: 16px;
+  }
+
+  .account-password__header h2 {
+    font-size: 1.02rem;
+  }
+
+  .account-password__header p {
+    font-size: 0.9rem;
+  }
+
+  .account-password__input {
+    gap: 8px;
+  }
+
+  .account-password__input input {
+    min-height: 46px;
+  }
+
+  .address-modal {
+    padding: 6px;
+  }
+
+  .address-modal__dialog {
+    width: min(100vw - 12px, 680px);
+    padding: 14px;
+    border-radius: 16px;
+  }
+
+  .address-form__actions .btn {
+    min-height: 46px;
   }
 }
 
