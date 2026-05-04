@@ -57,6 +57,38 @@ const setHeaderLinks = () => {
   });
 };
 
+const syncHeaderHeight = () => {
+  const headerHost = document.getElementById('site-header');
+  const siteHeader = headerHost?.querySelector('.site-header');
+
+  if (!siteHeader) {
+    return;
+  }
+
+  const updateHeaderHeight = () => {
+    document.documentElement.style.setProperty('--site-header-height', `${siteHeader.offsetHeight}px`);
+  };
+
+  updateHeaderHeight();
+
+  if (siteHeader.dataset.heightObserverBound === 'true') {
+    return;
+  }
+
+  siteHeader.dataset.heightObserverBound = 'true';
+
+  if (typeof ResizeObserver !== 'undefined') {
+    const observer = new ResizeObserver(() => {
+      updateHeaderHeight();
+    });
+
+    observer.observe(siteHeader);
+  }
+
+  window.addEventListener('resize', updateHeaderHeight, { passive: true });
+  window.addEventListener('orientationchange', updateHeaderHeight);
+};
+
 const loadHeader = async () => {
   const header = document.getElementById('site-header');
 
@@ -73,6 +105,7 @@ const loadHeader = async () => {
 
     header.innerHTML = await response.text();
     setHeaderLinks();
+    syncHeaderHeight();
   } catch (error) {
     console.error(error);
     header.innerHTML = '';

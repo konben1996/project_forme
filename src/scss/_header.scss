@@ -148,9 +148,26 @@ img {
   display: block;
 }
 
+#site-header {
+  position: fixed;
+  inset: 0 0 auto 0;
+  width: 100%;
+  z-index: 70;
+}
+
+main {
+  display: block;
+  padding-top: var(--site-header-height, 160px);
+}
+
 .container {
   width: min(1200px, calc(100% - 32px));
   margin: 0 auto;
+}
+
+.site-header {
+  position: relative;
+  box-shadow: var(--header-shadow);
 }
 
 .topbar {
@@ -189,12 +206,10 @@ img {
 }
 
 .header {
-  position: sticky;
-  top: 0;
-  z-index: 50;
+  position: relative;
   background: var(--header-bg);
   border-bottom: 1px solid var(--header-border);
-  box-shadow: var(--header-shadow);
+  box-shadow: none;
 
   &__inner {
     min-height: 88px;
