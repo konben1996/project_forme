@@ -4,13 +4,13 @@
   const DEFAULT_REDIRECT = 'account-info.html';
 
   const FORM_SELECTORS = [
-    '[data-auth-form="login"]',
-    '#loginForm',
-    '#login-form',
-    'form[name="login"]',
-    'form.login-form',
+    '[data-auth-form="register"]',
+    '#registerForm',
+    '#register-form',
+    'form[name="register"]',
+    'form.register-form',
     'form.auth-form',
-    'form[action*="login"]',
+    'form[action*="register"]',
   ];
 
   const getAuthApi = () => window.AuthAPI || null;
@@ -108,25 +108,7 @@
     }
 
     button.disabled = !!busy;
-    button.textContent = busy ? (loadingText || 'Đang đăng nhập...') : button.dataset.defaultText;
-  };
-
-  const applyInitialMessage = (messageNode) => {
-    const params = getSearchParams();
-
-    if (params.get('registered') === '1') {
-      setMessage(messageNode, 'Đăng ký thành công. Vui lòng đăng nhập để tiếp tục.', 'success');
-      return;
-    }
-
-    if (params.get('logout') === '1') {
-      setMessage(messageNode, 'Bạn đã đăng xuất khỏi hệ thống.', 'success');
-      return;
-    }
-
-    if (params.get('expired') === '1') {
-      setMessage(messageNode, 'Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.', 'warning');
-    }
+    button.textContent = busy ? (loadingText || 'Đang đăng ký...') : button.dataset.defaultText;
   };
 
   const handleFieldInput = (field) => {
@@ -142,7 +124,7 @@
   const normalizeAuthError = (error) => {
     if (!error) {
       return {
-        message: 'Đăng nhập thất bại. Vui lòng thử lại.',
+        message: 'Đăng ký thất bại. Vui lòng thử lại.',
         fields: null,
       };
     }
@@ -154,28 +136,61 @@
       message:
         (payload && (payload.message || payload.error || payload.reason)) ||
         error.message ||
-        'Đăng nhập thất bại. Vui lòng thử lại.',
+        'Đăng ký thất bại. Vui lòng thử lại.',
       fields,
     };
   };
 
-  const submitLogin = async (event) => {
+  const getPayload = (form) => {
+    const fullNameField = getField(form, ['fullName', 'name', 'hoTen']);
+    const emailField = getField(form, ['email', 'emailAddress']);
+    const passwordField = getField(form, ['password']);
+    const confirmPasswordField = getField(form, ['confirmPassword', 'passwordConfirmation', 'passwordConfirm']);
+    const phoneField = getField(form, ['phone', 'phoneNumber', 'sdt']);
+
+    return {
+      fullName: fullNameField ? fullNameField.value.trim() : '',
+      email: emailField ? emailField.value.trim() : '',
+      password: passwordField ? passwordField.value : '',
+      confirmPassword: confirmPasswordField ? confirmPasswordField.value : '',
+      phone: phoneField ? phoneField.value.trim() : '',
+      fields: {
+        fullNameField,
+        emailField,
+        passwordField,
+        confirmPasswordField,
+        phoneField,
+      },
+    };
+  };
+
+  const submitRegister = async (event) => {
     event.preventDefault();
 
     const form = event.currentTarget;
     const authApi = getAuthApi();
     const messageNode = getMessageNode(form);
-    const emailField = getField(form, ['email', 'emailAddress', 'username']);
-    const passwordField = getField(form, ['password']);
 
     clearFormErrors(form);
     setMessage(messageNode, '', '');
     form.querySelectorAll('[aria-invalid="true"]').forEach((field) => field.removeAttribute('aria-invalid'));
 
-    const email = emailField ? emailField.value.trim() : '';
-    const password = passwordField ? passwordField.value : '';
+    const payload = getPayload(form);
+    const fullNameField = payload.fields.fullNameField;
+    const emailField = payload.fields.emailField;
+    const passwordField = payload.fields.passwordField;
+    const confirmPasswordField = payload.fields.confirmPasswordField;
+    const phoneField = payload.fields.phoneField;
 
-    if (!emailField || !email) {
+    if (!payload.fullName) {
+      setFieldError(fullNameField, 'Vui lòng nhập họ và tên.');
+      if (fullNameField) {
+        fullNameField.focus();
+      }
+      return;
+    }
+
+    if (!payload.email) {
       setFieldError(emailField, 'Vui lòng nhập email.');
       if (emailField) {
         emailField.focus();
@@ -183,7 +198,7 @@
       return;
     }
 
-    if (!passwordField || !password) {
+    if (!payload.password) {
       setFieldError(passwordField, 'Vui lòng nhập mật khẩu.');
       if (passwordField) {
         passwordField.focus();
@@ -191,8 +206,32 @@
       return;
     }
 
+    if (payload.password.length < 8) {
+      setFieldError(passwordField, 'Mật khẩu phải có ít nhất 8 ký tự.');
+      if (passwordField) {
+        passwordField.focus();
+      }
+      return;
+    }
+
+    if (!payload.confirmPassword) {
+      setFieldError(confirmPasswordField, 'Vui lòng xác nhận mật khẩu.');
+      if (confirmPasswordField) {
+        confirmPasswordField.focus();
+      }
+      return;
+    }
+
+    if (payload.password !== payload.confirmPassword) {
+      setFieldError(confirmPasswordField, 'Mật khẩu xác nhận không khớp.');
+      if (confirmPasswordField) {
+        confirmPasswordField.focus();
+      }
+      return;
+    }
+
     if (!authApi) {
-      setMessage(messageNode, 'Không tìm thấy lớp xử lý đăng nhập.', 'error');
+      setMessage(messageNode, 'Không tìm thấy lớp xử lý đăng ký.', 'error');
       return;
     }
 
@@ -201,18 +240,33 @@
       form.querySelector('button[type="submit"]') ||
       form.querySelector('input[type="submit"]');
 
-    setBusy(form, submitButton, true, 'Đang đăng nhập...');
+    setBusy(form, submitButton, true, 'Đang đăng ký...');
 
     try {
-      await authApi.login({
-        email,
-        password,
+      const result = await authApi.register({
+        fullName: payload.fullName,
+        name: payload.fullName,
+        email: payload.email,
+        password: payload.password,
+        phone: payload.phone,
       });
 
-      window.location.assign(getRedirectTarget());
+      const hasSession = !!(result && (result.token || result.accessToken || result.sessionToken || result.user));
+      const redirectTarget = getRedirectTarget();
+
+      if (hasSession) {
+        window.location.assign(redirectTarget);
+        return;
+      }
+
+      window.location.assign(`login.html?registered=1&redirect=${encodeURIComponent(redirectTarget)}`);
     } catch (error) {
       const normalized = normalizeAuthError(error);
       const fieldErrors = normalized.fields || {};
+
+      if (fieldErrors.fullName && fullNameField) {
+        setFieldError(fullNameField, fieldErrors.fullName);
+      }
 
       if (fieldErrors.email && emailField) {
         setFieldError(emailField, fieldErrors.email);
@@ -222,7 +276,15 @@
         setFieldError(passwordField, fieldErrors.password);
       }
 
-      if (!fieldErrors.email && !fieldErrors.password) {
+      if (fieldErrors.confirmPassword && confirmPasswordField) {
+        setFieldError(confirmPasswordField, fieldErrors.confirmPassword);
+      }
+
+      if (fieldErrors.phone && phoneField) {
+        setFieldError(phoneField, fieldErrors.phone);
+      }
+
+      if (!fieldErrors.fullName && !fieldErrors.email && !fieldErrors.password && !fieldErrors.confirmPassword && !fieldErrors.phone) {
         setMessage(messageNode, normalized.message, 'error');
       }
     } finally {
@@ -236,19 +298,24 @@
       return;
     }
 
-    const emailField = getField(form, ['email', 'emailAddress', 'username']);
-    const passwordField = getField(form, ['password']);
+    const payload = getPayload(form);
     const messageNode = getMessageNode(form);
 
-    form.dataset.authForm = 'login';
+    form.dataset.authForm = 'register';
     form.setAttribute('novalidate', 'novalidate');
 
-    applyInitialMessage(messageNode);
+    handleFieldInput(payload.fields.fullNameField);
+    handleFieldInput(payload.fields.emailField);
+    handleFieldInput(payload.fields.passwordField);
+    handleFieldInput(payload.fields.confirmPasswordField);
+    handleFieldInput(payload.fields.phoneField);
 
-    handleFieldInput(emailField);
-    handleFieldInput(passwordField);
+    form.addEventListener('submit', submitRegister);
 
-    form.addEventListener('submit', submitLogin);
+    const params = getSearchParams();
+    if (params.get('registered') === '1') {
+      setMessage(messageNode, 'Đăng ký thành công. Vui lòng đăng nhập.', 'success');
+    }
   };
 
   if (document.readyState === 'loading') {

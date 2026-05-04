@@ -120,7 +120,7 @@ section {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  height: 460px;
+  height: 500px;
   overflow: hidden;
   box-shadow: $page-shadow;
   transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
@@ -241,7 +241,7 @@ section {
 
   .product-card {
     flex: 0 0 320px;
-    height: 440px;
+    height: 500px;
     scroll-snap-align: start;
   }
 }
@@ -278,7 +278,7 @@ section {
 
   .product-card {
     flex: 0 0 280px;
-    height: 420px;
+    height: 500px;
     padding: 16px;
     gap: 10px;
     scroll-snap-align: start;
@@ -317,7 +317,7 @@ section {
 
   .product-card {
     flex: 0 0 250px;
-    height: 400px;
+    height: 500px;
     padding: 14px;
     gap: 8px;
     scroll-snap-align: start;

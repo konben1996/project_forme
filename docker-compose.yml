@@ -1,0 +1,33 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: computer-store-mysql
+    restart: unless-stopped
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: computer_store
+      MYSQL_USER: computer_store_user
+      MYSQL_PASSWORD: computer_store_pass
+      TZ: Asia/Ho_Chi_Minh
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./database/account.sql:/docker-entrypoint-initdb.d/01-account.sql:ro
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: computer-store-phpmyadmin
+    restart: unless-stopped
+    depends_on:
+      - mysql
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 0
+
+volumes:
+  mysql_data:

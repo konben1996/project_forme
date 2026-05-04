@@ -8,32 +8,107 @@
   <link rel="stylesheet" href="../css/product.css" />
 </head>
 <body>
-  <div id="site-header"></div>
+  <div data-header-slot></div>
 
   <main>
-    <section class="hero">
-      <div class="container hero__grid">
-        <aside class="hero__sidebar">
-          <h2>Thông tin nhanh</h2>
-          <ul>
-            <li><a href="#">Bảo hành 24 tháng</a></li>
-            <li><a href="#">Trả góp 0%</a></li>
-            <li><a href="#">Giao hàng toàn quốc</a></li>
-            <li><a href="#">Đổi trả 7 ngày</a></li>
-            <li><a href="#">Tư vấn cấu hình miễn phí</a></li>
-          </ul>
-        </aside>
+    <section class="product-hero">
+      <div class="container">
+        <div class="product-breadcrumb">
+          <a href="../index.html">Trang chủ</a>
+          <span>/</span>
+          <a href="#">Laptop</a>
+          <span>/</span>
+          <span>Lenovo IdeaPad Slim 5</span>
+        </div>
 
-        <div class="hero__banner">
-          <p class="hero__tag">Sản phẩm nổi bật</p>
-          <h1>Lenovo IdeaPad Slim 5</h1>
-          <p>
-            Laptop mỏng nhẹ dành cho học tập và làm việc, cân bằng giữa hiệu năng,
-            pin và khả năng di động.
-          </p>
-          <div class="hero__buttons">
-            <a class="btn btn--primary" href="./cart.html">Thêm vào giỏ</a>
-            <a class="btn btn--ghost" href="../index.html">Quay lại trang chủ</a>
+        <div class="product-layout">
+          <aside class="product-aside">
+            <h2>Thông tin nhanh</h2>
+            <ul class="quick-list">
+              <li>Bảo hành 24 tháng</li>
+              <li>Trả góp 0%</li>
+              <li>Giao hàng toàn quốc</li>
+              <li>Đổi trả 7 ngày</li>
+              <li>Tư vấn cấu hình miễn phí</li>
+            </ul>
+
+            <div class="trust-card">
+              <strong>Ưu đãi hôm nay</strong>
+              <p>Giảm thêm khi thanh toán online, kèm quà tặng phụ kiện theo chương trình.</p>
+            </div>
+          </aside>
+
+          <div class="product-gallery">
+            <div class="gallery-main">
+              <img
+                src="../assets/products/lenovo-ideapad-slim-5-main.svg"
+                alt="Lenovo IdeaPad Slim 5 ảnh chính"
+              />
+              <div class="gallery-badge">Sản phẩm nổi bật</div>
+            </div>
+
+            <div class="gallery-thumbs">
+              <figure class="thumb-card thumb-card--active">
+                <img
+                  src="../assets/products/lenovo-ideapad-slim-5-main.svg"
+                  alt="Lenovo IdeaPad Slim 5 ảnh chính thu nhỏ"
+                />
+              </figure>
+              <figure class="thumb-card">
+                <img
+                  src="../assets/products/lenovo-ideapad-slim-5-side.svg"
+                  alt="Lenovo IdeaPad Slim 5 góc nhìn bên hông"
+                />
+              </figure>
+              <figure class="thumb-card">
+                <img
+                  src="../assets/products/lenovo-ideapad-slim-5-open.svg"
+                  alt="Lenovo IdeaPad Slim 5 khi mở máy"
+                />
+              </figure>
+            </div>
+          </div>
+
+          <div class="product-summary">
+            <p class="product-tag">Laptop mỏng nhẹ</p>
+            <h1>Lenovo IdeaPad Slim 5</h1>
+            <p class="product-intro">
+              Dòng laptop tối ưu cho học tập và làm việc với thiết kế mỏng gọn,
+              thời lượng pin tốt và hiệu năng ổn định cho nhu cầu đa nhiệm hàng ngày.
+            </p>
+
+            <div class="price-box">
+              <span class="price-box__label">Giá bán</span>
+              <div class="price-box__row">
+                <strong>18.990.000đ</strong>
+                <span>Giảm 8%</span>
+              </div>
+              <p>Trả góp từ 0đ, hỗ trợ thanh toán linh hoạt.</p>
+            </div>
+
+            <div class="summary-features">
+              <article>
+                <span>CPU</span>
+                <strong>Intel Core i5</strong>
+              </article>
+              <article>
+                <span>RAM</span>
+                <strong>16GB</strong>
+              </article>
+              <article>
+                <span>SSD</span>
+                <strong>512GB</strong>
+              </article>
+              <article>
+                <span>Màn hình</span>
+                <strong>14 inch</strong>
+              </article>
+            </div>
+
+            <div class="hero-actions">
+              <a class="btn btn--primary" href="./cart.html">Thêm vào giỏ</a>
+              <a class="btn btn--ghost" href="../index.html">Quay lại trang chủ</a>
+            </div>
           </div>
         </div>
       </div>
@@ -46,7 +121,7 @@
           <a href="#">Xem đầy đủ</a>
         </div>
 
-        <div class="benefits__grid">
+        <div class="benefits-grid">
           <article class="benefit-card">
             <h3>CPU</h3>
             <p>Intel Core i5 thế hệ mới, tối ưu đa nhiệm và xử lý công việc.</p>
@@ -82,36 +157,12 @@
         </div>
       </div>
     </section>
-
-    <section id="reviews" class="section section--alt">
-      <div class="container">
-        <div class="section__heading">
-          <h2>Đánh giá khách hàng</h2>
-          <a href="#">Xem thêm</a>
-        </div>
-
-        <div class="review-grid">
-          <article class="review-card">
-            <p>“Máy nhẹ, pin ổn, đúng nhu cầu học và làm việc của mình.”</p>
-            <strong>Ngọc Anh</strong>
-          </article>
-          <article class="review-card">
-            <p>“Cấu hình vừa đủ, giao hàng nhanh, tư vấn nhiệt tình.”</p>
-            <strong>Quốc Bảo</strong>
-          </article>
-          <article class="review-card">
-            <p>“Giá tốt hơn mình tìm thấy ở nhiều nơi khác.”</p>
-            <strong>Hồng Phúc</strong>
-          </article>
-        </div>
-      </div>
-    </section>
   </main>
 
   <div id="site-footer"></div>
 
   <script src="../utils/loadHeader.js"></script>
-  <script src="../utils/header.js"></script>
+ 
   <script src="../utils/loadFooter.js"></script>
 </body>
 </html>

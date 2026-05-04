@@ -145,6 +145,18 @@ main {
   background: var(--header-topbar-bg);
   color: var(--header-topbar-text);
   font-size: 14px;
+  overflow: hidden;
+  max-height: 120px;
+  opacity: 1;
+  transform: translateY(0);
+  transition: max-height 0.3s ease, opacity 0.2s ease, transform 0.3s ease;
+  will-change: max-height, opacity, transform;
+}
+.topbar.is-hidden {
+  max-height: 0;
+  opacity: 0;
+  transform: translateY(-8px);
+  pointer-events: none;
 }
 .topbar__inner {
   min-height: 40px;
@@ -210,6 +222,37 @@ main {
 .header__actions a[aria-label="Đăng nhập"]:hover {
   background: var(--header-accent-dark);
   color: #fff;
+}
+.header__greeting {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: var(--header-nav-link-hover-bg);
+  color: var(--header-text);
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+.header__greeting strong {
+  font-weight: 700;
+}
+.header__mobile-drawer-greeting {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 16px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: var(--header-drawer-item-hover-bg);
+  color: var(--header-text);
+  font-weight: 600;
+  line-height: 1.2;
+  flex-wrap: wrap;
+}
+.header__mobile-drawer-greeting strong {
+  font-weight: 700;
 }
 .header__theme {
   display: flex;
@@ -528,6 +571,7 @@ main {
   }
   .topbar {
     font-size: 13px;
+    max-height: 160px;
   }
   .header__actions {
     gap: 6px;
@@ -922,13 +966,13 @@ section {
 }
 
 .btn--ghost {
-  border: 1px solid rgba(255, 255, 255, 0.32);
-  color: #fff;
-  background: rgba(255, 255, 255, 0.06);
+  background: #fff;
+  color: var(--page-accent-dark);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.18);
 }
 
 .btn--ghost:hover {
-  background: rgba(255, 255, 255, 0.14);
+  background: #eff6ff;
 }
 
 .btn--full {
@@ -1323,7 +1367,7 @@ section {
   }
   .product-card {
     flex: 0 0 320px;
-    height: 440px;
+    height: 500px;
     scroll-snap-align: start;
   }
   .brand-grid {

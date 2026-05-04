@@ -1,7 +1,0 @@
--- Master entrypoint for the split database schema
--- Run in this order:
---   1. tables.sql   -> creates database and tables
---   2. indexes.sql  -> adds indexes and unique constraints
---   3. seed.sql     -> inserts sample data
---
--- The full schema has been split into separate files for easier maintenance.

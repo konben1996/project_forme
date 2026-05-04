@@ -1,0 +1,5 @@
+-- Master database entrypoint for Computer Store
+-- Run the files in this order:
+--   1. account.sql  -> creates account-related database tables and sample data
+--
+-- If you later split more domains into separate files, include them here as well.

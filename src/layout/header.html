@@ -1,4 +1,4 @@
-<div class="site-header">
+<div id="site-header" class="site-header" data-auth-header>
   <div class="topbar">
     <div class="container topbar__inner">
       <p>Hotline: 0900 000 001 | Hỗ trợ 8:00 - 21:00</p>
@@ -12,7 +12,7 @@
 
   <header class="header">
     <div class="container header__inner">
-      <a class="logo" href="index.html" aria-label="Computer Store">
+      <a class="logo" href="../../index.html" aria-label="Computer Store">
         <span class="logo__mark">CS</span>
         <span class="logo__text">
           <strong>Computer</strong>
@@ -21,18 +21,23 @@
       </a>
 
       <div class="header__actions">
-        <a href="#" aria-label="Trang chủ">Trang Chủ</a>
-        <a href="#" aria-label="Đăng ký tài khoản">Đăng ký</a>
-        <a href="#" aria-label="Thông tin tài khoản">Thông tin tài khoản</a>
-        <a href="#" aria-label="Giỏ hàng">Giỏ hàng</a>
-        <a href="#" aria-label="Đăng nhập">Đăng nhập</a>
-        <a href="#" aria-label="Đăng xuất">Đăng xuất</a>
+        <a href="../../index.html" aria-label="Trang chủ">Trang Chủ</a>
+        <span class="header__greeting" data-auth-visible="logged-in" hidden>
+          Xin chào: <strong data-auth-user-name>Khách hàng</strong>
+        </span>
+        <a href="register.html" aria-label="Đăng ký tài khoản" data-auth-visible="logged-out">Đăng ký</a>
+        <a href="account-info.html" aria-label="Thông tin tài khoản" data-auth-visible="logged-in" hidden>Thông tin tài khoản</a>
+        <a href="cart.html" aria-label="Giỏ hàng">Giỏ hàng</a>
+        <a href="login.html" aria-label="Đăng nhập" data-auth-visible="logged-out">Đăng nhập</a>
+        <a href="login.html?logout=1" aria-label="Đăng xuất" data-auth-action="logout" data-auth-visible="logged-in" hidden>Đăng xuất</a>
       </div>
+
       <div class="header__theme">
         <button class="theme-toggle" type="button" aria-label="Chuyển giao diện sáng tối">
           <span class="theme-toggle__icon" aria-hidden="true">☀</span>
         </button>
       </div>
+
       <div class="header__mobile-menu">
         <button class="mobile-menu-toggle" type="button" aria-label="Mở menu điều hướng" aria-controls="mobile-header-drawer" aria-expanded="false">
           <span class="mobile-menu-toggle__icon" aria-hidden="true">☰</span>
@@ -47,16 +52,19 @@
           <strong>Menu điều hướng</strong>
           <button class="header__mobile-drawer-close" type="button" aria-label="Đóng menu điều hướng">×</button>
         </div>
+
         <nav class="header__mobile-drawer-links" aria-label="Menu tài khoản và thao tác">
-          <a href="#" aria-label="Trang chủ">Trang Chủ</a>
-          <a href="#" aria-label="Đăng ký tài khoản">Đăng ký</a>
-          <a href="#" aria-label="Thông tin tài khoản">Thông tin tài khoản</a>
-          <a href="#" aria-label="Giỏ hàng">Giỏ hàng</a>
-          <a href="#" aria-label="Đăng nhập">Đăng nhập</a>
-          <a href="#" aria-label="Đăng xuất">Đăng xuất</a>
+          <a href="../../index.html" aria-label="Trang chủ">Trang Chủ</a>
+          <div class="header__mobile-drawer-greeting" data-auth-visible="logged-in" hidden>
+            Xin chào: <strong data-auth-user-name>Khách hàng</strong>
+          </div>
+          <a href="register.html" aria-label="Đăng ký tài khoản" data-auth-visible="logged-out">Đăng ký</a>
+          <a href="account-info.html" aria-label="Thông tin tài khoản" data-auth-visible="logged-in" hidden>Thông tin tài khoản</a>
+          <a href="cart.html" aria-label="Giỏ hàng">Giỏ hàng</a>
+          <a href="login.html" aria-label="Đăng nhập" data-auth-visible="logged-out">Đăng nhập</a>
+          <a href="login.html?logout=1" aria-label="Đăng xuất" data-auth-action="logout" data-auth-visible="logged-in" hidden>Đăng xuất</a>
         </nav>
       </aside>
     </div>
   </header>
-
 </div>

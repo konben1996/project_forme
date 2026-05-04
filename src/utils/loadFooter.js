@@ -1,3 +1,32 @@
+const FOOTER_TEMPLATE = `
+<footer class="footer">
+  <div class="container footer__grid">
+    <div>
+      <h3>Computer Store</h3>
+      <p>Cửa hàng máy tính, laptop, linh kiện và phụ kiện chính hãng.</p>
+    </div>
+
+    <div>
+      <h4>Hỗ trợ</h4>
+      <ul>
+        <li><a href="#">Chính sách bảo hành</a></li>
+        <li><a href="#">Chính sách đổi trả</a></li>
+        <li><a href="#">Hướng dẫn mua hàng</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h4>Liên hệ</h4>
+      <ul>
+        <li>Hotline: 0900 000 001</li>
+        <li>Email: support@computerstore.vn</li>
+        <li>TP. Hồ Chí Minh</li>
+      </ul>
+    </div>
+  </div>
+</footer>
+`;
+
 const getFooterProjectBasePath = () => {
   const { pathname } = window.location;
   const srcMarker = '/src/';
@@ -19,7 +48,7 @@ const getFooterProjectBasePath = () => {
 };
 
 const resolveFooterUrl = (relativePath) => {
-  const baseUrl = `${window.location.origin}${getFooterProjectBasePath()}`;
+  const baseUrl = new URL(getFooterProjectBasePath(), window.location.href);
   return new URL(relativePath, baseUrl).href;
 };
 
@@ -27,6 +56,11 @@ const loadFooter = async () => {
   const footer = document.getElementById('site-footer');
 
   if (!footer) {
+    return;
+  }
+
+  if (window.location.protocol === 'file:') {
+    footer.innerHTML = FOOTER_TEMPLATE;
     return;
   }
 
@@ -40,7 +74,7 @@ const loadFooter = async () => {
     footer.innerHTML = await response.text();
   } catch (error) {
     console.error(error);
-    footer.innerHTML = '';
+    footer.innerHTML = FOOTER_TEMPLATE;
   }
 };
 

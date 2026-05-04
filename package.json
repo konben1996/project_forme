@@ -4,9 +4,16 @@
   "version": "1.0.0",
   "scripts": {
     "build:css": "sass src/scss/index.scss src/css/index.css --no-source-map && sass src/scss/login.scss src/css/login.css --no-source-map && sass src/scss/register.scss src/css/register.css --no-source-map && sass src/scss/forgot-password.scss src/css/forgot-password.css --no-source-map && sass src/scss/account-info.scss src/css/account-info.css --no-source-map && sass src/scss/cart.scss src/css/cart.css --no-source-map && sass src/scss/product.scss src/css/product.css --no-source-map && sass src/scss/checkout.scss src/css/checkout.css --no-source-map && sass src/scss/admin.scss src/admin/css/admin.css --no-source-map",
-    "watch:css": "sass --watch src/scss/index.scss:src/css/index.css src/scss/login.scss:src/css/login.css src/scss/register.scss:src/css/register.css src/scss/forgot-password.scss:src/css/forgot-password.css src/scss/account-info.scss:src/css/account-info.css src/scss/cart.scss:src/css/cart.css src/scss/product.scss:src/css/product.css src/scss/checkout.scss:src/css/checkout.css src/scss/admin.scss:src/admin/css/admin.css --no-source-map"
+    "watch:css": "sass --watch src/scss/index.scss:src/css/index.css src/scss/login.scss:src/css/login.css src/scss/register.scss:src/css/register.css src/scss/forgot-password.scss:src/css/forgot-password.css src/scss/account-info.scss:src/css/account-info.css src/scss/cart.scss:src/css/cart.css src/scss/product.scss:src/css/product.css src/scss/checkout.scss:src/css/checkout.css src/scss/admin.scss:src/admin/css/admin.css --no-source-map",
+    "dev": "node server/index.js",
+    "start": "node server/index.js"
   },
   "devDependencies": {
     "sass": "^1.99.0"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "mysql2": "^3.11.5",
+    "bcryptjs": "^3.0.2"
   }
 }

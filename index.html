@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="./src/css/index.css" />
 </head>
 <body>
-  <div id="site-header"></div>
+  <div data-header-slot></div>
 
   <main>
     <section class="hero">
@@ -636,31 +636,15 @@
     <section class="section">
       <div class="container">
         <div class="section__heading">
-          <h2>Laptop theo nhu cầu</h2>
-          <a href="#">Xem thêm</a>
-        </div>
-
-        <div class="tile-grid">
-          <a class="tile-card" href="#">Sinh viên</a>
-          <a class="tile-card" href="#">Văn phòng</a>
-          <a class="tile-card" href="#">Gaming</a>
-          <a class="tile-card" href="#">Đồ họa</a>
-        </div>
-      </div>
-    </section>
-
-    <section class="section section--alt">
-      <div class="container">
-        <div class="section__heading">
           <h2>Build PC theo ngân sách</h2>
           <a href="#">Xem cấu hình</a>
         </div>
 
-        <div class="tile-grid tile-grid--budget">
-          <a class="tile-card" href="#">Dưới 15 triệu</a>
-          <a class="tile-card" href="#">20 triệu</a>
-          <a class="tile-card" href="#">30 triệu</a>
-          <a class="tile-card" href="#">40 triệu+</a>
+        <div class="brand-grid">
+          <a class="brand-card" href="#">Dưới 15 triệu</a>
+          <a class="brand-card" href="#">20 triệu</a>
+          <a class="brand-card" href="#">30 triệu</a>
+          <a class="brand-card" href="#">40 triệu+</a>
         </div>
       </div>
     </section>
@@ -690,7 +674,6 @@
   <div id="site-footer"></div>
 
   <script src="./src/utils/loadHeader.js"></script>
-  <script src="./src/utils/header.js"></script>
   <script src="./src/utils/heroBannerSlider.js"></script>
   <script src="./src/utils/loadFooter.js"></script>
 </body>
