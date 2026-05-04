@@ -22,12 +22,18 @@ $page-hero-image-text: var(--page-hero-image-text);
 $page-budget-bg-start: var(--page-budget-bg-start);
 $page-budget-bg-end: var(--page-budget-bg-end);
 
+html {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
 body {
   background: linear-gradient(180deg, $page-bg 0%, $page-bg-alt 100%);
   color: $page-text;
   font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   line-height: 1.5;
   transition: background-color 0.2s ease, color 0.2s ease;
+  overflow-x: hidden;
 }
 
 main {
@@ -40,6 +46,11 @@ section {
 
 .hero {
   padding: 40px 0 24px;
+  overflow-x: hidden;
+}
+
+.hero > .container {
+  width: min(1240px, 100% - 32px);
 }
 
 .hero__grid {
@@ -47,9 +58,25 @@ section {
   grid-template-columns: 280px minmax(0, 1fr);
   gap: 24px;
   align-items: stretch;
+  min-width: 0;
+  width: 100%;
+  max-width: 100%;
+}
+
+.hero__content {
+  position: relative;
+  min-width: 0;
+  width: 100%;
+  max-width: 100%;
+  height: clamp(320px, 34vw, 460px);
+  overflow: hidden;
 }
 
 .hero__sidebar {
+  min-width: 0;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
   background: $page-hero-sidebar-bg;
   border: 1px solid $page-border;
   border-radius: 24px;
@@ -88,50 +115,123 @@ section {
 }
 
 .hero__banner {
+  position: absolute;
+  inset: 0;
   border-radius: 28px;
-  padding: 32px 36px;
-  background:
-    radial-gradient(circle at top right, rgba(255, 255, 255, 0.16), transparent 35%),
-    linear-gradient(135deg, $page-accent 0%, $page-accent-dark 100%);
-  color: #fff;
+  overflow: hidden;
+  background: $page-surface;
+  border: 1px solid $page-border;
   box-shadow: $page-shadow;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  opacity: 0;
+  transform: translateX(100%);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+  pointer-events: none;
+  will-change: transform, opacity;
 }
 
-.hero__tag {
-  display: inline-flex;
+.hero__banner.is-active,
+.hero__banner[data-banner-state='active'] {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
+  z-index: 2;
+}
+
+.hero__banner[data-banner-state='enter-left'] {
+  opacity: 1;
+  transform: translateX(-100%);
+}
+
+.hero__banner[data-banner-state='enter-right'] {
+  opacity: 1;
+  transform: translateX(100%);
+}
+
+.hero__banner[data-banner-state='exit-left'] {
+  opacity: 0;
+  transform: translateX(-100%);
+}
+
+.hero__banner[data-banner-state='exit-right'],
+.hero__banner[data-banner-state='idle'] {
+  opacity: 0;
+  transform: translateX(100%);
+}
+
+.hero__banner-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  background: #020617;
+}
+
+.hero__controls {
+  position: absolute;
+  inset: 0;
+  display: flex;
   align-items: center;
-  width: fit-content;
-  padding: 8px 14px;
+  justify-content: space-between;
+  padding: 0 14px;
+  z-index: 4;
+  pointer-events: none;
+}
+
+.hero__control {
+  width: 44px;
+  height: 44px;
+  border: 0;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.14);
-  color: rgba(255, 255, 255, 0.95);
-  font-weight: 700;
-  letter-spacing: 0.2px;
-  margin: 0 0 16px;
+  background: rgba(15, 23, 42, 0.72);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.2);
+  transition: background 0.2s ease, transform 0.15s ease, opacity 0.2s ease;
+  pointer-events: auto;
+
+  &:hover {
+    background: rgba(15, 23, 42, 0.88);
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(1px);
+  }
 }
 
-.hero__banner h1 {
-  margin: 0 0 16px;
-  font-size: clamp(2rem, 4vw, 3.75rem);
-  line-height: 1.08;
-  max-width: 12ch;
+.hero__dots {
+  display: none;
+  position: absolute;
+  left: 50%;
+  bottom: 16px;
+  align-items: center;
+  gap: 8px;
+  transform: translateX(-50%);
+  z-index: 5;
+  pointer-events: auto;
 }
 
-.hero__banner p {
-  margin: 0;
-  max-width: 62ch;
-  font-size: 1.05rem;
-  color: rgba(255, 255, 255, 0.92);
-}
+.hero__dot {
+  width: 10px;
+  height: 10px;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.45);
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.2s ease, background 0.2s ease, width 0.2s ease;
 
-.hero__buttons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 24px;
+  &:hover {
+    transform: scale(1.1);
+  }
+
+  &.is-active {
+    width: 28px;
+    background: #fff;
+  }
 }
 
 .btn {
@@ -287,6 +387,8 @@ section {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  height: 100%;
+  min-height: 100%;
   box-shadow: $page-shadow;
   transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 
@@ -298,6 +400,7 @@ section {
 
   &__image {
     min-height: 180px;
+    height: 180px;
     border-radius: 18px;
     display: grid;
     place-items: center;
@@ -307,6 +410,7 @@ section {
     color: $page-hero-image-text;
     font-size: 1.1rem;
     font-weight: 800;
+    flex-shrink: 0;
   }
 
   &__badge {
@@ -319,17 +423,28 @@ section {
     color: #166534;
     font-size: 0.85rem;
     font-weight: 700;
+    flex-shrink: 0;
   }
 
   h3 {
     margin: 0;
     font-size: 1.1rem;
     color: $page-text;
+    min-height: 2.8em;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
   }
 
   &__spec {
     margin: 0;
     color: $page-muted;
+    min-height: 2.4em;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
   }
 
   &__price {
@@ -337,6 +452,7 @@ section {
     align-items: baseline;
     gap: 10px;
     flex-wrap: wrap;
+    min-height: 1.6em;
 
     strong {
       color: $page-accent-dark;
@@ -386,17 +502,19 @@ section {
 .brand-grid {
   display: grid;
   grid-template-columns: repeat(6, minmax(0, 1fr));
-  gap: 14px;
+  gap: 10px;
 }
 
 .brand-card {
-  min-height: 84px;
-  border-radius: 18px;
+  min-height: 64px;
+  border-radius: 14px;
   background: $page-surface;
   border: 1px solid $page-border;
   display: grid;
   place-items: center;
+  padding: 0 10px;
   font-weight: 800;
+  font-size: 0.92rem;
   color: $page-text;
   box-shadow: $page-shadow;
   transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
@@ -536,7 +654,29 @@ section {
 
 @media (max-width: 1024px) {
   .hero__grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 240px minmax(0, 1fr);
+    gap: 20px;
+  }
+
+  .hero__content {
+    height: 360px;
+  }
+
+  .hero__sidebar {
+    padding: 20px;
+  }
+
+  .hero__sidebar h2 {
+    font-size: 1.1rem;
+  }
+
+  .hero__sidebar ul {
+    gap: 8px;
+  }
+
+  .hero__sidebar a {
+    padding: 11px 12px;
+    font-size: 0.95rem;
   }
 
   .benefits__grid,
@@ -548,8 +688,55 @@ section {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .product-grid {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 16px;
+    overflow-x: auto;
+    padding-bottom: 6px;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x proximity;
+  }
+
+  .product-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .product-card {
+    flex: 0 0 320px;
+    height: 440px;
+    scroll-snap-align: start;
+  }
+
   .brand-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 10px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x proximity;
+  }
+
+  .brand-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .brand-card {
+    flex: 0 0 128px;
+    width: 128px;
+    min-width: 128px;
+    min-height: 50px;
+    padding: 10px 12px;
+    border-radius: 999px;
+    background: $page-surface-soft;
+    box-shadow: none;
+    font-weight: 600;
+    white-space: nowrap;
+    text-align: center;
+    scroll-snap-align: start;
   }
 
   .newsletter__inner {
@@ -565,23 +752,68 @@ section {
 
 @media (max-width: 768px) {
   .hero {
-    padding-top: 24px;
+    padding-top: 20px;
   }
 
-  .hero__sidebar,
-  .hero__banner,
-  .benefit-card,
-  .category-card,
-  .product-card,
-  .tile-card,
-  .brand-card,
-  .review-card,
-  .blog-card {
-    border-radius: 20px;
+  .hero__grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .hero__sidebar {
+    order: 2;
+    padding: 14px;
+    border-radius: 18px;
+  }
+
+  .hero__sidebar h2 {
+    margin: 0 0 10px;
+    font-size: 0.98rem;
+  }
+
+  .hero__sidebar ul {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 8px;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    padding: 0 0 4px;
+    margin: 0;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .hero__sidebar ul::-webkit-scrollbar {
+    display: none;
+  }
+
+  .hero__sidebar li {
+    flex: 0 0 auto;
+  }
+
+  .hero__sidebar a {
+    padding: 10px 12px;
+    border-radius: 999px;
+    white-space: nowrap;
+    font-size: 0.92rem;
+  }
+
+  .hero__content {
+    order: 1;
+    height: 260px;
   }
 
   .hero__banner {
-    padding: 28px 24px;
+    border-radius: 20px;
+  }
+
+  .hero__controls {
+    display: none;
+  }
+
+  .hero__dots {
+    display: flex;
   }
 
   .section {
@@ -597,13 +829,40 @@ section {
   .category-grid,
   .product-grid,
   .tile-grid,
-  .brand-grid,
   .review-grid,
   .blog-grid {
     grid-template-columns: 1fr;
   }
 
-  .hero__buttons,
+  .product-grid {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 14px;
+    overflow-x: auto;
+    padding-bottom: 6px;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x proximity;
+  }
+
+  .product-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .product-card {
+    flex: 0 0 280px;
+    height: 420px;
+    padding: 16px;
+    gap: 10px;
+    scroll-snap-align: start;
+  }
+
+  .product-card__image {
+    height: 150px;
+    min-height: 150px;
+    border-radius: 16px;
+  }
+
   .newsletter__form {
     flex-direction: column;
     align-items: stretch;
@@ -617,27 +876,97 @@ section {
   .newsletter__inner {
     padding: 28px 24px;
   }
+
+  .brand-grid {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x proximity;
+  }
+
+  .brand-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .brand-card {
+    flex: 0 0 120px;
+    width: 120px;
+    min-width: 120px;
+    min-height: 54px;
+    padding: 10px 12px;
+    font-size: 0.84rem;
+    border-radius: 999px;
+    background: $page-surface-soft;
+    box-shadow: none;
+    font-weight: 600;
+    white-space: nowrap;
+    text-align: center;
+    scroll-snap-align: start;
+  }
 }
 
 @media (max-width: 480px) {
   .hero {
-    padding: 20px 0 16px;
+    padding: 16px 0 12px;
+  }
+
+  .hero > .container {
+    width: min(100% - 20px, 1240px);
+  }
+
+  .hero__grid {
+    gap: 10px;
   }
 
   .hero__sidebar {
-    padding: 20px;
+    padding: 12px;
+    border-radius: 16px;
+  }
+
+  .hero__sidebar h2 {
+    margin-bottom: 8px;
+    font-size: 0.92rem;
+  }
+
+  .hero__sidebar a {
+    padding: 9px 11px;
+    font-size: 0.86rem;
+  }
+
+  .hero__content {
+    height: auto;
+    aspect-ratio: 16 / 9;
   }
 
   .hero__banner {
-    padding: 24px 20px;
+    border-radius: 16px;
   }
 
-  .hero__banner h1 {
-    max-width: none;
+  .hero__controls {
+    padding: 0 8px;
   }
 
-  .hero__banner p {
-    font-size: 1rem;
+  .hero__control {
+    width: 38px;
+    height: 38px;
+  }
+
+  .hero__dots {
+    bottom: 10px;
+    gap: 6px;
+  }
+
+  .hero__dot {
+    width: 8px;
+    height: 8px;
+
+    &.is-active {
+      width: 22px;
+    }
   }
 
   .benefits {
@@ -654,5 +983,36 @@ section {
 
   .newsletter {
     padding-bottom: 40px;
+  }
+
+  .brand-grid {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x proximity;
+  }
+
+  .brand-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .brand-card {
+    flex: 0 0 108px;
+    width: 108px;
+    min-width: 108px;
+    min-height: 48px;
+    padding: 10px 12px;
+    font-size: 0.8rem;
+    border-radius: 999px;
+    background: $page-surface-soft;
+    box-shadow: none;
+    font-weight: 600;
+    white-space: nowrap;
+    text-align: center;
+    scroll-snap-align: start;
   }
 }

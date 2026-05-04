@@ -13,8 +13,7 @@
   <main>
     <section class="hero">
       <div class="container hero__grid">
-        <aside class="hero__sidebar">
-          <h2>Danh mục nhanh</h2>
+        <aside class="hero__sidebar" aria-label="Danh mục nhanh">
           <ul>
             <li><a href="#">Laptop văn phòng</a></li>
             <li><a href="#">Laptop gaming</a></li>
@@ -22,61 +21,59 @@
             <li><a href="#">CPU / GPU</a></li>
             <li><a href="#">RAM / SSD</a></li>
             <li><a href="#">Bàn phím / Chuột</a></li>
+            <li><a href="#">Màn hình</a></li>
+            <li><a href="#">Camera</a></li>
           </ul>
         </aside>
 
-        <div class="hero__banner">
-          <p class="hero__tag">Deal hot trong tuần</p>
-          <h1>Trang chủ shop bán máy tính hiện đại, dễ mua, dễ chọn</h1>
-          <p>
-            Tìm laptop, PC gaming, linh kiện và phụ kiện chính hãng với giá tốt,
-            hỗ trợ trả góp và giao hàng nhanh.
-          </p>
-          <div class="hero__buttons">
-            <a class="btn btn--primary" href="#products">Xem sản phẩm</a>
-            <a class="btn btn--ghost" href="#featured-categories">Xem danh mục</a>
+        <div class="hero__content" aria-live="polite" tabindex="0">
+          <div class="hero__banner hero__banner--primary is-active" aria-hidden="false">
+            <img
+              class="hero__banner-image"
+              src="https://cdn2.cellphones.com.vn/insecure/rs:fill:1036:450/q:100/plain/https://dashboard.cellphones.com.vn/storage/tai-nghe-logitech-dealhot.png"
+              alt="Banner Computer Store"
+              loading="eager"
+              decoding="async"
+            />
           </div>
+
+          <div class="hero__banner hero__banner--secondary" aria-hidden="true">
+            <img
+              class="hero__banner-image"
+              src="https://cdn2.cellphones.com.vn/insecure/rs:fill:1036:450/q:100/plain/https://dashboard.cellphones.com.vn/storage/slidingmobanmacneo.png"
+              alt="Banner gaming Computer Store"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+
+          <div class="hero__controls" aria-label="Điều hướng banner">
+            <button class="hero__control hero__control--prev" type="button" data-hero-action="prev" aria-label="Banner trước">
+              <span aria-hidden="true">←</span>
+            </button>
+            <button class="hero__control hero__control--next" type="button" data-hero-action="next" aria-label="Banner tiếp theo">
+              <span aria-hidden="true">→</span>
+            </button>
+          </div>
+
+          <div class="hero__dots" aria-label="Điều hướng banner"></div>
         </div>
       </div>
     </section>
 
-    <section class="benefits">
-      <div class="container benefits__grid">
-        <article class="benefit-card">
-          <h3>Trả góp 0%</h3>
-          <p>Hỗ trợ trả góp với nhiều phương thức thanh toán linh hoạt.</p>
-        </article>
-        <article class="benefit-card">
-          <h3>Giao nhanh</h3>
-          <p>Đóng gói cẩn thận, giao nhanh nội thành và toàn quốc.</p>
-        </article>
-        <article class="benefit-card">
-          <h3>Bảo hành chính hãng</h3>
-          <p>Sản phẩm có bảo hành rõ ràng, đầy đủ thông tin.</p>
-        </article>
-        <article class="benefit-card">
-          <h3>Tư vấn tận tâm</h3>
-          <p>Hỗ trợ chọn cấu hình phù hợp nhu cầu và ngân sách.</p>
-        </article>
-      </div>
-    </section>
-
-    <section id="featured-categories" class="section">
+    <section class="section">
       <div class="container">
         <div class="section__heading">
-          <h2>Danh mục nổi bật</h2>
-          <a href="#">Xem tất cả</a>
+          <h2>Thương hiệu nổi bật</h2>
         </div>
 
-        <div class="category-grid">
-          <a class="category-card" href="#">Laptop sinh viên</a>
-          <a class="category-card" href="#">Laptop gaming</a>
-          <a class="category-card" href="#">PC gaming</a>
-          <a class="category-card" href="#">CPU</a>
-          <a class="category-card" href="#">GPU</a>
-          <a class="category-card" href="#">RAM</a>
-          <a class="category-card" href="#">SSD</a>
-          <a class="category-card" href="#">Màn hình</a>
+        <div class="brand-grid">
+          <a class="brand-card" href="#">ASUS</a>
+          <a class="brand-card" href="#">MSI</a>
+          <a class="brand-card" href="#">Lenovo</a>
+          <a class="brand-card" href="#">Dell</a>
+          <a class="brand-card" href="#">Acer</a>
+          <a class="brand-card" href="#">Apple</a>
         </div>
       </div>
     </section>
@@ -136,6 +133,30 @@
             </div>
             <a class="btn btn--primary btn--full" href="./src/pages/product.html">Xem chi tiết</a>
           </article>
+
+          <article class="product-card">
+            <div class="product-card__image">Ảnh</div>
+            <p class="product-card__badge">Hot</p>
+            <h3>Dell UltraSharp U2723QE</h3>
+            <p class="product-card__spec">27 inch / 4K / USB-C</p>
+            <div class="product-card__price">
+              <strong>12.990.000đ</strong>
+              <span>13.990.000đ</span>
+            </div>
+            <a class="btn btn--primary btn--full" href="./src/pages/product.html">Xem chi tiết</a>
+          </article>
+
+          <article class="product-card">
+            <div class="product-card__image">Ảnh</div>
+            <p class="product-card__badge">Hot</p>
+            <h3>Dell UltraSharp U2723QE</h3>
+            <p class="product-card__spec">27 inch / 4K / USB-C</p>
+            <div class="product-card__price">
+              <strong>12.990.000đ</strong>
+              <span>13.990.000đ</span>
+            </div>
+            <a class="btn btn--primary btn--full" href="./src/pages/product.html">Xem chi tiết</a>
+          </article>
         </div>
       </div>
     </section>
@@ -172,69 +193,26 @@
       </div>
     </section>
 
-    <section class="section">
-      <div class="container">
-        <div class="section__heading">
-          <h2>Thương hiệu nổi bật</h2>
-          <a href="#">Xem tất cả</a>
-        </div>
+    
 
-        <div class="brand-grid">
-          <a class="brand-card" href="#">ASUS</a>
-          <a class="brand-card" href="#">MSI</a>
-          <a class="brand-card" href="#">Lenovo</a>
-          <a class="brand-card" href="#">Dell</a>
-          <a class="brand-card" href="#">Acer</a>
-          <a class="brand-card" href="#">Apple</a>
-        </div>
-      </div>
-    </section>
-
-    <section id="reviews" class="section section--alt">
-      <div class="container">
-        <div class="section__heading">
-          <h2>Khách hàng nói gì</h2>
-          <a href="#">Xem thêm</a>
-        </div>
-
-        <div class="review-grid">
-          <article class="review-card">
-            <p>“Tư vấn rất dễ hiểu, chọn đúng laptop cho nhu cầu học tập.”</p>
-            <strong>Nguyễn Minh</strong>
-          </article>
-          <article class="review-card">
-            <p>“Giao hàng nhanh, đóng gói kỹ, máy đúng mô tả.”</p>
-            <strong>Trần Anh</strong>
-          </article>
-          <article class="review-card">
-            <p>“Giá linh kiện hợp lý, có hỗ trợ build cấu hình luôn.”</p>
-            <strong>Phạm Huy</strong>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="container">
-        <div class="section__heading">
-          <h2>Tin công nghệ</h2>
-          <a href="#">Xem blog</a>
-        </div>
-
-        <div class="blog-grid">
-          <article class="blog-card">
-            <h3>Top laptop cho sinh viên 2026</h3>
-            <p>Gợi ý những mẫu máy phù hợp học tập, văn phòng và di chuyển.</p>
-          </article>
-          <article class="blog-card">
-            <h3>Cách chọn CPU phù hợp</h3>
-            <p>Phân biệt CPU cho gaming, đồ họa và công việc văn phòng.</p>
-          </article>
-          <article class="blog-card">
-            <h3>Nên mua SSD nào?</h3>
-            <p>So sánh SSD SATA, NVMe và lưu ý khi nâng cấp máy tính.</p>
-          </article>
-        </div>
+    <section class="benefits">
+      <div class="container benefits__grid">
+        <article class="benefit-card">
+          <h3>Trả góp 0%</h3>
+          <p>Hỗ trợ trả góp với nhiều phương thức thanh toán linh hoạt.</p>
+        </article>
+        <article class="benefit-card">
+          <h3>Giao nhanh</h3>
+          <p>Đóng gói cẩn thận, giao nhanh nội thành và toàn quốc.</p>
+        </article>
+        <article class="benefit-card">
+          <h3>Bảo hành chính hãng</h3>
+          <p>Sản phẩm có bảo hành rõ ràng, đầy đủ thông tin.</p>
+        </article>
+        <article class="benefit-card">
+          <h3>Tư vấn tận tâm</h3>
+          <p>Hỗ trợ chọn cấu hình phù hợp nhu cầu và ngân sách.</p>
+        </article>
       </div>
     </section>
 
@@ -244,6 +222,7 @@
 
   <script src="./src/utils/loadHeader.js"></script>
   <script src="./src/utils/header.js"></script>
+  <script src="./src/utils/heroBannerSlider.js"></script>
   <script src="./src/utils/loadFooter.js"></script>
 </body>
 </html>
