@@ -15,6 +15,7 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
       - ./database/account.sql:/docker-entrypoint-initdb.d/01-account.sql:ro
+      - ./database/product.sql:/docker-entrypoint-initdb.d/02-product.sql:ro
 
   phpmyadmin:
     image: phpmyadmin:latest

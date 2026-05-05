@@ -193,7 +193,7 @@ INSERT INTO user_sessions (
   expires_at
 ) VALUES
   (
-    'session_demo_user_01_0123456789abcdef0123456789abcdef0123456789abcdef0123456789ab',
+    '0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef',
     1,
     '127.0.0.1',
     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36',

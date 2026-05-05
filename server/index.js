@@ -7,10 +7,12 @@ const {
   login,
   getCurrentUser,
   updateCurrentUser,
+  updatePassword,
   logout,
   healthCheck,
   resolveTokenFromRequest,
 } = require('./auth-service');
+const { query } = require('./db');
 
 const app = express();
 const projectRoot = path.resolve(__dirname, '..');
@@ -69,6 +71,28 @@ const sendJson = (res, statusCode, payload) => {
   res.status(statusCode).json(payload);
 };
 
+const formatProductRow = (row) => ({
+  id: row.id,
+  sku: row.sku,
+  name: row.name,
+  slug: row.slug,
+  thumbnailUrl: row.thumbnail_url,
+  description: row.description,
+  specSummary: row.spec_summary || '',
+  price: row.price !== null && row.price !== undefined ? Number(row.price) : 0,
+  salePrice: row.sale_price !== null && row.sale_price !== undefined ? Number(row.sale_price) : null,
+  stockQuantity: row.stock_quantity !== null && row.stock_quantity !== undefined ? Number(row.stock_quantity) : 0,
+  status: row.status,
+  brand: {
+    name: row.brand_name,
+    slug: row.brand_slug,
+  },
+  category: {
+    name: row.category_name,
+    slug: row.category_slug,
+  },
+});
+
 app.get(
   '/api/health',
   asyncRoute(async (req, res) => {
@@ -90,6 +114,116 @@ app.get(
   }),
 );
 
+app.get(
+  '/api/products/home',
+  asyncRoute(async (req, res) => {
+    const requestedLimit = Number(req.query.limit || 6);
+    const limit = Number.isFinite(requestedLimit) ? Math.min(Math.max(Math.trunc(requestedLimit), 1), 12) : 6;
+
+    const rows = await query(
+      `
+      SELECT
+        p.id,
+        p.sku,
+        p.name,
+        p.slug,
+        p.thumbnail_url,
+        p.description,
+        p.price,
+        p.sale_price,
+        p.stock_quantity,
+        p.status,
+        b.name AS brand_name,
+        b.slug AS brand_slug,
+        c.name AS category_name,
+        c.slug AS category_slug,
+        ps.spec_summary
+      FROM products p
+      INNER JOIN brands b ON b.id = p.brand_id
+      INNER JOIN categories c ON c.id = p.category_id
+      LEFT JOIN (
+        SELECT
+          product_id,
+          GROUP_CONCAT(CONCAT(spec_key, ': ', spec_value) ORDER BY id SEPARATOR ' / ') AS spec_summary
+        FROM product_specs
+        GROUP BY product_id
+      ) ps ON ps.product_id = p.id
+      WHERE p.status = 'active'
+      ORDER BY p.created_at DESC, p.id DESC
+      LIMIT ?
+      `,
+      [limit],
+    );
+
+    sendJson(res, 200, {
+      success: true,
+      message: 'Lấy danh sách sản phẩm nổi bật thành công',
+      data: {
+        limit,
+        products: rows.map(formatProductRow),
+      },
+    });
+  }),
+);
+
+app.get(
+  '/api/products/category/:slug',
+  asyncRoute(async (req, res) => {
+    const categorySlug = String(req.params.slug || '').trim();
+    if (!categorySlug) {
+      throw new ApiError(400, 'Thiếu slug danh mục');
+    }
+
+    const requestedLimit = Number(req.query.limit || 4);
+    const limit = Number.isFinite(requestedLimit) ? Math.min(Math.max(Math.trunc(requestedLimit), 1), 12) : 4;
+
+    const rows = await query(
+      `
+      SELECT
+        p.id,
+        p.sku,
+        p.name,
+        p.slug,
+        p.thumbnail_url,
+        p.description,
+        p.price,
+        p.sale_price,
+        p.stock_quantity,
+        p.status,
+        b.name AS brand_name,
+        b.slug AS brand_slug,
+        c.name AS category_name,
+        c.slug AS category_slug,
+        ps.spec_summary
+      FROM products p
+      INNER JOIN brands b ON b.id = p.brand_id
+      INNER JOIN categories c ON c.id = p.category_id
+      LEFT JOIN (
+        SELECT
+          product_id,
+          GROUP_CONCAT(CONCAT(spec_key, ': ', spec_value) ORDER BY id SEPARATOR ' / ') AS spec_summary
+        FROM product_specs
+        GROUP BY product_id
+      ) ps ON ps.product_id = p.id
+      WHERE p.status = 'active' AND c.slug = ?
+      ORDER BY p.created_at DESC, p.id DESC
+      LIMIT ?
+      `,
+      [categorySlug, limit],
+    );
+
+    sendJson(res, 200, {
+      success: true,
+      message: 'Lấy danh sách sản phẩm theo danh mục thành công',
+      data: {
+        categorySlug,
+        limit,
+        products: rows.map(formatProductRow),
+      },
+    });
+  }),
+);
+
 app.post(
   '/api/auth/register',
   asyncRoute(async (req, res) => {
@@ -100,8 +234,6 @@ app.post(
     });
 
     res.setHeader('X-Session-Token', result.session.token);
-    res.setHeader('X-Auth-Token', result.session.token);
-    res.setHeader('X-Auth-Token', result.session.token);
     res.setHeader('X-Auth-Token', result.session.token);
     sendJson(res, 201, {
       success: true,
@@ -179,6 +311,29 @@ app.patch(
     sendJson(res, 200, {
       success: true,
       message: 'Cập nhật thông tin tài khoản thành công',
+      user: result.user,
+      session: result.session,
+      token: result.session.token,
+      data: {
+        user: result.user,
+        session: result.session,
+        token: result.session.token,
+      },
+    });
+  }),
+);
+
+app.patch(
+  '/api/auth/password',
+  asyncRoute(async (req, res) => {
+    const token = resolveTokenFromRequest(req);
+    const result = await updatePassword(token, req.body || {});
+
+    res.setHeader('X-Session-Token', result.session.token);
+    res.setHeader('X-Auth-Token', result.session.token);
+    sendJson(res, 200, {
+      success: true,
+      message: 'Đổi mật khẩu thành công',
       user: result.user,
       session: result.session,
       token: result.session.token,

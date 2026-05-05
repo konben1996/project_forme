@@ -1080,6 +1080,87 @@ const updateCurrentUser = async (token, payload = {}, context = {}) => {
   }).then(() => getCurrentUser(normalizedToken));
 };
 
+const updatePassword = async (token, payload = {}) => {
+  const normalizedToken = normalizeString(token);
+  if (!normalizedToken) {
+    throw new ApiError(401, 'Vui lòng cung cấp mã phiên đăng nhập');
+  }
+
+  const { session, sessionColumns } = await findSessionByToken(normalizedToken);
+  if (!session) {
+    throw new ApiError(401, 'Phiên đăng nhập không hợp lệ hoặc đã hết hạn');
+  }
+
+  const sessionUserIdColumn = getColumnByCandidates(sessionColumns, SESSION_USER_ID_CANDIDATES);
+  if (!sessionUserIdColumn) {
+    throw new ApiError(500, 'Bảng user_sessions thiếu cột user_id');
+  }
+
+  const userColumns = await getUserTableColumns();
+  const userIdColumn = getColumnByCandidates(userColumns, USER_ID_CANDIDATES);
+  const passwordColumn = getColumnByCandidates(userColumns, PASSWORD_CANDIDATES);
+
+  if (!userIdColumn) {
+    throw new ApiError(500, 'Bảng users thiếu cột định danh người dùng');
+  }
+
+  if (!passwordColumn) {
+    throw new ApiError(500, 'Bảng users thiếu cột mật khẩu');
+  }
+
+  const currentPassword = normalizeString(payload.currentPassword || payload.oldPassword || payload.current_password || '');
+  const newPassword = normalizeString(payload.newPassword || payload.password || payload.new_password || '');
+  const confirmPassword = normalizeString(
+    payload.confirmPassword || payload.confirmNewPassword || payload.passwordConfirm || payload.confirm_password || '',
+  );
+
+  if (!currentPassword) {
+    throw new ApiError(400, 'Vui lòng nhập mật khẩu hiện tại');
+  }
+
+  if (!newPassword) {
+    throw new ApiError(400, 'Vui lòng nhập mật khẩu mới');
+  }
+
+  validatePassword(newPassword);
+
+  if (!confirmPassword) {
+    throw new ApiError(400, 'Vui lòng nhập lại mật khẩu mới');
+  }
+
+  if (newPassword !== confirmPassword) {
+    throw new ApiError(400, 'Mật khẩu mới nhập lại không khớp');
+  }
+
+  const userId = session[sessionUserIdColumn.name];
+
+  return transaction(async (connection) => {
+    const userRow = await selectByColumn(connection, USER_TABLE, userIdColumn.name, userId);
+    if (!userRow) {
+      throw new ApiError(401, 'Phiên đăng nhập không hợp lệ hoặc đã hết hạn');
+    }
+
+    const passwordHash = userRow[passwordColumn.name];
+    const isPasswordValid = await bcrypt.compare(currentPassword, String(passwordHash || ''));
+    if (!isPasswordValid) {
+      throw new ApiError(400, 'Mật khẩu hiện tại không đúng');
+    }
+
+    const nextPasswordHash = await bcrypt.hash(newPassword, BCRYPT_ROUNDS);
+    const assignments = [`${quoteIdentifier(passwordColumn.name)} = ?`];
+    const params = [nextPasswordHash];
+
+    if (getColumnByCandidates(userColumns, UPDATED_AT_CANDIDATES)) {
+      assignments.push(`${quoteIdentifier(getColumnByCandidates(userColumns, UPDATED_AT_CANDIDATES).name)} = NOW()`);
+    }
+
+    await connection.execute(
+      `UPDATE ${quoteIdentifier(USER_TABLE)} SET ${assignments.join(', ')} WHERE ${quoteIdentifier(userIdColumn.name)} = ?`,
+      [...params, userId],
+    );
+  }).then(() => getCurrentUser(normalizedToken));
+};
+
 const logout = async (token) => {
   const normalizedToken = normalizeString(token);
   if (!normalizedToken) {
@@ -1108,6 +1189,7 @@ module.exports = {
   login,
   getCurrentUser,
   updateCurrentUser,
+  updatePassword,
   logout,
   healthCheck,
   resolveTokenFromRequest,
