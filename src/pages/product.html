@@ -11,15 +11,17 @@
   <div data-header-slot></div>
 
   <main>
-    <section class="product-hero">
+    <section class="product-hero" data-product-main-section>
       <div class="container">
         <div class="product-breadcrumb">
           <a href="../index.html">Trang chủ</a>
           <span>/</span>
-          <a href="#">Laptop</a>
+          <a href="#" data-product-breadcrumb-category>Laptop</a>
           <span>/</span>
-          <span>Lenovo IdeaPad Slim 5</span>
+          <span data-product-breadcrumb-name>Chi tiết sản phẩm</span>
         </div>
+
+        <div data-product-error></div>
 
         <div class="product-layout">
           <aside class="product-aside">
@@ -41,38 +43,39 @@
           <div class="product-gallery">
             <div class="gallery-main">
               <img
+                data-product-main-image
                 src="../assets/products/lenovo-ideapad-slim-5-main.svg"
-                alt="Lenovo IdeaPad Slim 5 ảnh chính"
+                alt="Ảnh chính sản phẩm"
               />
               <div class="gallery-badge">Sản phẩm nổi bật</div>
             </div>
 
-            <div class="gallery-thumbs">
+            <div class="gallery-thumbs" data-product-thumbs>
               <figure class="thumb-card thumb-card--active">
                 <img
                   src="../assets/products/lenovo-ideapad-slim-5-main.svg"
-                  alt="Lenovo IdeaPad Slim 5 ảnh chính thu nhỏ"
+                  alt="Ảnh phụ sản phẩm"
                 />
               </figure>
               <figure class="thumb-card">
                 <img
                   src="../assets/products/lenovo-ideapad-slim-5-side.svg"
-                  alt="Lenovo IdeaPad Slim 5 góc nhìn bên hông"
+                  alt="Ảnh phụ sản phẩm"
                 />
               </figure>
               <figure class="thumb-card">
                 <img
                   src="../assets/products/lenovo-ideapad-slim-5-open.svg"
-                  alt="Lenovo IdeaPad Slim 5 khi mở máy"
+                  alt="Ảnh phụ sản phẩm"
                 />
               </figure>
             </div>
           </div>
 
           <div class="product-summary">
-            <p class="product-tag">Laptop mỏng nhẹ</p>
-            <h1>Lenovo IdeaPad Slim 5</h1>
-            <p class="product-intro">
+            <p class="product-tag" data-product-tag>Laptop mỏng nhẹ</p>
+            <h1 data-product-title>Lenovo IdeaPad Slim 5</h1>
+            <p class="product-intro" data-product-intro>
               Dòng laptop tối ưu cho học tập và làm việc với thiết kế mỏng gọn,
               thời lượng pin tốt và hiệu năng ổn định cho nhu cầu đa nhiệm hàng ngày.
             </p>
@@ -80,13 +83,13 @@
             <div class="price-box">
               <span class="price-box__label">Giá bán</span>
               <div class="price-box__row">
-                <strong>18.990.000đ</strong>
-                <span>Giảm 8%</span>
+                <strong data-product-price-strong>0đ</strong>
+                <span data-product-price-compare>0đ</span>
               </div>
               <p>Trả góp từ 0đ, hỗ trợ thanh toán linh hoạt.</p>
             </div>
 
-            <div class="summary-features">
+            <div class="summary-features" data-product-features>
               <article>
                 <span>CPU</span>
                 <strong>Intel Core i5</strong>
@@ -162,7 +165,7 @@
   <div id="site-footer"></div>
 
   <script src="../utils/loadHeader.js"></script>
- 
   <script src="../utils/loadFooter.js"></script>
+  <script src="../utils/product-detail.js"></script>
 </body>
 </html>

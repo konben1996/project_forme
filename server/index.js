@@ -224,6 +224,98 @@ app.get(
   }),
 );
 
+app.get(
+  '/api/products/detail/:slug',
+  asyncRoute(async (req, res) => {
+    const productSlug = String(req.params.slug || '').trim();
+    if (!productSlug) {
+      throw new ApiError(400, 'Thiếu slug sản phẩm');
+    }
+
+    const productRows = await query(
+      `
+      SELECT
+        p.id,
+        p.sku,
+        p.name,
+        p.slug,
+        p.thumbnail_url,
+        p.description,
+        p.price,
+        p.sale_price,
+        p.stock_quantity,
+        p.status,
+        b.name AS brand_name,
+        b.slug AS brand_slug,
+        c.name AS category_name,
+        c.slug AS category_slug,
+        ps.spec_summary
+      FROM products p
+      INNER JOIN brands b ON b.id = p.brand_id
+      INNER JOIN categories c ON c.id = p.category_id
+      LEFT JOIN (
+        SELECT
+          product_id,
+          GROUP_CONCAT(CONCAT(spec_key, ': ', spec_value) ORDER BY id SEPARATOR ' / ') AS spec_summary
+        FROM product_specs
+        GROUP BY product_id
+      ) ps ON ps.product_id = p.id
+      WHERE p.status = 'active' AND p.slug = ?
+      LIMIT 1
+      `,
+      [productSlug],
+    );
+
+    if (!productRows || !productRows.length) {
+      throw new ApiError(404, 'Không tìm thấy sản phẩm');
+    }
+
+    const product = formatProductRow(productRows[0]);
+
+    const images = await query(
+      `
+      SELECT
+        image_url,
+        sort_order
+      FROM product_images
+      WHERE product_id = ?
+      ORDER BY sort_order ASC, id ASC
+      `,
+      [product.id],
+    );
+
+    const specs = await query(
+      `
+      SELECT
+        spec_key,
+        spec_value
+      FROM product_specs
+      WHERE product_id = ?
+      ORDER BY id ASC
+      `,
+      [product.id],
+    );
+
+    sendJson(res, 200, {
+      success: true,
+      message: 'Lấy thông tin chi tiết sản phẩm thành công',
+      data: {
+        product: {
+          ...product,
+          images: (images || []).map((row) => ({
+            imageUrl: row.image_url,
+            sortOrder: row.sort_order,
+          })),
+          specs: (specs || []).map((row) => ({
+            key: row.spec_key,
+            value: row.spec_value,
+          })),
+        },
+      },
+    });
+  }),
+);
+
 app.post(
   '/api/auth/register',
   asyncRoute(async (req, res) => {
