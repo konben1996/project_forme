@@ -253,12 +253,83 @@
     return product;
   };
 
+  const bindAddToCart = (productSlug) => {
+    const buttons = Array.from(document.querySelectorAll('[data-add-to-cart]'));
+
+    if (!buttons.length) {
+      return;
+    }
+
+    buttons.forEach((button) => {
+      if (!(button instanceof Element)) {
+        return;
+      }
+
+      if (button.dataset.addToCartBound === 'true') {
+        return;
+      }
+
+      button.dataset.addToCartBound = 'true';
+
+      button.addEventListener('click', async (event) => {
+        event.preventDefault();
+
+        const authApi = window.AuthAPI || null;
+        if (!authApi) {
+          window.location.assign(`./login.html?redirect=${encodeURIComponent('./cart.html')}`);
+          return;
+        }
+
+        const quantityRaw = button.dataset.addToCartQuantity;
+        const quantity = Number.isFinite(Number(quantityRaw)) ? Math.max(1, Math.trunc(Number(quantityRaw))) : 1;
+
+        try {
+          const originalText = button.textContent || '';
+          if (!button.dataset.addToCartOriginalText) {
+            button.dataset.addToCartOriginalText = originalText;
+          }
+
+          button.setAttribute('aria-disabled', 'true');
+          button.style.pointerEvents = 'none';
+          button.textContent = 'Đang thêm...';
+
+          await authApi.request('/cart/items', {
+            method: 'POST',
+            body: {
+              slug: productSlug,
+              quantity,
+            },
+          });
+
+          window.location.assign('./cart.html');
+        } catch (error) {
+          const status = error && typeof error.status === 'number' ? error.status : null;
+
+          if (status === 401 || status === 403) {
+            window.location.assign(`./login.html?redirect=${encodeURIComponent('./cart.html')}`);
+            return;
+          }
+
+          setError(error && error.message ? error.message : 'Không thể thêm sản phẩm vào giỏ hàng.');
+        } finally {
+          button.setAttribute('aria-disabled', 'false');
+          button.style.pointerEvents = '';
+          const restoreText = button.dataset.addToCartOriginalText || '';
+          button.textContent = restoreText;
+          delete button.dataset.addToCartOriginalText;
+        }
+      });
+    });
+  };
+
   const init = async () => {
     const slug = getQueryParam('slug');
     if (!slug) {
       setError('Thiếu tham số slug để hiển thị sản phẩm.');
       return;
     }
+
+    bindAddToCart(slug);
 
     const selectors = getProductStateSelectors();
     const errorEl = document.querySelector(selectors.errorContainer);

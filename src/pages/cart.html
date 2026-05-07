@@ -18,38 +18,22 @@
           <a href="../index.html">Tiếp tục mua sắm</a>
         </div>
 
-        <div class="product-grid">
-          <article class="product-card">
-            <div class="product-card__image">Laptop</div>
-            <p class="product-card__badge">1 sản phẩm</p>
-            <h3>Lenovo IdeaPad Slim 5</h3>
-            <p class="product-card__spec">i5 / 16GB / 512GB SSD / 14 inch</p>
-            <div class="product-card__price">
-              <strong>20.990.000đ</strong>
-              <span>22.990.000đ</span>
-            </div>
-            <a class="btn btn--ghost btn--full" href="./product.html">Xem chi tiết</a>
-          </article>
-
-          <article class="product-card">
-            <div class="product-card__image">GPU</div>
-            <p class="product-card__badge">1 sản phẩm</p>
-            <h3>MSI RTX 4060 VENTUS 2X</h3>
-            <p class="product-card__spec">8GB GDDR6 / OC Edition</p>
-            <div class="product-card__price">
-              <strong>8.990.000đ</strong>
-              <span>9.890.000đ</span>
-            </div>
-            <a class="btn btn--ghost btn--full" href="./product.html">Xem chi tiết</a>
-          </article>
-
-          <article class="review-card">
+        <div class="product-grid" data-cart-items-grid>
+          <article class="review-card" data-cart-review-card>
             <p>“Đơn hàng của bạn đủ điều kiện freeship nội thành và hỗ trợ trả góp 0%.”</p>
             <strong>Tóm tắt đơn hàng</strong>
-            <p style="margin-top: 16px;">Tạm tính: 29.980.000đ</p>
-            <p>Phí vận chuyển: 0đ</p>
-            <p><strong>Tổng cộng: 29.980.000đ</strong></p>
-            <a class="btn btn--primary btn--full" href="./checkout.html">Tiến hành thanh toán</a>
+
+            <p style="margin-top: 16px;">
+              Tạm tính: <span data-cart-subtotal>0đ</span>
+            </p>
+            <p>
+              Phí vận chuyển: <span data-cart-shipping>0đ</span>
+            </p>
+            <p><strong>Tổng cộng: <span data-cart-total>0đ</span></strong></p>
+
+            <a class="btn btn--primary btn--full" href="./checkout.html" data-cart-checkout-link>
+              Tiến hành thanh toán
+            </a>
           </article>
         </div>
       </div>
@@ -58,8 +42,9 @@
 
   <div id="site-footer"></div>
 
+  <script src="../utils/auth-api.js"></script>
   <script src="../utils/loadHeader.js"></script>
- 
   <script src="../utils/loadFooter.js"></script>
+  <script src="../utils/cart.js"></script>
 </body>
 </html>

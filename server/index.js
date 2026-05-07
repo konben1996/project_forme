@@ -12,7 +12,7 @@ const {
   healthCheck,
   resolveTokenFromRequest,
 } = require('./auth-service');
-const { query } = require('./db');
+const { query, execute } = require('./db');
 
 const app = express();
 const projectRoot = path.resolve(__dirname, '..');
@@ -310,6 +310,392 @@ app.get(
             key: row.spec_key,
             value: row.spec_value,
           })),
+        },
+      },
+    });
+  }),
+);
+
+app.get(
+  '/api/cart',
+  asyncRoute(async (req, res) => {
+    const token = resolveTokenFromRequest(req);
+    const result = await getCurrentUser(token);
+    const user = result && result.user ? result.user : null;
+    const userId = user && user.id ? user.id : null;
+
+    if (!userId) {
+      throw new ApiError(401, 'Vui lòng đăng nhập để xem giỏ hàng');
+    }
+
+    let cartRows = await query(
+      `
+      SELECT id, status, items_count, subtotal_price
+      FROM carts
+      WHERE user_id = ? AND status = 'open'
+      ORDER BY id DESC
+      LIMIT 1
+      `,
+      [userId],
+    );
+
+    let cartRow = cartRows && cartRows[0] ? cartRows[0] : null;
+
+    if (!cartRow) {
+      await execute(
+        `
+        INSERT INTO carts (user_id, status, items_count, subtotal_price)
+        VALUES (?, 'open', 0, 0.00)
+        `,
+        [userId],
+      );
+
+      cartRows = await query(
+        `
+        SELECT id, status, items_count, subtotal_price
+        FROM carts
+        WHERE user_id = ? AND status = 'open'
+        ORDER BY id DESC
+        LIMIT 1
+        `,
+        [userId],
+      );
+
+      cartRow = cartRows && cartRows[0] ? cartRows[0] : null;
+    }
+
+    if (!cartRow) {
+      throw new ApiError(500, 'Không thể tạo giỏ hàng cho người dùng');
+    }
+
+    const items = await query(
+      `
+      SELECT
+        ci.id AS cart_item_id,
+        ci.product_id,
+        ci.quantity,
+        ci.unit_price,
+        ci.unit_sale_price,
+        ci.line_price,
+        p.id AS product_id_resolved,
+        p.slug,
+        p.name,
+        p.thumbnail_url,
+        p.price AS current_price,
+        p.sale_price AS current_sale_price,
+        p.stock_quantity,
+        p.status AS product_status,
+        ps.spec_summary
+      FROM cart_items ci
+      INNER JOIN products p ON p.id = ci.product_id
+      LEFT JOIN (
+        SELECT
+          product_id,
+          GROUP_CONCAT(CONCAT(spec_key, ': ', spec_value) ORDER BY id SEPARATOR ' / ') AS spec_summary
+        FROM product_specs
+        GROUP BY product_id
+      ) ps ON ps.product_id = p.id
+      WHERE ci.cart_id = ?
+      ORDER BY ci.id ASC
+      `,
+      [cartRow.id],
+    );
+
+    const subtotalPrice = (items || []).reduce((sum, item) => sum + Number(item.line_price || 0), 0);
+    const itemsCount = (items || []).reduce((sum, item) => sum + Number(item.quantity || 1), 0);
+
+    sendJson(res, 200, {
+      success: true,
+      message: 'Lấy giỏ hàng thành công',
+      data: {
+        cart: {
+          id: cartRow.id,
+          status: cartRow.status,
+          itemsCount,
+          subtotalPrice,
+        },
+        items: (items || []).map((row) => ({
+          id: row.cart_item_id,
+          productId: row.product_id,
+          quantity: Number(row.quantity || 1),
+          unitPrice: Number(row.unit_price || 0),
+          unitSalePrice: row.unit_sale_price === null || row.unit_sale_price === undefined ? null : Number(row.unit_sale_price),
+          linePrice: Number(row.line_price || 0),
+          product: {
+            id: row.product_id_resolved,
+            slug: row.slug,
+            name: row.name,
+            thumbnailUrl: row.thumbnail_url,
+            price: Number(row.current_price || 0),
+            salePrice: row.current_sale_price === null || row.current_sale_price === undefined ? null : Number(row.current_sale_price),
+            stockQuantity: Number(row.stock_quantity || 0),
+            status: row.product_status,
+          },
+          specSummary: row.spec_summary || '',
+        })),
+      },
+    });
+  }),
+);
+
+app.post(
+  '/api/cart/items',
+  asyncRoute(async (req, res) => {
+    const token = resolveTokenFromRequest(req);
+    const result = await getCurrentUser(token);
+
+    const user = result && result.user ? result.user : null;
+    const userId = user && user.id ? user.id : null;
+
+    if (!userId) {
+      throw new ApiError(401, 'Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng');
+    }
+
+    const slug = String(req.body && req.body.slug ? req.body.slug : '').trim();
+    if (!slug) {
+      throw new ApiError(400, 'Thiếu slug sản phẩm');
+    }
+
+    const requestedQuantityRaw = req.body && req.body.quantity !== undefined ? req.body.quantity : 1;
+    const requestedQuantity = Number(requestedQuantityRaw);
+    const quantity = Number.isFinite(requestedQuantity) ? Math.max(1, Math.trunc(requestedQuantity)) : 1;
+
+    const productRows = await query(
+      `
+      SELECT
+        id,
+        price,
+        sale_price,
+        stock_quantity,
+        status
+      FROM products
+      WHERE slug = ? AND status = 'active'
+      LIMIT 1
+      `,
+      [slug],
+    );
+
+    if (!productRows || !productRows.length) {
+      throw new ApiError(404, 'Không tìm thấy sản phẩm');
+    }
+
+    const productRow = productRows[0];
+    const productId = productRow.id;
+
+    const basePrice = Number(productRow.price || 0);
+    const salePriceRaw = productRow.sale_price === null || productRow.sale_price === undefined ? null : Number(productRow.sale_price);
+    const hasValidSale =
+      salePriceRaw !== null && Number.isFinite(salePriceRaw) && salePriceRaw > 0 && salePriceRaw < basePrice;
+
+    const effectiveUnitPrice = hasValidSale ? salePriceRaw : basePrice;
+
+    if (Number(productRow.stock_quantity || 0) <= 0) {
+      throw new ApiError(409, 'Sản phẩm hiện đã hết hàng');
+    }
+
+    // Create/get open cart
+    let cartRows = await query(
+      `
+      SELECT id, status
+      FROM carts
+      WHERE user_id = ? AND status = 'open'
+      ORDER BY id DESC
+      LIMIT 1
+      `,
+      [userId],
+    );
+
+    let cartRow = cartRows && cartRows[0] ? cartRows[0] : null;
+
+    if (!cartRow) {
+      await execute(
+        `
+        INSERT INTO carts (user_id, status, items_count, subtotal_price)
+        VALUES (?, 'open', 0, 0.00)
+        `,
+        [userId],
+      );
+
+      cartRows = await query(
+        `
+        SELECT id, status
+        FROM carts
+        WHERE user_id = ? AND status = 'open'
+        ORDER BY id DESC
+        LIMIT 1
+        `,
+        [userId],
+      );
+
+      cartRow = cartRows && cartRows[0] ? cartRows[0] : null;
+    }
+
+    if (!cartRow) {
+      throw new ApiError(500, 'Không thể tạo giỏ hàng');
+    }
+
+    // Update or insert cart_item
+    const existingItems = await query(
+      `
+      SELECT id, quantity
+      FROM cart_items
+      WHERE cart_id = ? AND product_id = ?
+      LIMIT 1
+      `,
+      [cartRow.id, productId],
+    );
+
+    const unitPrice = basePrice;
+    const unitSalePrice = hasValidSale ? salePriceRaw : null;
+    const nextLinePriceFor = (nextQty) => effectiveUnitPrice * nextQty;
+
+    if (existingItems && existingItems.length) {
+      const existing = existingItems[0];
+      const existingQty = Number(existing.quantity || 0);
+      const nextQty = Math.max(1, existingQty + quantity);
+
+      await execute(
+        `
+        UPDATE cart_items
+        SET
+          quantity = ?,
+          unit_price = ?,
+          unit_sale_price = ?,
+          line_price = ?
+        WHERE id = ?
+        `,
+        [nextQty, unitPrice, unitSalePrice, nextLinePriceFor(nextQty), existing.id],
+      );
+    } else {
+      await execute(
+        `
+        INSERT INTO cart_items (cart_id, product_id, quantity, unit_price, unit_sale_price, line_price)
+        VALUES (?, ?, ?, ?, ?, ?)
+        `,
+        [cartRow.id, productId, quantity, unitPrice, unitSalePrice, nextLinePriceFor(quantity)],
+      );
+    }
+
+    const totalsRows = await query(
+      `
+      SELECT
+        COALESCE(SUM(quantity), 0) AS items_count,
+        COALESCE(SUM(line_price), 0.00) AS subtotal_price
+      FROM cart_items
+      WHERE cart_id = ?
+      `,
+      [cartRow.id],
+    );
+
+    const totals = totalsRows && totalsRows[0] ? totalsRows[0] : null;
+    const itemsCount = totals ? Number(totals.items_count || 0) : 0;
+    const subtotalPrice = totals ? Number(totals.subtotal_price || 0) : 0;
+
+    await execute(
+      `
+      UPDATE carts
+      SET items_count = ?, subtotal_price = ?
+      WHERE id = ?
+      `,
+      [itemsCount, subtotalPrice, cartRow.id],
+    );
+
+    sendJson(res, 200, {
+      success: true,
+      message: 'Thêm sản phẩm vào giỏ hàng thành công',
+      data: {
+        cart: {
+          id: cartRow.id,
+          status: cartRow.status,
+          itemsCount,
+          subtotalPrice,
+        },
+      },
+    });
+  }),
+);
+
+app.delete(
+  '/api/cart/items',
+  asyncRoute(async (req, res) => {
+    const token = resolveTokenFromRequest(req);
+    const result = await getCurrentUser(token);
+
+    const user = result && result.user ? result.user : null;
+    const userId = user && user.id ? user.id : null;
+
+    if (!userId) {
+      throw new ApiError(401, 'Vui lòng đăng nhập để xoá sản phẩm khỏi giỏ hàng');
+    }
+
+    const requestedId = req.body && (req.body.id || req.body.cartItemId || req.body.cart_item_id);
+    const cartItemId = Number(requestedId);
+
+    if (!Number.isFinite(cartItemId) || cartItemId <= 0) {
+      throw new ApiError(400, 'Thiếu id sản phẩm trong giỏ hàng');
+    }
+
+    const cartRows = await query(
+      `
+      SELECT id
+      FROM carts
+      WHERE user_id = ? AND status = 'open'
+      ORDER BY id DESC
+      LIMIT 1
+      `,
+      [userId],
+    );
+
+    if (!cartRows || !cartRows.length) {
+      throw new ApiError(404, 'Không tìm thấy giỏ hàng');
+    }
+
+    const cartId = cartRows[0].id;
+
+    const deleteResult = await execute(
+      `
+      DELETE FROM cart_items
+      WHERE cart_id = ? AND id = ?
+      `,
+      [cartId, cartItemId],
+    );
+
+    if (!deleteResult || Number(deleteResult.affectedRows || 0) <= 0) {
+      throw new ApiError(404, 'Sản phẩm không tồn tại trong giỏ hàng');
+    }
+
+    const totalsRows = await query(
+      `
+      SELECT
+        COALESCE(SUM(quantity), 0) AS items_count,
+        COALESCE(SUM(line_price), 0.00) AS subtotal_price
+      FROM cart_items
+      WHERE cart_id = ?
+      `,
+      [cartId],
+    );
+
+    const totals = totalsRows && totalsRows[0] ? totalsRows[0] : null;
+    const itemsCount = totals ? Number(totals.items_count || 0) : 0;
+    const subtotalPrice = totals ? Number(totals.subtotal_price || 0) : 0;
+
+    await execute(
+      `
+      UPDATE carts
+      SET items_count = ?, subtotal_price = ?
+      WHERE id = ?
+      `,
+      [itemsCount, subtotalPrice, cartId],
+    );
+
+    sendJson(res, 200, {
+      success: true,
+      message: 'Đã xoá sản phẩm khỏi giỏ hàng',
+      data: {
+        cart: {
+          id: cartId,
+          itemsCount,
+          subtotalPrice,
         },
       },
     });
