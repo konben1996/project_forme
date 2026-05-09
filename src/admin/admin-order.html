@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Computer Store - Admin đơn hàng (demo UI)" />
+  <title>Computer Store - Đơn hàng</title>
+  <link rel="stylesheet" href="./css/admin.css" />
+</head>
+
+<body class="admin-page">
+  <div data-header-slot></div>
+
+  <main class="admin-main">
+    <div class="admin-container" data-admin-root>
+      <aside class="admin-sidebar" aria-label="Menu quản trị">
+        <div class="admin-sidebar__brand">
+          <span class="admin-sidebar__brand-mark" aria-hidden="true">A</span>
+          <div>
+            <strong>Admin</strong>
+            <div class="admin-sidebar__brand-sub">Quản lý cửa hàng</div>
+          </div>
+        </div>
+
+        <nav class="admin-sidebar__nav">
+          <a class="admin-sidebar__link" href="./admin.html">Tổng quan</a>
+          <a class="admin-sidebar__link" href="./admin-product.html">Sản phẩm</a>
+          <a class="admin-sidebar__link" href="./admin-category.html">Danh mục</a>
+          <a class="admin-sidebar__link is-active" href="./admin-order.html" aria-current="page">Đơn hàng</a>
+          <a class="admin-sidebar__link" href="./admin-accounts.html">Tài khoản</a>
+        </nav>
+
+        <div class="admin-sidebar__footer">
+          <div class="admin-sidebar__hint">
+            <strong>Chế độ</strong>
+            <span>Demo UI (chưa có backend)</span>
+          </div>
+
+          <a class="admin-sidebar__logout btn btn--ghost" href="../pages/login.html?logout=1" aria-label="Đăng xuất">Đăng xuất</a>
+        </div>
+      </aside>
+
+      <section class="admin-content" aria-label="Quản lý đơn hàng">
+        <header class="admin-topbar">
+          <div class="admin-topbar__left">
+            <h1>Đơn hàng</h1>
+            <p class="admin-topbar__subtitle">Danh sách đơn hàng - demo UI</p>
+          </div>
+
+          <div class="admin-topbar__right">
+            <div class="admin-search">
+              <input type="text" placeholder="Tìm theo mã / khách..." aria-label="Tìm kiếm đơn hàng" />
+              <button type="button" class="btn btn--primary">Tìm</button>
+            </div>
+          </div>
+        </header>
+
+        <section class="admin-section">
+          <div class="admin-section__heading">
+            <h2>Đơn hàng mới nhất</h2>
+          </div>
+
+          <div class="admin-order-list">
+            <article class="admin-order">
+              <div class="admin-order__left">
+                <div class="admin-order__code">#HD-10293</div>
+                <div class="admin-order__customer">Khách: Nguyễn Văn A</div>
+                <div class="admin-order__meta">Thanh toán: Online</div>
+              </div>
+
+              <div class="admin-order__right">
+                <span class="pill pill--ok">Đã giao</span>
+                <div class="admin-order__total"><strong>12,450,000đ</strong></div>
+                <div class="admin-row-actions">
+                  <button class="btn btn--ghost btn--sm" type="button">Xem</button>
+                  <button class="btn btn--primary btn--sm" type="button">Cập nhật</button>
+                </div>
+              </div>
+            </article>
+
+            <article class="admin-order">
+              <div class="admin-order__left">
+                <div class="admin-order__code">#HD-10294</div>
+                <div class="admin-order__customer">Khách: Trần Thị B</div>
+                <div class="admin-order__meta">Thanh toán: COD</div>
+              </div>
+
+              <div class="admin-order__right">
+                <span class="pill pill--warn">Chờ xử lý</span>
+                <div class="admin-order__total"><strong>6,980,000đ</strong></div>
+                <div class="admin-row-actions">
+                  <button class="btn btn--ghost btn--sm" type="button">Xem</button>
+                  <button class="btn btn--primary btn--sm" type="button">Cập nhật</button>
+                </div>
+              </div>
+            </article>
+
+            <article class="admin-order">
+              <div class="admin-order__left">
+                <div class="admin-order__code">#HD-10295</div>
+                <div class="admin-order__customer">Khách: Lê Văn C</div>
+                <div class="admin-order__meta">Thanh toán: Online</div>
+              </div>
+
+              <div class="admin-order__right">
+                <span class="pill pill--ok">Đang giao</span>
+                <div class="admin-order__total"><strong>19,300,000đ</strong></div>
+                <div class="admin-row-actions">
+                  <button class="btn btn--ghost btn--sm" type="button">Xem</button>
+                  <button class="btn btn--primary btn--sm" type="button">Cập nhật</button>
+                </div>
+              </div>
+            </article>
+          </div>
+
+          <div class="admin-pagination" aria-label="Phân trang (demo)">
+            <button class="btn btn--ghost" type="button" disabled>Trước</button>
+            <span class="admin-pagination__info">Trang 1 / 10</span>
+            <button class="btn btn--ghost" type="button">Sau</button>
+          </div>
+        </section>
+      </section>
+    </div>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script src="../utils/auth-api.js"></script>
+  <script src="../utils/loadHeader.js"></script>
+  <script src="../utils/loadFooter.js"></script>
+</body>
+</html>

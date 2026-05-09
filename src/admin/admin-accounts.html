@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Computer Store - Admin tài khoản (demo UI)" />
+  <title>Computer Store - Tài khoản</title>
+  <link rel="stylesheet" href="./css/admin.css" />
+  <link rel="stylesheet" href="./css/admin-accounts.css" />
+</head>
+
+<body class="admin-page">
+  <div data-header-slot></div>
+
+  <main class="admin-main">
+    <div class="admin-container" data-admin-root>
+      <aside class="admin-sidebar" aria-label="Menu quản trị">
+        <div class="admin-sidebar__brand">
+          <span class="admin-sidebar__brand-mark" aria-hidden="true">A</span>
+          <div>
+            <strong>Admin</strong>
+            <div class="admin-sidebar__brand-sub">Quản lý cửa hàng</div>
+          </div>
+        </div>
+
+        <nav class="admin-sidebar__nav">
+          <a class="admin-sidebar__link" href="./admin.html">Tổng quan</a>
+          <a class="admin-sidebar__link" href="./admin-product.html">Sản phẩm</a>
+          <a class="admin-sidebar__link" href="./admin-category.html">Danh mục</a>
+          <a class="admin-sidebar__link" href="./admin-order.html">Đơn hàng</a>
+          <a class="admin-sidebar__link is-active" href="./admin-accounts.html" aria-current="page">Tài khoản</a>
+        </nav>
+
+        <div class="admin-sidebar__footer">
+          <div class="admin-sidebar__hint">
+            <strong>Chế độ</strong>
+            <span>Demo UI (chưa có backend)</span>
+          </div>
+
+          <a class="admin-sidebar__logout btn btn--ghost" href="../pages/login.html?logout=1" aria-label="Đăng xuất">Đăng xuất</a>
+        </div>
+      </aside>
+
+      <section class="admin-content" aria-label="Quản lý tài khoản">
+        <header class="admin-topbar">
+          <div class="admin-topbar__left">
+            <h1>Tài khoản</h1>
+            <p class="admin-topbar__subtitle">Quản lý tài khoản - demo UI</p>
+          </div>
+
+          <div class="admin-topbar__right">
+            <div class="admin-search">
+              <input type="text" placeholder="Tìm theo tên / email..." aria-label="Tìm kiếm tài khoản" />
+              <button type="button" class="btn btn--primary">Tìm</button>
+            </div>
+          </div>
+        </header>
+
+        <section class="admin-section">
+          <div class="admin-section__heading">
+            <h2>Danh sách tài khoản</h2>
+            <div class="admin-section__actions">
+              <button class="btn btn--ghost" type="button">Thêm tài khoản</button>
+            </div>
+          </div>
+
+          <div class="admin-table-wrap">
+            <table class="admin-table" aria-label="Danh sách tài khoản">
+              <thead>
+                <tr>
+                  <th>STT</th>
+                  <th>Tên</th>
+                  <th>Email</th>
+                  <th>Vai trò</th>
+                  <th>Trạng thái</th>
+                  <th>Thao tác</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td><strong>Nguyễn Văn A</strong></td>
+                  <td>nguyenvana@email.com</td>
+                  <td>Khách hàng</td>
+                  <td><span class="pill pill--ok">Hoạt động</span></td>
+                  <td>
+                    <div class="admin-row-actions">
+                      <button class="btn btn--ghost btn--sm" type="button">Sửa</button>
+                      <button class="btn btn--danger btn--sm" type="button">Khóa</button>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>2</td>
+                  <td><strong>Trần Thị B</strong></td>
+                  <td>tranthib@email.com</td>
+                  <td>Khách hàng</td>
+                  <td><span class="pill pill--warn">Tạm khóa</span></td>
+                  <td>
+                    <div class="admin-row-actions">
+                      <button class="btn btn--ghost btn--sm" type="button">Sửa</button>
+                      <button class="btn btn--primary btn--sm" type="button">Mở khóa</button>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>3</td>
+                  <td><strong>admin</strong></td>
+                  <td>admin@email.com</td>
+                  <td>Quản trị</td>
+                  <td><span class="pill pill--ok">Hoạt động</span></td>
+                  <td>
+                    <div class="admin-row-actions">
+                      <button class="btn btn--ghost btn--sm" type="button">Sửa</button>
+                      <button class="btn btn--danger btn--sm" type="button">Vô hiệu</button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="admin-pagination" aria-label="Phân trang (demo)">
+            <button class="btn btn--ghost" type="button" disabled>Trước</button>
+            <span class="admin-pagination__info">Trang 1 / 10</span>
+            <button class="btn btn--ghost" type="button">Sau</button>
+          </div>
+        </section>
+      </section>
+    </div>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script src="../utils/auth-api.js"></script>
+  <script src="../utils/loadHeader.js"></script>
+  <script src="../utils/loadFooter.js"></script>
+</body>
+</html>

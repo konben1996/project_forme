@@ -287,22 +287,63 @@ body.admin-page {
 .admin-table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 860px;
+  table-layout: fixed;
+  min-width: 100%;
 }
 
 .admin-table thead th {
   text-align: left;
-  padding: 12px 14px;
+  padding: 11px 12px;
   font-size: 0.92rem;
   color: $page-muted;
   font-weight: 850;
   border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+  white-space: nowrap;
 }
 
 .admin-table tbody td {
-  padding: 12px 14px;
+  padding: 11px 12px;
   border-bottom: 1px solid rgba(226, 232, 240, 0.65);
   vertical-align: middle;
+  white-space: nowrap;
+
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+.admin-table thead th:nth-child(1),
+.admin-table tbody td:nth-child(1) {
+  width: 6%;
+}
+
+.admin-table thead th:nth-child(2),
+.admin-table tbody td:nth-child(2) {
+  width: 32%;
+}
+
+.admin-table thead th:nth-child(3),
+.admin-table tbody td:nth-child(3) {
+  width: 16%;
+}
+
+.admin-table thead th:nth-child(4),
+.admin-table tbody td:nth-child(4) {
+  width: 14%;
+}
+
+.admin-table thead th:nth-child(5),
+.admin-table tbody td:nth-child(5) {
+  width: 16%;
+}
+
+.admin-table thead th:nth-child(6),
+.admin-table tbody td:nth-child(6) {
+  width: 16%;
+}
+
+.admin-table tbody td:nth-child(2),
+.admin-table tbody td:nth-child(3) {
+  white-space: normal;
 }
 
 .admin-table tbody tr:hover td {
@@ -311,8 +352,10 @@ body.admin-page {
 
 .admin-row-actions {
   display: flex;
-  gap: 10px;
+  gap: 8px;
   align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
 }
 
 .admin-pagination {
@@ -467,9 +510,9 @@ body.admin-page {
 
 .btn--sm {
   min-height: 40px;
-  padding: 0 14px;
+  padding: 0 10px;
   border-radius: 12px;
-  font-size: 0.92rem;
+  font-size: 0.85rem;
   font-weight: 900;
 }
 
@@ -517,7 +560,7 @@ body.admin-page {
   }
 
   .admin-table {
-    min-width: 740px;
+    min-width: 100%;
   }
 
   .admin-order {
@@ -560,6 +603,6 @@ body.admin-page {
   }
 
   .admin-table {
-    min-width: 680px;
+    min-width: 100%;
   }
 }

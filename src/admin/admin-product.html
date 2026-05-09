@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Computer Store - Admin quản trị" />
-  <title>Computer Store - Admin</title>
+  <meta name="description" content="Computer Store - Admin sản phẩm (demo UI)" />
+  <title>Computer Store - Sản phẩm</title>
   <link rel="stylesheet" href="./css/admin.css" />
 </head>
 
@@ -23,8 +23,8 @@
         </div>
 
         <nav class="admin-sidebar__nav">
-          <a class="admin-sidebar__link is-active" href="./admin.html" aria-current="page">Tổng quan</a>
-          <a class="admin-sidebar__link" href="./admin-product.html">Sản phẩm</a>
+          <a class="admin-sidebar__link" href="./admin.html">Tổng quan</a>
+          <a class="admin-sidebar__link is-active" href="./admin-product.html">Sản phẩm</a>
           <a class="admin-sidebar__link" href="./admin-category.html">Danh mục</a>
           <a class="admin-sidebar__link" href="./admin-order.html">Đơn hàng</a>
           <a class="admin-sidebar__link" href="./admin-accounts.html">Tài khoản</a>
@@ -35,78 +35,52 @@
             <strong>Chế độ</strong>
             <span>Demo UI (chưa có backend)</span>
           </div>
+
           <a class="admin-sidebar__logout btn btn--ghost" href="../pages/login.html?logout=1" aria-label="Đăng xuất">Đăng xuất</a>
         </div>
       </aside>
 
-      <section class="admin-content" aria-label="Nội dung quản trị">
+      <section class="admin-content" aria-label="Quản lý sản phẩm">
         <header class="admin-topbar">
           <div class="admin-topbar__left">
-            <h1>Dashboard</h1>
-            <p class="admin-topbar__subtitle">Theo dõi nhanh hoạt động của cửa hàng</p>
+            <h1>Sản phẩm</h1>
+            <p class="admin-topbar__subtitle">Quản lý sản phẩm - demo UI</p>
           </div>
 
           <div class="admin-topbar__right">
             <div class="admin-search">
-              <input type="text" placeholder="Tìm kiếm theo tên / mã..." aria-label="Tìm kiếm" />
+              <input type="text" placeholder="Tìm theo tên / mã..." aria-label="Tìm kiếm sản phẩm" />
               <button type="button" class="btn btn--primary">Tìm</button>
             </div>
           </div>
         </header>
 
         <section class="admin-section">
-          <div class="admin-cards-grid">
-            <article class="admin-card">
-              <div class="admin-card__label">Sản phẩm</div>
-              <div class="admin-card__value">1,284</div>
-              <div class="admin-card__meta">+12 tháng này</div>
-            </article>
-
-            <article class="admin-card">
-              <div class="admin-card__label">Đơn hàng</div>
-              <div class="admin-card__value">356</div>
-              <div class="admin-card__meta">Tổng trong hệ thống</div>
-            </article>
-
-            <article class="admin-card">
-              <div class="admin-card__label">Khách hàng</div>
-              <div class="admin-card__value">912</div>
-              <div class="admin-card__meta">Đã đăng ký</div>
-            </article>
-
-            <article class="admin-card">
-              <div class="admin-card__label">Doanh thu</div>
-              <div class="admin-card__value">48,620,000đ</div>
-              <div class="admin-card__meta">Ước tính</div>
-            </article>
-          </div>
-        </section>
-
-        <section class="admin-section">
           <div class="admin-section__heading">
-            <h2>Sản phẩm gần đây</h2>
+            <h2>Danh sách sản phẩm</h2>
             <div class="admin-section__actions">
-              <button class="btn btn--ghost" type="button">Thêm sản phẩm</button>
+              <a class="btn btn--ghost" href="./admin-add-product-items.html" aria-label="Thêm sản phẩm">Thêm sản phẩm</a>
             </div>
           </div>
 
           <div class="admin-table-wrap">
-            <table class="admin-table" aria-label="Danh sách sản phẩm gần đây">
+            <table class="admin-table" aria-label="Danh sách sản phẩm">
               <thead>
                 <tr>
                   <th>STT</th>
                   <th>Tên sản phẩm</th>
-                  <th>Danh mục</th>
+                  <th>Hãng</th>
                   <th>Giá</th>
                   <th>Trạng thái</th>
                   <th>Thao tác</th>
                 </tr>
               </thead>
+
               <tbody>
                 <tr>
                   <td>1</td>
                   <td><strong>Lenovo IdeaPad Slim 5</strong></td>
-                  <td>Laptop</td>
+                  <td>Lenovo</td>
                   <td>16,990,000đ</td>
                   <td><span class="pill pill--ok">Đang bán</span></td>
                   <td>
@@ -116,10 +90,11 @@
                     </div>
                   </td>
                 </tr>
+
                 <tr>
                   <td>2</td>
                   <td><strong>MSI Modern 14</strong></td>
-                  <td>Laptop</td>
+                  <td>MSI</td>
                   <td>18,490,000đ</td>
                   <td><span class="pill pill--warn">Hết hàng</span></td>
                   <td>
@@ -129,10 +104,11 @@
                     </div>
                   </td>
                 </tr>
+
                 <tr>
                   <td>3</td>
                   <td><strong>ASUS ROG Strix G15</strong></td>
-                  <td>Gaming</td>
+                  <td>ASUS</td>
                   <td>29,900,000đ</td>
                   <td><span class="pill pill--ok">Đang bán</span></td>
                   <td>
@@ -152,47 +128,6 @@
             <button class="btn btn--ghost" type="button">Sau</button>
           </div>
         </section>
-
-        <section class="admin-section">
-          <div class="admin-section__heading">
-            <h2>Danh sách đơn hàng (demo)</h2>
-          </div>
-
-          <div class="admin-order-list">
-            <article class="admin-order">
-              <div class="admin-order__left">
-                <div class="admin-order__code">#HD-10293</div>
-                <div class="admin-order__customer">Khách: Nguyễn Văn A</div>
-                <div class="admin-order__meta">Thanh toán: Online</div>
-              </div>
-              <div class="admin-order__right">
-                <span class="pill pill--ok">Đã giao</span>
-                <div class="admin-order__total"><strong>12,450,000đ</strong></div>
-                <div class="admin-row-actions">
-                  <button class="btn btn--ghost btn--sm" type="button">Xem</button>
-                  <button class="btn btn--primary btn--sm" type="button">Cập nhật</button>
-                </div>
-              </div>
-            </article>
-
-            <article class="admin-order">
-              <div class="admin-order__left">
-                <div class="admin-order__code">#HD-10294</div>
-                <div class="admin-order__customer">Khách: Trần Thị B</div>
-                <div class="admin-order__meta">Thanh toán: COD</div>
-              </div>
-              <div class="admin-order__right">
-                <span class="pill pill--warn">Chờ xử lý</span>
-                <div class="admin-order__total"><strong>6,980,000đ</strong></div>
-                <div class="admin-row-actions">
-                  <button class="btn btn--ghost btn--sm" type="button">Xem</button>
-                  <button class="btn btn--primary btn--sm" type="button">Cập nhật</button>
-                </div>
-              </div>
-            </article>
-          </div>
-        </section>
-
       </section>
     </div>
   </main>

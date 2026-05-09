@@ -1,0 +1,33 @@
+@use '../../scss/header';
+@use '../../scss/header-responsive';
+@use '../../scss/footer';
+
+$category-table: 'Danh sách hãng';
+
+body.admin-page {
+  /* chỉ áp dụng cho trang category vì trang này là trang duy nhất load admin-category.css */
+  table[aria-label='Danh sách hãng'] {
+    th,
+    td:last-child {
+      text-align: right;
+    }
+
+    th:last-child,
+    td:last-child {
+      width: 170px;
+    }
+
+    .admin-row-actions {
+      justify-content: flex-end;
+    }
+
+    .btn--sm {
+      white-space: nowrap;
+    }
+  }
+
+  /* Nút "Thêm hãng" */
+  section.admin-section__heading > .admin-section__actions > .btn--ghost {
+    min-width: 150px;
+  }
+}

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Computer Store - Admin chi tiết đơn hàng (demo UI)" />
+  <title>Computer Store - Chi tiết đơn hàng</title>
+  <link rel="stylesheet" href="./css/admin.css" />
+</head>
+
+<body class="admin-page">
+  <div data-header-slot></div>
+
+  <main class="admin-main">
+    <div class="admin-container" data-admin-root>
+      <aside class="admin-sidebar" aria-label="Menu quản trị">
+        <div class="admin-sidebar__brand">
+          <span class="admin-sidebar__brand-mark" aria-hidden="true">A</span>
+          <div>
+            <strong>Admin</strong>
+            <div class="admin-sidebar__brand-sub">Quản lý cửa hàng</div>
+          </div>
+        </div>
+
+        <nav class="admin-sidebar__nav">
+          <a class="admin-sidebar__link" href="./admin.html">Tổng quan</a>
+          <a class="admin-sidebar__link" href="./admin-product.html">Sản phẩm</a>
+          <a class="admin-sidebar__link" href="./admin-category.html">Danh mục</a>
+          <a class="admin-sidebar__link is-active" href="./admin-order.html">Đơn hàng</a>
+          <a class="admin-sidebar__link" href="./admin-accounts.html">Tài khoản</a>
+        </nav>
+
+        <div class="admin-sidebar__footer">
+          <div class="admin-sidebar__hint">
+            <strong>Chế độ</strong>
+            <span>Demo UI (chưa có backend)</span>
+          </div>
+
+          <a class="admin-sidebar__logout btn btn--ghost" href="../pages/login.html?logout=1" aria-label="Đăng xuất">Đăng xuất</a>
+        </div>
+      </aside>
+
+      <section class="admin-content" aria-label="Chi tiết đơn hàng">
+        <header class="admin-topbar">
+          <div class="admin-topbar__left">
+            <h1>Chi tiết đơn hàng</h1>
+            <p class="admin-topbar__subtitle">Demo UI: hiển thị sản phẩm trong từng đơn</p>
+          </div>
+
+          <div class="admin-topbar__right">
+            <a class="btn btn--ghost" href="./admin-oder.html" aria-label="Quay lại danh sách đơn hàng">← Quay lại</a>
+          </div>
+        </header>
+
+        <!-- Order summary -->
+        <section class="admin-section">
+          <div class="admin-section__heading">
+            <h2>
+              #HD-10293
+            </h2>
+            <div class="admin-section__actions">
+              <span class="pill pill--ok">Đã giao</span>
+            </div>
+          </div>
+
+          <div class="admin-cards-grid" style="grid-template-columns: repeat(4, minmax(0, 1fr));">
+            <article class="admin-card">
+              <div class="admin-card__label">Khách hàng</div>
+              <div class="admin-card__value">Nguyễn Văn A</div>
+              <div class="admin-card__meta">SDT: 0900 000 001</div>
+            </article>
+
+            <article class="admin-card">
+              <div class="admin-card__label">Thanh toán</div>
+              <div class="admin-card__value">Online</div>
+              <div class="admin-card__meta">Trạng thái: Thành công</div>
+            </article>
+
+            <article class="admin-card">
+              <div class="admin-card__label">Ngày đặt</div>
+              <div class="admin-card__value">05/09/2026</div>
+              <div class="admin-card__meta">11:30</div>
+            </article>
+
+            <article class="admin-card">
+              <div class="admin-card__label">Tổng tiền</div>
+              <div class="admin-card__value">12,450,000đ</div>
+              <div class="admin-card__meta">Sau khi giảm (demo)</div>
+            </article>
+          </div>
+        </section>
+
+        <!-- Order items table -->
+        <section class="admin-section">
+          <div class="admin-section__heading">
+            <h2>Sản phẩm trong đơn</h2>
+            <div class="admin-section__actions">
+              <button class="btn btn--ghost" type="button">Cập nhật đơn</button>
+            </div>
+          </div>
+
+          <div class="admin-table-wrap">
+            <table class="admin-table" aria-label="Danh sách sản phẩm trong đơn hàng">
+              <thead>
+                <tr>
+                  <th>STT</th>
+                  <th>Tên sản phẩm</th>
+                  <th>Số lượng</th>
+                  <th>Đơn giá</th>
+                  <th>Thành tiền</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td><strong>Lenovo IdeaPad Slim 5</strong></td>
+                  <td>1</td>
+                  <td>16,990,000đ</td>
+                  <td>16,990,000đ</td>
+                </tr>
+
+                <tr>
+                  <td>2</td>
+                  <td><strong>Chuột không dây</strong></td>
+                  <td>2</td>
+                  <td>1,980,000đ</td>
+                  <td>3,960,000đ</td>
+                </tr>
+
+                <tr>
+                  <td>3</td>
+                  <td><strong>Túi chống sốc</strong></td>
+                  <td>1</td>
+                  <td>990,000đ</td>
+                  <td>990,000đ</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Totals -->
+        <section class="admin-section">
+          <div class="admin-section__heading">
+            <h2>Phần tổng hợp</h2>
+          </div>
+
+          <div class="admin-order-list">
+            <article class="admin-order">
+              <div class="admin-order__left">
+                <div class="admin-order__code">Tạm tính</div>
+                <div class="admin-order__meta">Tổng giá sản phẩm (demo)</div>
+              </div>
+              <div class="admin-order__right">
+                <div class="admin-order__total"><strong>21,940,000đ</strong></div>
+              </div>
+            </article>
+
+            <article class="admin-order">
+              <div class="admin-order__left">
+                <div class="admin-order__code">Giảm giá</div>
+                <div class="admin-order__meta">Voucher (demo)</div>
+              </div>
+              <div class="admin-order__right">
+                <div class="admin-order__total"><strong>-9,490,000đ</strong></div>
+              </div>
+            </article>
+
+            <article class="admin-order">
+              <div class="admin-order__left">
+                <div class="admin-order__code">Phí vận chuyển</div>
+                <div class="admin-order__meta">Nội thành (demo)</div>
+              </div>
+              <div class="admin-order__right">
+                <div class="admin-order__total"><strong>0đ</strong></div>
+              </div>
+            </article>
+
+            <article class="admin-order">
+              <div class="admin-order__left">
+                <div class="admin-order__code">Tổng cộng</div>
+                <div class="admin-order__meta">Số tiền phải thanh toán</div>
+              </div>
+              <div class="admin-order__right">
+                <span class="pill pill--ok">12,450,000đ</span>
+              </div>
+            </article>
+          </div>
+        </section>
+      </section>
+    </div>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script src="../utils/auth-api.js"></script>
+  <script src="../utils/loadHeader.js"></script>
+  <script src="../utils/loadFooter.js"></script>
+</body>
+</html>

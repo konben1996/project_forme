@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Computer Store - Admin thêm sản phẩm (demo UI)" />
+  <title>Computer Store - Thêm sản phẩm</title>
+  <link rel="stylesheet" href="./css/admin.css" />
+  <link rel="stylesheet" href="./css/admin-add-product-items.css" />
+</head>
+
+<body class="admin-page">
+  <div data-header-slot></div>
+
+  <main class="admin-main">
+    <div class="admin-container" data-admin-root>
+      <aside class="admin-sidebar" aria-label="Menu quản trị">
+        <div class="admin-sidebar__brand">
+          <span class="admin-sidebar__brand-mark" aria-hidden="true">A</span>
+          <div>
+            <strong>Admin</strong>
+            <div class="admin-sidebar__brand-sub">Quản lý cửa hàng</div>
+          </div>
+        </div>
+
+        <nav class="admin-sidebar__nav">
+          <a class="admin-sidebar__link" href="./admin.html">Tổng quan</a>
+          <a class="admin-sidebar__link is-active" href="./admin-product.html">Sản phẩm</a>
+          <a class="admin-sidebar__link" href="./admin-category.html">Danh mục</a>
+          <a class="admin-sidebar__link" href="./admin-order.html">Đơn hàng</a>
+          <a class="admin-sidebar__link" href="./admin-accounts.html">Tài khoản</a>
+        </nav>
+
+        <div class="admin-sidebar__footer">
+          <div class="admin-sidebar__hint">
+            <strong>Chế độ</strong>
+            <span>Demo UI (chưa có backend)</span>
+          </div>
+
+          <a class="admin-sidebar__logout btn btn--ghost" href="../pages/login.html?logout=1" aria-label="Đăng xuất">Đăng xuất</a>
+        </div>
+      </aside>
+
+      <section class="admin-content" aria-label="Thêm sản phẩm">
+        <header class="admin-topbar">
+          <div class="admin-topbar__left">
+            <h1>Thêm sản phẩm</h1>
+            <p class="admin-topbar__subtitle">Điền thông tin sản phẩm mới</p>
+          </div>
+
+          <div class="admin-topbar__right" aria-hidden="true"></div>
+        </header>
+
+        <section class="admin-section">
+          <form class="admin-form" data-admin-product-create-form>
+            <div class="admin-form__grid">
+              <label class="admin-form__field">
+                <span class="admin-form__label">Tên sản phẩm</span>
+                <input
+                  class="admin-form__input"
+                  type="text"
+                  name="productName"
+                  id="productName"
+                  placeholder="Ví dụ: Lenovo IdeaPad Slim 5"
+                  maxlength="120"
+                  required
+                />
+              </label>
+
+              <label class="admin-form__field">
+                <span class="admin-form__label">Hãng (brand)</span>
+                <select class="admin-form__input" name="brand" id="brand" required>
+                  <option value="" selected disabled>Chọn hãng</option>
+                  <option value="LENOVO">Lenovo</option>
+                  <option value="ASUS">ASUS</option>
+                  <option value="DELL">Dell</option>
+                  <option value="MSI">MSI</option>
+                  <option value="ACER">Acer</option>
+                  <option value="APPLE">Apple</option>
+                </select>
+              </label>
+
+              <label class="admin-form__field">
+                <span class="admin-form__label">Đơn vị lưu kho (sku)</span>
+                <input
+                  class="admin-form__input"
+                  type="text"
+                  name="sku"
+                  id="sku"
+                  placeholder="Ví dụ: LEN-SLIM5-IDEA-001"
+                  maxlength="60"
+                  required
+                />
+              </label>
+
+              <label class="admin-form__field">
+                <span class="admin-form__label">Slug</span>
+                <input
+                  class="admin-form__input"
+                  type="text"
+                  name="slug"
+                  id="slug"
+                  placeholder="Ví dụ: lenovo-ideapad-slim-5"
+                  maxlength="120"
+                  required
+                />
+              </label>
+            </div>
+
+            <section class="admin-image-section" aria-label="Tải ảnh sản phẩm">
+              <div class="admin-image-section__heading">
+                <h2>Ảnh sản phẩm</h2>
+                <p>Demo UI: thêm ảnh chính và vài ảnh phụ (chưa lưu vào backend).</p>
+              </div>
+
+              <div class="admin-image-grid">
+                <div class="admin-image-slot admin-image-slot--main">
+                  <div class="admin-image-slot__top">
+                    <strong>Ảnh chính</strong>
+                    <span class="admin-image-slot__hint">Khuyến nghị: 1 ảnh rõ mặt sản phẩm</span>
+                  </div>
+
+                  <div class="admin-image-slot__preview" data-preview-main>
+                    <span>Chưa có ảnh</span>
+                  </div>
+
+                  <input
+                    class="admin-image-input"
+                    type="file"
+                    id="mainImage"
+                    name="mainImage"
+                    accept="image/*"
+                  />
+                  <label class="admin-image-upload-btn" for="mainImage">Chọn ảnh chính</label>
+                </div>
+
+                <div class="admin-image-slot admin-image-slot--side">
+                  <div class="admin-image-slot__top">
+                    <strong>Ảnh phụ 1</strong>
+                    <span class="admin-image-slot__hint">Góc cạnh / ảnh chi tiết</span>
+                  </div>
+
+                  <div class="admin-image-slot__preview" data-preview-side-1>
+                    <span>Chưa có ảnh</span>
+                  </div>
+
+                  <input
+                    class="admin-image-input"
+                    type="file"
+                    id="sideImage1"
+                    name="sideImage1"
+                    accept="image/*"
+                  />
+                  <label class="admin-image-upload-btn" for="sideImage1">Chọn ảnh phụ 1</label>
+                </div>
+
+                <div class="admin-image-slot admin-image-slot--side">
+                  <div class="admin-image-slot__top">
+                    <strong>Ảnh phụ 2</strong>
+                    <span class="admin-image-slot__hint">Hình ảnh bổ sung</span>
+                  </div>
+
+                  <div class="admin-image-slot__preview" data-preview-side-2>
+                    <span>Chưa có ảnh</span>
+                  </div>
+
+                  <input
+                    class="admin-image-input"
+                    type="file"
+                    id="sideImage2"
+                    name="sideImage2"
+                    accept="image/*"
+                  />
+                  <label class="admin-image-upload-btn" for="sideImage2">Chọn ảnh phụ 2</label>
+                </div>
+
+                <div class="admin-image-slot admin-image-slot--side">
+                  <div class="admin-image-slot__top">
+                    <strong>Ảnh phụ 3</strong>
+                    <span class="admin-image-slot__hint">Tùy chọn</span>
+                  </div>
+
+                  <div class="admin-image-slot__preview" data-preview-side-3>
+                    <span>Chưa có ảnh</span>
+                  </div>
+
+                  <input
+                    class="admin-image-input"
+                    type="file"
+                    id="sideImage3"
+                    name="sideImage3"
+                    accept="image/*"
+                  />
+                  <label class="admin-image-upload-btn" for="sideImage3">Chọn ảnh phụ 3</label>
+                </div>
+              </div>
+
+              <section class="admin-image-storage" aria-label="Nơi lưu ảnh sản phẩm">
+                <div class="admin-image-storage__heading">
+                  <h2>Nơi lưu ảnh sản phẩm</h2>
+                  <p>Demo UI: chọn thư mục lưu ảnh (chưa lưu backend).</p>
+                </div>
+
+                <div class="admin-image-storage__row">
+                  <label class="admin-image-storage__field">
+                    <span class="admin-form__label">Chọn thư mục</span>
+                    <select class="admin-form__input" id="imageStorage" name="imageStorage">
+                      <option value="uploads/products" selected>uploads/products</option>
+                      <option value="uploads/products/thumbnails">uploads/products/thumbnails</option>
+                      <option value="uploads/products/details">uploads/products/details</option>
+                    </select>
+                  </label>
+
+                  <label class="admin-image-storage__field">
+                    <span class="admin-form__label">Đường dẫn (demo)</span>
+                    <input class="admin-form__input" type="text" id="imagePath" name="imagePath" value="/uploads/products" disabled />
+                  </label>
+                </div>
+              </section>
+            </section>
+
+            <div class="admin-form__actions">
+              <a class="btn btn--ghost" href="./admin.html" aria-label="Hủy và quay lại">Hủy</a>
+              <button class="btn btn--primary" type="button" data-admin-product-create-submit>
+                Lưu sản phẩm
+              </button>
+            </div>
+
+            <p class="admin-form__note" aria-live="polite">
+              (Demo UI) Chưa kết nối backend. Nút “Lưu sản phẩm” chỉ để hiển thị giao diện.
+            </p>
+          </form>
+        </section>
+      </section>
+    </div>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script src="../utils/auth-api.js"></script>
+  <script src="../utils/loadHeader.js"></script>
+  <script src="../utils/loadFooter.js"></script>
+</body>
+</html>
