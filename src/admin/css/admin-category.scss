@@ -1,11 +1,5 @@
-@use '../../scss/header';
-@use '../../scss/header-responsive';
-@use '../../scss/footer';
-
-$category-table: 'Danh sách hãng';
-
 body.admin-page {
-  /* chỉ áp dụng cho trang category vì trang này là trang duy nhất load admin-category.css */
+  /* custom cho trang category */
   table[aria-label='Danh sách hãng'] {
     th,
     td:last-child {
