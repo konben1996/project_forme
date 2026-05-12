@@ -59,9 +59,6 @@
         <section class="admin-section">
           <div class="admin-section__heading">
             <h2>Danh sách tài khoản</h2>
-            <div class="admin-section__actions">
-              <button class="btn btn--ghost" type="button">Thêm tài khoản</button>
-            </div>
           </div>
 
           <div class="admin-table-wrap">
@@ -86,8 +83,7 @@
                   <td><span class="pill pill--ok">Hoạt động</span></td>
                   <td>
                     <div class="admin-row-actions">
-                      <button class="btn btn--ghost btn--sm" type="button">Sửa</button>
-                      <button class="btn btn--danger btn--sm" type="button">Khóa</button>
+                      <a class="btn btn--ghost btn--sm" href="#edit-account-modal">Sửa</a>
                     </div>
                   </td>
                 </tr>
@@ -100,8 +96,7 @@
                   <td><span class="pill pill--warn">Tạm khóa</span></td>
                   <td>
                     <div class="admin-row-actions">
-                      <button class="btn btn--ghost btn--sm" type="button">Sửa</button>
-                      <button class="btn btn--primary btn--sm" type="button">Mở khóa</button>
+                      <a class="btn btn--ghost btn--sm" href="#edit-account-modal">Sửa</a>
                     </div>
                   </td>
                 </tr>
@@ -114,8 +109,7 @@
                   <td><span class="pill pill--ok">Hoạt động</span></td>
                   <td>
                     <div class="admin-row-actions">
-                      <button class="btn btn--ghost btn--sm" type="button">Sửa</button>
-                      <button class="btn btn--danger btn--sm" type="button">Vô hiệu</button>
+                      <a class="btn btn--ghost btn--sm" href="#edit-account-modal">Sửa</a>
                     </div>
                   </td>
                 </tr>
@@ -132,6 +126,66 @@
       </section>
     </div>
   </main>
+
+  <section
+    id="edit-account-modal"
+    class="admin-modal"
+    aria-modal="true"
+    role="dialog"
+    aria-label="Sửa tài khoản"
+  >
+    <a class="admin-modal__backdrop" href="#" aria-hidden="true"></a>
+
+    <div class="admin-modal__panel">
+      <div class="admin-modal__header">
+        <div>
+          <h3>Sửa tài khoản</h3>
+          <p>Chỉnh sửa thông tin người dùng (demo UI)</p>
+        </div>
+
+        <a class="admin-modal__close" href="#" aria-label="Đóng">
+          &times;
+        </a>
+      </div>
+
+      <form class="admin-form" action="#" method="post">
+        <div class="admin-field">
+          <label for="edit-account-name">Tên</label>
+          <input
+            id="edit-account-name"
+            type="text"
+            name="name"
+            placeholder="Ví dụ: Nguyễn Văn A"
+          />
+        </div>
+
+        <div class="admin-field">
+          <label for="edit-account-role">Vai trò</label>
+          <select id="edit-account-role" name="role">
+            <option value="customer" selected>Khách hàng</option>
+            <option value="admin">Quản trị</option>
+          </select>
+        </div>
+
+        <div class="admin-field">
+          <label for="edit-account-status">Trạng thái</label>
+          <select id="edit-account-status" name="status">
+            <option value="active" selected>Hoạt động</option>
+            <option value="locked">Tạm khóa</option>
+            <option value="inactive">Vô hiệu</option>
+          </select>
+        </div>
+
+
+        <div class="admin-modal__footer">
+          <a class="btn btn--ghost" href="#">Hủy</a>
+          <button class="btn btn--primary" type="button">Lưu thay đổi</button>
+        </div>
+
+        <p class="admin-modal__helper">Bấm “Hủy” hoặc “×” để đóng popup.</p>
+      </form>
+    </div>
+  </section>
 
   <div id="site-footer"></div>
 

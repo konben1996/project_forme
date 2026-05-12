@@ -1,1 +1,200 @@
+/* Modal sửa tài khoản - thuần HTML/CSS (không JS)
+   Cơ chế mở/đóng: dùng :target với id trên .admin-modal
+*/
 
+.admin-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 24px;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+}
+
+.admin-modal:target {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.admin-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.52);
+}
+
+.admin-modal__panel {
+  position: relative;
+  z-index: 1;
+
+  width: min(420px, 100%);
+  max-height: calc(100vh - 48px);
+  overflow: auto;
+
+  background: var(--page-surface);
+  border: 1px solid var(--page-border);
+  border-radius: 22px;
+  box-shadow: var(--page-shadow);
+
+  padding: 14px;
+}
+
+.admin-modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 12px;
+  margin-bottom: 12px;
+
+  border-bottom: 1px solid rgba(226, 232, 240, 0.9);
+}
+
+.admin-modal__header h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  letter-spacing: -0.01em;
+}
+
+.admin-modal__header p {
+  margin: 6px 0 0;
+  color: var(--page-muted);
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.admin-modal__close {
+  min-width: 44px;
+  min-height: 44px;
+
+  border-radius: 14px;
+  background: var(--page-surface-soft);
+  border: 1px solid rgba(37, 99, 235, 0.16);
+
+  font-size: 28px;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  color: var(--page-accent-dark);
+  cursor: pointer;
+
+  transition: transform 0.15s ease, background 0.2s ease, border-color 0.2s ease;
+  text-decoration: none;
+}
+
+.admin-modal__close:hover {
+  background: rgba(37, 99, 235, 0.1);
+  border-color: rgba(37, 99, 235, 0.26);
+  transform: translateY(-1px);
+}
+
+.admin-modal__close:active {
+  transform: translateY(1px);
+}
+
+.admin-form {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.admin-form__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.admin-form__grid--single {
+  grid-template-columns: 1fr;
+}
+
+@media (max-width: 680px) {
+  .admin-form__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.admin-field {
+  display: grid;
+  gap: 6px;
+}
+
+.admin-field label {
+  font-weight: 900;
+  color: var(--page-muted);
+  font-size: 0.9rem;
+}
+
+.admin-field input,
+.admin-field select {
+  width: 100%;
+  min-height: 46px;
+
+  padding: 0 14px;
+  border-radius: 14px;
+
+  border: 1px solid var(--page-border);
+  background: var(--page-surface);
+  color: var(--page-text);
+
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  font-size: 15px;
+}
+
+.admin-field input::placeholder {
+  color: #94a3b8;
+}
+
+.admin-field input:focus,
+.admin-field select:focus {
+  border-color: var(--page-accent);
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+}
+
+/* Field trong popup sửa tài khoản: full chiều rộng panel */
+#edit-account-name,
+#edit-account-role,
+#edit-account-status {
+  width: 100%;
+  justify-self: stretch;
+}
+
+.admin-modal__footer {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+
+  padding-top: 12px;
+  margin-top: 12px;
+  border-top: 1px solid rgba(226, 232, 240, 0.9);
+}
+
+.admin-modal__helper {
+  margin: 2px 0 0;
+  color: var(--page-muted);
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.admin-modal__status-note {
+  margin: 0;
+  color: var(--page-muted);
+  font-weight: 800;
+  font-size: 0.9rem;
+  padding: 10px 12px;
+  background: var(--page-surface-soft);
+  border: 1px solid rgba(37, 99, 235, 0.12);
+  border-radius: 16px;
+}
