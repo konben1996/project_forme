@@ -119,7 +119,7 @@ INSERT INTO users (
     'Admin Computer Store',
     'admin@computerstore.vn',
     '0900000001',
-    '$2b$12$mrhR2Ue8TE0VeixOIPtT4.TIeXHDZAOMhZpNUxhdw9uP9mjyFy9iC',
+    '$2b$12$p7opVwJA4fhMYWJbC5DBoOismDsxXQr9fS0h0TkPBLpr/0rTbjtLe',
     'admin',
     'active',
     '2026-04-01 08:00:00',

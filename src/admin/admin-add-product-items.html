@@ -105,6 +105,62 @@
                   required
                 />
               </label>
+
+              <label class="admin-form__field">
+                <span class="admin-form__label">Danh mục (category)</span>
+                <select class="admin-form__input" name="category" id="category" required>
+                  <option value="" selected disabled>Chọn danh mục</option>
+                  <option value="laptop-van-phong">Laptop văn phòng</option>
+                  <option value="laptop-gaming">Laptop gaming</option>
+                  <option value="macbook">MacBook</option>
+                  <option value="man-hinh">Màn hình</option>
+                  <option value="cpu-gpu">CPU / GPU</option>
+                  <option value="ram-ssd">RAM / SSD</option>
+                  <option value="ban-phim-chuot">Bàn phím / Chuột</option>
+                  <option value="camera">Camera</option>
+                  <option value="pc-build-san">PC build sẵn</option>
+                </select>
+              </label>
+
+              <label class="admin-form__field">
+                <span class="admin-form__label">Giá bán (Sprice)</span>
+                <input
+                  class="admin-form__input"
+                  type="number"
+                  name="salePrice"
+                  id="salePrice"
+                  placeholder="Ví dụ: 19990000"
+                  inputmode="decimal"
+                  step="0.01"
+                  min="0"
+                />
+              </label>
+
+              <label class="admin-form__field">
+                <span class="admin-form__label">Giá Sale (Sale_price)</span>
+                <input
+                  class="admin-form__input"
+                  type="number"
+                  name="sale_price"
+                  id="sale_price"
+                  placeholder="Ví dụ: 17990000"
+                  inputmode="decimal"
+                  step="0.01"
+                  min="0"
+                />
+              </label>
+
+              <label class="admin-form__field">
+                <span class="admin-form__label">Mô tả ngắn (description)</span>
+                <textarea
+                  class="admin-form__input"
+                  name="description"
+                  id="description"
+                  placeholder="Ví dụ: Laptop mỏng nhẹ, phù hợp học tập và làm việc văn phòng."
+                  rows="3"
+                  maxlength="500"
+                ></textarea>
+              </label>
             </div>
 
             <section class="admin-image-section" aria-label="Tải ảnh sản phẩm">
@@ -125,13 +181,14 @@
                   </div>
 
                   <input
-                    class="admin-image-input"
-                    type="file"
-                    id="mainImage"
-                    name="mainImage"
-                    accept="image/*"
+                    class="admin-form__input"
+                    type="url"
+                    id="mainImageUrl"
+                    name="mainImageUrl"
+                    placeholder="Nhập link ảnh chính (https://...)"
+                    inputmode="url"
+                    autocomplete="off"
                   />
-                  <label class="admin-image-upload-btn" for="mainImage">Chọn ảnh chính</label>
                 </div>
 
                 <div class="admin-image-slot admin-image-slot--side">
@@ -145,13 +202,14 @@
                   </div>
 
                   <input
-                    class="admin-image-input"
-                    type="file"
-                    id="sideImage1"
-                    name="sideImage1"
-                    accept="image/*"
+                    class="admin-form__input"
+                    type="url"
+                    id="sideImage1Url"
+                    name="sideImage1Url"
+                    placeholder="Nhập link ảnh phụ 1 (https://...)"
+                    inputmode="url"
+                    autocomplete="off"
                   />
-                  <label class="admin-image-upload-btn" for="sideImage1">Chọn ảnh phụ 1</label>
                 </div>
 
                 <div class="admin-image-slot admin-image-slot--side">
@@ -165,13 +223,14 @@
                   </div>
 
                   <input
-                    class="admin-image-input"
-                    type="file"
-                    id="sideImage2"
-                    name="sideImage2"
-                    accept="image/*"
+                    class="admin-form__input"
+                    type="url"
+                    id="sideImage2Url"
+                    name="sideImage2Url"
+                    placeholder="Nhập link ảnh phụ 2 (https://...)"
+                    inputmode="url"
+                    autocomplete="off"
                   />
-                  <label class="admin-image-upload-btn" for="sideImage2">Chọn ảnh phụ 2</label>
                 </div>
 
                 <div class="admin-image-slot admin-image-slot--side">
@@ -185,38 +244,17 @@
                   </div>
 
                   <input
-                    class="admin-image-input"
-                    type="file"
-                    id="sideImage3"
-                    name="sideImage3"
-                    accept="image/*"
+                    class="admin-form__input"
+                    type="url"
+                    id="sideImage3Url"
+                    name="sideImage3Url"
+                    placeholder="Nhập link ảnh phụ 3 (https://...)"
+                    inputmode="url"
+                    autocomplete="off"
                   />
-                  <label class="admin-image-upload-btn" for="sideImage3">Chọn ảnh phụ 3</label>
                 </div>
               </div>
 
-              <section class="admin-image-storage" aria-label="Nơi lưu ảnh sản phẩm">
-                <div class="admin-image-storage__heading">
-                  <h2>Nơi lưu ảnh sản phẩm</h2>
-                  <p>Demo UI: chọn thư mục lưu ảnh (chưa lưu backend).</p>
-                </div>
-
-                <div class="admin-image-storage__row">
-                  <label class="admin-image-storage__field">
-                    <span class="admin-form__label">Chọn thư mục</span>
-                    <select class="admin-form__input" id="imageStorage" name="imageStorage">
-                      <option value="uploads/products" selected>uploads/products</option>
-                      <option value="uploads/products/thumbnails">uploads/products/thumbnails</option>
-                      <option value="uploads/products/details">uploads/products/details</option>
-                    </select>
-                  </label>
-
-                  <label class="admin-image-storage__field">
-                    <span class="admin-form__label">Đường dẫn (demo)</span>
-                    <input class="admin-form__input" type="text" id="imagePath" name="imagePath" value="/uploads/products" disabled />
-                  </label>
-                </div>
-              </section>
             </section>
 
             <div class="admin-form__actions">
@@ -240,5 +278,55 @@
   <script src="../utils/auth-api.js"></script>
   <script src="../utils/loadHeader.js"></script>
   <script src="../utils/loadFooter.js"></script>
+  <script>
+    (function () {
+      const previews = [
+        { inputId: 'mainImageUrl', preview: document.querySelector('[data-preview-main]') },
+        { inputId: 'sideImage1Url', preview: document.querySelector('[data-preview-side-1]') },
+        { inputId: 'sideImage2Url', preview: document.querySelector('[data-preview-side-2]') },
+        { inputId: 'sideImage3Url', preview: document.querySelector('[data-preview-side-3]') },
+      ];
+
+      const setPreview = (previewEl, url) => {
+        if (!previewEl) return;
+
+        const trimmed = String(url || '').trim();
+        previewEl.innerHTML = '';
+
+        if (!trimmed) {
+          const span = document.createElement('span');
+          span.textContent = 'Chưa có ảnh';
+          previewEl.appendChild(span);
+          return;
+        }
+
+        const img = document.createElement('img');
+        img.src = trimmed;
+        img.alt = 'Ảnh sản phẩm';
+        img.loading = 'lazy';
+        img.decoding = 'async';
+
+        img.onerror = function () {
+          previewEl.innerHTML = '';
+          const span = document.createElement('span');
+          span.textContent = 'Không tải được ảnh từ link';
+          previewEl.appendChild(span);
+        };
+
+        previewEl.appendChild(img);
+      };
+
+      previews.forEach(({ inputId, preview }) => {
+        const input = document.getElementById(inputId);
+        if (!input || !preview) return;
+
+        const onChange = () => setPreview(preview, input.value);
+        input.addEventListener('input', onChange);
+        input.addEventListener('change', onChange);
+
+        setPreview(preview, input.value);
+      });
+    })();
+  </script>
 </body>
 </html>

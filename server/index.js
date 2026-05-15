@@ -317,6 +317,65 @@ app.get(
 );
 
 app.get(
+  '/api/admin/products',
+  asyncRoute(async (req, res) => {
+    const requestedLimit = Number(req.query.limit || 10);
+    const limit = Number.isFinite(requestedLimit)
+      ? Math.min(Math.max(Math.trunc(requestedLimit), 1), 50)
+      : 10;
+
+    const q = String(req.query.q || '').trim();
+
+    const whereClause = q ? ' AND (p.name LIKE ? OR p.sku LIKE ? OR p.slug LIKE ?)' : '';
+    const params = q ? [`%${q}%`, `%${q}%`, `%${q}%`] : [];
+
+    const rows = await query(
+      `
+      SELECT
+        p.id,
+        p.sku,
+        p.name,
+        p.slug,
+        p.thumbnail_url,
+        p.description,
+        p.price,
+        p.sale_price,
+        p.stock_quantity,
+        p.status,
+        b.name AS brand_name,
+        b.slug AS brand_slug,
+        c.name AS category_name,
+        c.slug AS category_slug,
+        ps.spec_summary
+      FROM products p
+      INNER JOIN brands b ON b.id = p.brand_id
+      INNER JOIN categories c ON c.id = p.category_id
+      LEFT JOIN (
+        SELECT
+          product_id,
+          GROUP_CONCAT(CONCAT(spec_key, ': ', spec_value) ORDER BY id SEPARATOR ' / ') AS spec_summary
+        FROM product_specs
+        GROUP BY product_id
+      ) ps ON ps.product_id = p.id
+      WHERE 1=1 ${whereClause}
+      ORDER BY p.created_at DESC, p.id DESC
+      LIMIT ?
+      `,
+      [...params, limit],
+    );
+
+    sendJson(res, 200, {
+      success: true,
+      message: 'Lấy danh sách sản phẩm (admin) thành công',
+      data: {
+        limit,
+        products: rows.map(formatProductRow),
+      },
+    });
+  }),
+);
+
+app.get(
   '/api/cart',
   asyncRoute(async (req, res) => {
     const token = resolveTokenFromRequest(req);

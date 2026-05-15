@@ -47,6 +47,14 @@ body.admin-page {
   box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
 }
 
+.admin-form__input-textarea {
+  resize: none;
+}
+
+textarea.admin-form__input {
+  resize: none;
+}
+
 .admin-form__actions {
   display: flex;
   justify-content: flex-end;
