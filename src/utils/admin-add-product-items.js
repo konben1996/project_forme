@@ -24,6 +24,24 @@
     sideImage1Url: '#sideImage1Url',
     sideImage2Url: '#sideImage2Url',
     sideImage3Url: '#sideImage3Url',
+
+    // Extra specs editor (8 pairs)
+    specKey1: '#specKey1',
+    specValue1: '#specValue1',
+    specKey2: '#specKey2',
+    specValue2: '#specValue2',
+    specKey3: '#specKey3',
+    specValue3: '#specValue3',
+    specKey4: '#specKey4',
+    specValue4: '#specValue4',
+    specKey5: '#specKey5',
+    specValue5: '#specValue5',
+    specKey6: '#specKey6',
+    specValue6: '#specValue6',
+    specKey7: '#specKey7',
+    specValue7: '#specValue7',
+    specKey8: '#specKey8',
+    specValue8: '#specValue8',
   };
 
   const $ = (sel) => document.querySelector(sel);
@@ -155,6 +173,15 @@
 
     setInputValue(descriptionEl, product.description);
 
+    const extraSpecs = Array.isArray(product.extraSpecs) ? product.extraSpecs : [];
+    for (let i = 1; i <= 8; i += 1) {
+      const spec = extraSpecs[i - 1] || {};
+      const keyEl = document.getElementById(`specKey${i}`);
+      const valueEl = document.getElementById(`specValue${i}`);
+      setInputValue(keyEl, spec.specKey);
+      setInputValue(valueEl, spec.specValue);
+    }
+
     const triggerImagePreviewRefresh = (inputEl) => {
       if (!inputEl) return;
       inputEl.dispatchEvent(new Event('input', { bubbles: true }));
@@ -230,6 +257,18 @@
     const sideImage2Url = $(SELECTORS.sideImage2Url)?.value?.trim();
     const sideImage3Url = $(SELECTORS.sideImage3Url)?.value?.trim();
 
+    const extraSpecsPayload = {};
+    for (let i = 1; i <= 8; i += 1) {
+      const keyEl = document.getElementById(`specKey${i}`);
+      const valueEl = document.getElementById(`specValue${i}`);
+
+      const specKey = keyEl && keyEl.value !== undefined ? String(keyEl.value || '').trim() : '';
+      const specValue = valueEl && valueEl.value !== undefined ? String(valueEl.value || '').trim() : '';
+
+      extraSpecsPayload[`specKey${i}`] = specKey;
+      extraSpecsPayload[`specValue${i}`] = specValue;
+    }
+
     requireField(productName, 'Vui lòng nhập tên sản phẩm');
     requireField(sku, 'Vui lòng nhập SKU');
     requireField(slug, 'Vui lòng nhập slug');
@@ -253,6 +292,8 @@
       sale_price: salePriceSaleNumber,
 
       description,
+
+      ...extraSpecsPayload,
 
       mainImageUrl,
       sideImage1Url: sideImage1Url || null,

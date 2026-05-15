@@ -215,6 +215,45 @@ textarea.admin-form__input {
   gap: 8px;
 }
 
+/* Spec key / spec value section */
+.admin-spec-section {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(226, 232, 240, 0.8);
+  display: grid;
+  gap: 14px;
+}
+
+.admin-spec-section__heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+.admin-spec-section__heading h2 {
+  margin: 0;
+  font-size: 1.2rem;
+  letter-spacing: -0.01em;
+}
+.admin-spec-section__heading p {
+  margin: 6px 0 0;
+  color: var(--page-muted);
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.admin-spec-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  align-items: start;
+}
+
+.admin-spec-field {
+  display: grid;
+  gap: 8px;
+}
+
 @media (max-width: 1024px) {
   .admin-form__grid {
     grid-template-columns: 1fr 1fr;

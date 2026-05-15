@@ -23,6 +23,28 @@ const clampString255 = (value) => {
   return s.length > 255 ? s.slice(0, 255) : s;
 };
 
+const clampString120 = (value) => {
+  const s = normalizeString(value);
+  if (!s) return '';
+  return s.length > 120 ? s.slice(0, 120) : s;
+};
+
+const extractExtraSpecsFromPayload = (body) => {
+  const safeBody = body || {};
+  const specs = [];
+
+  for (let i = 1; i <= 8; i += 1) {
+    const key = clampString120(safeBody[`specKey${i}`]);
+    const value = clampString255(safeBody[`specValue${i}`]);
+
+    if (!key || !value) continue;
+
+    specs.push({ key, value });
+  }
+
+  return specs;
+};
+
 const toSalePriceOrNull = ({ price, salePrice }) => {
   if (salePrice === null) return null;
   const p = Number(price || 0);
@@ -154,10 +176,19 @@ const createProduct = async (payload) => {
       );
     }
 
+    const extraSpecs = extractExtraSpecsFromPayload(body).filter((s) => String(s.key).toLowerCase() !== 'description');
+
     if (description) {
       await connection.execute(
         'INSERT INTO product_specs (product_id, spec_key, spec_value) VALUES (?, ?, ?)',
         [productId, 'Description', clampString255(description)],
+      );
+    }
+
+    for (const spec of extraSpecs) {
+      await connection.execute(
+        'INSERT INTO product_specs (product_id, spec_key, spec_value) VALUES (?, ?, ?)',
+        [productId, spec.key, spec.value],
       );
     }
 
@@ -229,6 +260,25 @@ const getProductForEdit = async (productId) => {
   const sideImage2Url = bySort.get(3) || '';
   const sideImage3Url = bySort.get(4) || '';
 
+  const extraSpecsRows = await query(
+    `
+    SELECT
+      spec_key,
+      spec_value
+    FROM product_specs
+    WHERE product_id = ? AND spec_key <> 'Description'
+    ORDER BY id ASC
+    `,
+    [pid],
+  );
+
+  const extraSpecs = (extraSpecsRows || [])
+    .slice(0, 8)
+    .map((r) => ({
+      specKey: r.spec_key,
+      specValue: r.spec_value,
+    }));
+
   return {
     product: {
       id: product.id,
@@ -254,6 +304,7 @@ const getProductForEdit = async (productId) => {
 
       stockQuantity: product.stock_quantity !== null && product.stock_quantity !== undefined ? Number(product.stock_quantity) : null,
       status: product.status || null,
+      extraSpecs,
     },
   };
 };
@@ -374,6 +425,17 @@ const updateProductById = async (productId, payload) => {
         await connection.execute(
           'INSERT INTO product_specs (product_id, spec_key, spec_value) VALUES (?, ?, ?)',
           [pid, 'Description', clampString255(description)],
+        );
+      }
+
+      const extraSpecs = extractExtraSpecsFromPayload(body).filter(
+        (s) => String(s.key).toLowerCase() !== 'description',
+      );
+
+      for (const spec of extraSpecs) {
+        await connection.execute(
+          'INSERT INTO product_specs (product_id, spec_key, spec_value) VALUES (?, ?, ?)',
+          [pid, spec.key, spec.value],
         );
       }
 
