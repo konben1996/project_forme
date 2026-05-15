@@ -2,13 +2,16 @@
   'use strict';
 
   const ENDPOINT = '/api/admin/products';
-  const DEFAULT_LIMIT = 20;
+  const DEFAULT_PAGE_SIZE = 10;
 
   const SELECTORS = {
     tbody: '[data-admin-products-tbody]',
     searchInput: '[data-admin-product-search-input]',
     searchButton: '[data-admin-product-search-button]',
-    statusCellTemplate: '[data-admin-products-status]',
+
+    pagePrev: '[data-admin-products-page-prev]',
+    pageNext: '[data-admin-products-page-next]',
+    pageInfo: '[data-admin-products-page-info]',
   };
 
   const formatCurrency = (value) => {
@@ -101,7 +104,8 @@
 
   const parseProductsPayload = (payload) => {
     const products = payload && payload.data && Array.isArray(payload.data.products) ? payload.data.products : [];
-    return products;
+    const totalCount = payload && payload.data && payload.data.totalCount !== undefined ? Number(payload.data.totalCount) : 0;
+    return { products, totalCount: Number.isFinite(totalCount) ? totalCount : 0 };
   };
 
   const setLoading = (tbody) => {
@@ -134,17 +138,16 @@
     `;
   };
 
-  const fetchProducts = async ({ limit, q }) => {
+  const fetchProducts = async ({ limit, offset, q }) => {
     const url = new URL(ENDPOINT, window.location.origin);
-    url.searchParams.set('limit', String(limit || DEFAULT_LIMIT));
+    url.searchParams.set('limit', String(limit));
+    url.searchParams.set('offset', String(offset));
     if (q) {
       url.searchParams.set('q', q);
     }
 
     const response = await fetch(url.href, {
-      headers: {
-        Accept: 'application/json',
-      },
+      headers: { Accept: 'application/json' },
     });
 
     if (!response.ok) {
@@ -156,26 +159,24 @@
     return parseProductsPayload(payload);
   };
 
-  const loadAndRender = async (opts) => {
-    const tbody = document.querySelector(SELECTORS.tbody);
-    if (!tbody) return;
+  const updatePaginationUI = ({ page, pageCount, pagePrevEl, pageNextEl, pageInfoEl }) => {
+    const disablePrev = page <= 1;
+    const disableNext = page >= pageCount;
 
-    const { q, limit } = opts || {};
+    if (pagePrevEl) {
+      pagePrevEl.disabled = disablePrev;
+      pagePrevEl.style.opacity = disablePrev ? '0.6' : '';
+      pagePrevEl.style.pointerEvents = disablePrev ? 'none' : '';
+    }
 
-    setLoading(tbody);
+    if (pageNextEl) {
+      pageNextEl.disabled = disableNext;
+      pageNextEl.style.opacity = disableNext ? '0.6' : '';
+      pageNextEl.style.pointerEvents = disableNext ? 'none' : '';
+    }
 
-    try {
-      const products = await fetchProducts({ limit: limit || DEFAULT_LIMIT, q });
-
-      if (!products.length) {
-        setEmpty(tbody);
-        return;
-      }
-
-      tbody.innerHTML = products.map(buildRowHtml).join('');
-    } catch (error) {
-      const message = error && error.message ? String(error.message) : 'Không thể tải sản phẩm';
-      setError(tbody, message);
+    if (pageInfoEl) {
+      pageInfoEl.textContent = `Trang ${page} / ${pageCount}`;
     }
   };
 
@@ -186,12 +187,92 @@
     const input = document.querySelector(SELECTORS.searchInput);
     const button = document.querySelector(SELECTORS.searchButton);
 
+    const pagePrevEl = document.querySelector(SELECTORS.pagePrev);
+    const pageNextEl = document.querySelector(SELECTORS.pageNext);
+    const pageInfoEl = document.querySelector(SELECTORS.pageInfo);
+
     const readQuery = () => (input ? String(input.value || '').trim() : '');
 
-    const handleSearch = async () => {
-      const q = readQuery();
-      await loadAndRender({ q });
+    let currentPage = 1;
+    let currentQuery = readQuery();
+    let lastTotalCount = 0;
+    let lastPageCount = 1;
+    let isLoading = false;
+
+    const loadAndRender = async (page) => {
+      if (isLoading) return;
+      isLoading = true;
+
+      try {
+        const q = currentQuery;
+        const limit = DEFAULT_PAGE_SIZE;
+        const offset = (page - 1) * limit;
+
+        setLoading(tbody);
+
+        const { products, totalCount } = await fetchProducts({
+          limit,
+          offset,
+          q,
+        });
+
+        lastTotalCount = totalCount;
+
+        const pageCount = Math.max(1, Math.ceil(totalCount / limit));
+
+        // Nếu page vượt quá pageCount (do dữ liệu thay đổi), tự về trang cuối
+        const safePage = Math.min(Math.max(page, 1), pageCount);
+        if (safePage !== page) {
+          currentPage = safePage;
+          isLoading = false;
+          return void loadAndRender(safePage);
+        }
+
+        currentPage = page;
+
+        if (!products.length) {
+          setEmpty(tbody);
+        } else {
+          tbody.innerHTML = products.map(buildRowHtml).join('');
+        }
+
+        updatePaginationUI({
+          page: safePage,
+          pageCount,
+          totalCount,
+          pagePrevEl,
+          pageNextEl,
+          pageInfoEl,
+        });
+      } catch (error) {
+        const message = error && error.message ? String(error.message) : 'Không thể tải sản phẩm';
+        setError(tbody, message);
+      } finally {
+        isLoading = false;
+      }
     };
+
+    const handleSearch = async () => {
+      currentQuery = readQuery();
+      currentPage = 1;
+      await loadAndRender(1);
+    };
+
+    if (pagePrevEl) {
+      pagePrevEl.addEventListener('click', (event) => {
+        event.preventDefault();
+        if (currentPage > 1) void loadAndRender(currentPage - 1);
+      });
+    }
+
+    if (pageNextEl) {
+      pageNextEl.addEventListener('click', (event) => {
+        event.preventDefault();
+        const limit = DEFAULT_PAGE_SIZE;
+        const pageCount = Math.max(1, Math.ceil(lastTotalCount / limit));
+        if (currentPage < pageCount) void loadAndRender(currentPage + 1);
+      });
+    }
 
     if (button) {
       button.addEventListener('click', (event) => {
@@ -209,7 +290,8 @@
       });
     }
 
-    void loadAndRender({ q: readQuery() });
+    // initial
+    void loadAndRender(1);
   };
 
   if (document.readyState === 'loading') {

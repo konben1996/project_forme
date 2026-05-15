@@ -324,10 +324,24 @@ app.get(
       ? Math.min(Math.max(Math.trunc(requestedLimit), 1), 50)
       : 10;
 
+    const requestedOffset = Number(req.query.offset || 0);
+    const offset = Number.isFinite(requestedOffset) ? Math.max(0, Math.trunc(requestedOffset)) : 0;
+
     const q = String(req.query.q || '').trim();
 
     const whereClause = q ? ' AND (p.name LIKE ? OR p.sku LIKE ? OR p.slug LIKE ?)' : '';
     const params = q ? [`%${q}%`, `%${q}%`, `%${q}%`] : [];
+
+    const countRows = await query(
+      `
+      SELECT COUNT(*) AS totalCount
+      FROM products p
+      WHERE 1=1 ${whereClause}
+      `,
+      params,
+    );
+
+    const totalCount = countRows && countRows[0] ? Number(countRows[0].totalCount || 0) : 0;
 
     const rows = await query(
       `
@@ -359,9 +373,9 @@ app.get(
       ) ps ON ps.product_id = p.id
       WHERE 1=1 ${whereClause}
       ORDER BY p.created_at DESC, p.id DESC
-      LIMIT ?
+      LIMIT ? OFFSET ?
       `,
-      [...params, limit],
+      [...params, limit, offset],
     );
 
     sendJson(res, 200, {
@@ -369,6 +383,8 @@ app.get(
       message: 'Lấy danh sách sản phẩm (admin) thành công',
       data: {
         limit,
+        offset,
+        totalCount,
         products: rows.map(formatProductRow),
       },
     });
