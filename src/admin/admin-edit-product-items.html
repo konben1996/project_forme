@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Computer Store - Admin thêm sản phẩm (demo UI)" />
-  <title>Computer Store - Thêm sản phẩm</title>
+  <meta name="description" content="Computer Store - Admin sửa sản phẩm" />
+  <title>Computer Store - Sửa sản phẩm</title>
   <link rel="stylesheet" href="./css/admin.css" />
   <link rel="stylesheet" href="./css/admin-add-product-items.css" />
 </head>
@@ -41,11 +41,11 @@
         </div>
       </aside>
 
-      <section class="admin-content" aria-label="Thêm sản phẩm">
+      <section class="admin-content" aria-label="Sửa sản phẩm">
         <header class="admin-topbar">
           <div class="admin-topbar__left">
-            <h1>Thêm sản phẩm</h1>
-            <p class="admin-topbar__subtitle">Điền thông tin sản phẩm mới</p>
+            <h1>Sửa sản phẩm</h1>
+            <p class="admin-topbar__subtitle">Cập nhật thông tin sản phẩm</p>
           </div>
 
           <div class="admin-topbar__right" aria-hidden="true"></div>
@@ -166,7 +166,7 @@
             <section class="admin-image-section" aria-label="Tải ảnh sản phẩm">
               <div class="admin-image-section__heading">
                 <h2>Ảnh sản phẩm</h2>
-                <p>Demo UI: thêm ảnh chính và vài ảnh phụ (chưa lưu vào backend).</p>
+                <p>Trang sửa: cập nhật ảnh chính và ảnh phụ theo link.</p>
               </div>
 
               <div class="admin-image-grid">
@@ -258,14 +258,14 @@
             </section>
 
             <div class="admin-form__actions">
-              <a class="btn btn--ghost" href="./admin.html" aria-label="Hủy và quay lại">Hủy</a>
+              <a class="btn btn--ghost" href="./admin-product.html" aria-label="Hủy và quay lại">Hủy</a>
               <button class="btn btn--primary" type="button" data-admin-product-create-submit>
                 Lưu sản phẩm
               </button>
             </div>
 
             <p class="admin-form__note" aria-live="polite">
-              Kết nối backend: khi nhấn “Lưu sản phẩm” sẽ tạo mới dữ liệu vào MySQL (products / product_images / product_specs / brands / categories).
+              Khi bấm “Lưu sản phẩm” sẽ cập nhật sản phẩm vào MySQL.
             </p>
           </form>
         </section>

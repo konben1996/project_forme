@@ -12,7 +12,13 @@ const {
   healthCheck,
   resolveTokenFromRequest,
 } = require('./auth-service');
-const { query, execute } = require('./db');
+const { query, execute, transaction } = require('./db');
+const {
+  getAdminCatalog,
+  createProduct,
+  getProductForEdit,
+  updateProductById,
+} = require('./admin-products-service');
 
 const app = express();
 const projectRoot = path.resolve(__dirname, '..');
@@ -29,6 +35,33 @@ const parseBoolean = (value) => {
 
   const normalized = String(value || '').trim().toLowerCase();
   return ['1', 'true', 'yes', 'y', 'on'].includes(normalized);
+};
+
+const parseMoney = (value) => {
+  if (value === null || value === undefined) {
+    return null;
+  }
+
+  const n = Number(value);
+  if (!Number.isFinite(n)) {
+    return null;
+  }
+
+  return n;
+};
+
+const requireAdminUser = async (req) => {
+  const token = resolveTokenFromRequest(req);
+  const result = await getCurrentUser(token);
+
+  const user = result && result.user ? result.user : null;
+  const role = user && user.role ? user.role : '';
+
+  if (!user || role !== 'admin') {
+    throw new ApiError(403, 'Bạn không có quyền thực hiện thao tác này');
+  }
+
+  return user;
 };
 
 const corsHeaders = {
@@ -312,6 +345,58 @@ app.get(
           })),
         },
       },
+    });
+  }),
+);
+
+app.get(
+  '/api/admin/catalog',
+  asyncRoute(async (req, res) => {
+    const data = await getAdminCatalog();
+    sendJson(res, 200, {
+      success: true,
+      message: 'Lấy catalog hãng và danh mục thành công',
+      data,
+    });
+  }),
+);
+
+app.post(
+  '/api/admin/products',
+  asyncRoute(async (req, res) => {
+    const payload = req.body || {};
+    const result = await createProduct(payload);
+    sendJson(res, 201, {
+      success: true,
+      message: 'Tạo sản phẩm thành công',
+      data: result || {},
+    });
+  }),
+);
+
+app.get(
+  '/api/admin/products/:id',
+  asyncRoute(async (req, res) => {
+    const productId = req.params.id;
+    const result = await getProductForEdit(productId);
+    sendJson(res, 200, {
+      success: true,
+      message: 'Lấy thông tin sản phẩm để sửa thành công',
+      data: result,
+    });
+  }),
+);
+
+app.put(
+  '/api/admin/products/:id',
+  asyncRoute(async (req, res) => {
+    const productId = req.params.id;
+    const payload = req.body || {};
+    const result = await updateProductById(productId, payload);
+    sendJson(res, 200, {
+      success: true,
+      message: 'Cập nhật sản phẩm thành công',
+      data: result,
     });
   }),
 );

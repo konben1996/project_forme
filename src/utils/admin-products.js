@@ -94,7 +94,11 @@
         <td>${pill}</td>
         <td>
           <div class="admin-row-actions">
-            <button class="btn btn--ghost btn--sm" type="button">Sửa</button>
+            <a
+              class="btn btn--ghost btn--sm"
+              href="./admin-edit-product-items.html?id=${encodeURIComponent(product.id)}"
+              data-admin-product-edit-id="${product.id}"
+            >Sửa</a>
             <button class="btn btn--danger btn--sm" type="button">Xóa</button>
           </div>
         </td>
@@ -183,6 +187,23 @@
   const init = () => {
     const tbody = document.querySelector(SELECTORS.tbody);
     if (!tbody) return;
+
+    // Đảm bảo bấm "Sửa" luôn điều hướng đúng trang sửa (click có thể lệch ra ngoài vùng anchor)
+    tbody.addEventListener('click', (event) => {
+      // Nếu click vào nút Xóa thì không điều hướng
+      if (event.target && event.target.closest && event.target.closest('button')) return;
+
+      const actionsEl = event.target && event.target.closest ? event.target.closest('.admin-row-actions') : null;
+      if (!actionsEl) return;
+
+      const editAnchor = actionsEl.querySelector('a[data-admin-product-edit-id]');
+      if (!editAnchor) return;
+
+      const href = editAnchor.getAttribute('href');
+      if (!href) return;
+
+      window.location.href = href;
+    });
 
     const input = document.querySelector(SELECTORS.searchInput);
     const button = document.querySelector(SELECTORS.searchButton);
