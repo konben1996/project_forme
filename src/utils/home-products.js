@@ -72,7 +72,19 @@
 
   const buildSpecText = (product) => {
     if (product.specSummary) {
-      return product.specSummary;
+      const summary = String(product.specSummary || '');
+      const parts = summary
+        .split(' / ')
+        .map((p) => String(p || '').trim())
+        .filter(Boolean);
+
+      const filtered = parts.filter((p) => {
+        const key = String(p || '').split(':')[0].trim().toLowerCase();
+        return key !== 'description';
+      });
+
+      const joined = filtered.join(' / ').trim();
+      if (joined) return joined;
     }
 
     const parts = [];
