@@ -114,10 +114,16 @@
 
   const buildFeaturesHtml = (specs) => {
     const list = Array.isArray(specs) ? specs : [];
-    if (!list.length) return '<article><span>Thông tin</span><strong>Chưa có dữ liệu</strong></article>';
+    const filtered = list.filter((spec) => {
+      const key = String(spec && spec.key ? spec.key : '').trim();
+      if (!key) return false;
+      return key.toLowerCase() !== 'description';
+    });
+
+    if (!filtered.length) return '<article><span>Thông tin</span><strong>Chưa có dữ liệu</strong></article>';
 
     // Giữ giao diện giống form tĩnh hiện tại: mỗi spec là 1 article
-    return list
+    return filtered
       .map((spec) => {
         const key = escapeHtml(spec.key || '');
         const value = escapeHtml(spec.value || '');
